@@ -813,9 +813,9 @@
         
         const PHOTO_CANDIDATES_TABLE = 'tbl7ogfLnHsVfFdzb';  // in BASE_OLD
         const OLD_INVENTORY_TABLE = 'tblddAcLcQAyk050u';     // in BASE_OLD
-        const PROCESS_QUEUE_TABLE = 'tbliB2LYY90Qo1DIX';     // in BASE_NEW - UPDATE THIS ID
+        const PROCESS_QUEUE_TABLE = 'tblV7wZmFvTrHmYYe';     // in BASE_NEW - UPDATE THIS ID
         
-        let API_KEY = 'patCjuK4IUXhpgAKU.4e32846bb3298e85b13dfd28b11900a35816806477053e2295555c654682ec18';
+        let API_KEY = '';
         let allRecords = [];
         let pendingRecords = [];
         let currentSKU = null;
@@ -1146,7 +1146,7 @@
                         SKU: currentSKU,
                         Source: 'OLD_INVENTORY',
                         AI_Mode: aiMode,
-                        Target_Platforms: platforms.join(','),
+                        Target_Platforms: platforms,
                         Status_Process: 'PENDING',
                         Rigenera_Foto: true,
                         Rigenera_Titolo_Descrizione: true,
