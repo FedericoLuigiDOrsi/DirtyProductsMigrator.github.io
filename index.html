@@ -421,7 +421,7 @@
         const PHOTO_CANDIDATES_TABLE = 'tbl7ogfLnHsVfFdzb';
         const OLD_INVENTORY_TABLE = 'tblddAcLcQAyk050u';
         
-        let API_KEY = '';
+        let API_KEY = 'pat1xUFo94MidsSSa.81767812e1bb8e8b998ef1a7a59aa07a45eac196909eff6974c5a1780f0d943d';
         let allRecords = [];
         let pendingRecords = [];
         let currentSKU = null;
@@ -433,11 +433,10 @@
 
         // Check for saved API key
         window.onload = function() {
-            const savedKey = localStorage.getItem('airtable_api_key');
-            if (savedKey) {
-                document.getElementById('api-key').value = savedKey;
-            }
-        };
+    document.getElementById('config-panel').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+    loadAllRecords();
+};
 
         function startApp() {
             const key = document.getElementById('api-key').value.trim();
