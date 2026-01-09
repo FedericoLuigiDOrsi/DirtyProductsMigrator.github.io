@@ -268,6 +268,7 @@
             margin-top: 10px;
             font-size: 0.8rem;
             overflow-x: auto;
+            white-space: pre-wrap;
         }
 
         .modal {
@@ -417,10 +418,12 @@
     <script>
         // Configuration
         const BASE_ID = 'apptPbWnDkDkKEpFV';
-        const PHOTO_CANDIDATES_TABLE = 'PHOTO_CANDIDATES';
-        const OLD_INVENTORY_TABLE = 'RAW_INVENTORY';
+        const PHOTO_CANDIDATES_TABLE = 'tbl7ogfLnHsVfFdzb';
+        const OLD_INVENTORY_TABLE = 'tblddAcLcQAyk050u';
         
         let API_KEY = '';
+        let allRecords = [];
+        let pendingRecords = [];
         let currentSKU = null;
         let currentPhotos = [];
         let selectedFront = null;
@@ -448,41 +451,78 @@
             document.getElementById('config-panel').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
             
-            loadStats();
-            loadNextSKU();
+            loadAllRecords();
         }
 
-        async function airtableRequest(table, params = {}) {
-            const url = new URL(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(table)}`);
-            Object.keys(params).forEach(key => {
-                if (params[key] !== undefined && params[key] !== null) {
-                    url.searchParams.append(key, params[key]);
-                }
-            });
+        async function fetchAllRecords(table, offset = null) {
+            let url = `https://api.airtable.com/v0/${BASE_ID}/${table}`;
+            if (offset) {
+                url += `?offset=${offset}`;
+            }
 
-            console.log('API Request:', url.toString());
+            console.log('Fetching:', url);
 
             const response = await fetch(url, {
                 headers: {
-                    'Authorization': `Bearer ${API_KEY}`,
-                    'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${API_KEY}`
                 }
             });
 
             const data = await response.json();
             
             if (!response.ok) {
-                console.error('API Error Response:', data);
-                throw new Error(`API Error: ${response.status} - ${JSON.stringify(data)}`);
+                console.error('API Error:', data);
+                throw new Error(`API Error: ${response.status} - ${JSON.stringify(data.error || data)}`);
             }
 
             return data;
         }
 
+        async function loadAllRecords() {
+            document.getElementById('content').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Caricamento di tutti i record...</p>
+                </div>
+            `;
+
+            try {
+                allRecords = [];
+                let offset = null;
+                
+                // Fetch all pages
+                do {
+                    const data = await fetchAllRecords(PHOTO_CANDIDATES_TABLE, offset);
+                    allRecords = allRecords.concat(data.records);
+                    offset = data.offset;
+                    console.log(`Loaded ${allRecords.length} records...`);
+                } while (offset);
+
+                console.log(`Total records loaded: ${allRecords.length}`);
+
+                // Filter client-side
+                pendingRecords = allRecords.filter(r => r.fields.Review_Status === 'PENDING');
+                const assignedRecords = allRecords.filter(r => r.fields.Review_Status === 'ASSIGNED');
+
+                // Get unique SKUs
+                const pendingSKUs = [...new Set(pendingRecords.map(r => r.fields.SKU).filter(Boolean))];
+                const assignedSKUs = [...new Set(assignedRecords.map(r => r.fields.SKU).filter(Boolean))];
+
+                pendingCount = pendingSKUs.length;
+                doneCount = assignedSKUs.length;
+
+                updateStatsUI();
+                loadNextSKU();
+
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+
         async function updateRecord(table, recordId, fields) {
-            const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(table)}/${recordId}`;
+            const url = `https://api.airtable.com/v0/${BASE_ID}/${table}/${recordId}`;
             
-            console.log('Update Request:', url, fields);
+            console.log('Updating:', url, fields);
 
             const response = await fetch(url, {
                 method: 'PATCH',
@@ -496,38 +536,11 @@
             const data = await response.json();
 
             if (!response.ok) {
-                console.error('Update Error Response:', data);
-                throw new Error(`Update Error: ${response.status} - ${JSON.stringify(data)}`);
+                console.error('Update Error:', data);
+                throw new Error(`Update Error: ${response.status} - ${JSON.stringify(data.error || data)}`);
             }
 
             return data;
-        }
-
-        async function loadStats() {
-            try {
-                // Count pending - use simple approach
-                const pending = await airtableRequest(PHOTO_CANDIDATES_TABLE, {
-                    filterByFormula: `{Review_Status}='PENDING'`,
-                    'fields[]': 'SKU'
-                });
-                
-                // Get unique SKUs
-                const uniqueSKUs = [...new Set(pending.records.map(r => r.fields.SKU).filter(Boolean))];
-                pendingCount = uniqueSKUs.length;
-                
-                // Count done
-                const done = await airtableRequest(PHOTO_CANDIDATES_TABLE, {
-                    filterByFormula: `{Review_Status}='ASSIGNED'`,
-                    'fields[]': 'SKU'
-                });
-                const doneSKUs = [...new Set(done.records.map(r => r.fields.SKU).filter(Boolean))];
-                doneCount = doneSKUs.length;
-
-                updateStatsUI();
-            } catch (error) {
-                console.error('Stats error:', error);
-                showError(error.message);
-            }
         }
 
         function updateStatsUI() {
@@ -539,45 +552,28 @@
             document.getElementById('progress-fill').style.width = `${progress}%`;
         }
 
-        async function loadNextSKU() {
+        function loadNextSKU() {
             selectedFront = null;
             selectedBack = null;
+
+            // Get pending records
+            pendingRecords = allRecords.filter(r => r.fields.Review_Status === 'PENDING');
             
-            document.getElementById('content').innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Caricamento prossimo SKU...</p>
-                </div>
-            `;
-            document.getElementById('navigation').style.display = 'none';
-
-            try {
-                // Get first pending SKU
-                const response = await airtableRequest(PHOTO_CANDIDATES_TABLE, {
-                    filterByFormula: `{Review_Status}='PENDING'`,
-                    maxRecords: 1,
-                    'fields[]': 'SKU'
-                });
-
-                if (response.records.length === 0) {
-                    showEmptyState();
-                    return;
-                }
-
-                currentSKU = response.records[0].fields.SKU;
-                document.getElementById('current-sku').textContent = `SKU: ${currentSKU}`;
-
-                // Get all photos for this SKU
-                const photos = await airtableRequest(PHOTO_CANDIDATES_TABLE, {
-                    filterByFormula: `AND({SKU}='${currentSKU}', {Review_Status}='PENDING')`
-                });
-
-                currentPhotos = photos.records;
-                renderPhotos();
-
-            } catch (error) {
-                showError(error.message);
+            if (pendingRecords.length === 0) {
+                showEmptyState();
+                return;
             }
+
+            // Get first pending SKU
+            currentSKU = pendingRecords[0].fields.SKU;
+            document.getElementById('current-sku').textContent = `SKU: ${currentSKU}`;
+
+            // Get all photos for this SKU
+            currentPhotos = pendingRecords.filter(r => r.fields.SKU === currentSKU);
+            
+            console.log(`Loading SKU: ${currentSKU} with ${currentPhotos.length} photos`);
+            
+            renderPhotos();
         }
 
         function renderPhotos() {
@@ -636,7 +632,6 @@
                 selectedFront = null;
             } else {
                 selectedFront = photoId;
-                // If this was selected as back, remove it
                 if (selectedBack === photoId) {
                     selectedBack = null;
                 }
@@ -649,7 +644,6 @@
                 selectedBack = null;
             } else {
                 selectedBack = photoId;
-                // If this was selected as front, remove it
                 if (selectedFront === photoId) {
                     selectedFront = null;
                 }
@@ -670,23 +664,21 @@
             btn.textContent = '⏳ Salvando...';
 
             try {
-                // Get FileIds
                 const frontPhoto = currentPhotos.find(p => p.id === selectedFront);
                 const backPhoto = currentPhotos.find(p => p.id === selectedBack);
 
-                // Update PHOTO_CANDIDATES - set Is_Front
+                // Update PHOTO_CANDIDATES
                 await updateRecord(PHOTO_CANDIDATES_TABLE, selectedFront, {
                     Is_Front: true,
                     Review_Status: 'ASSIGNED'
                 });
 
-                // Update PHOTO_CANDIDATES - set Is_Back
                 await updateRecord(PHOTO_CANDIDATES_TABLE, selectedBack, {
                     Is_Back: true,
                     Review_Status: 'ASSIGNED'
                 });
 
-                // Update remaining photos for this SKU as ASSIGNED (not selected)
+                // Update remaining photos
                 for (const photo of currentPhotos) {
                     if (photo.id !== selectedFront && photo.id !== selectedBack) {
                         await updateRecord(PHOTO_CANDIDATES_TABLE, photo.id, {
@@ -695,23 +687,44 @@
                     }
                 }
 
-                // Find OLD_INVENTORY record for this SKU
-                const oldInv = await airtableRequest(OLD_INVENTORY_TABLE, {
-                    filterByFormula: `{SKU}='${currentSKU}'`,
-                    maxRecords: 1
-                });
-
-                if (oldInv.records.length > 0) {
-                    // Update OLD_INVENTORY with confirmed FileIds
-                    await updateRecord(OLD_INVENTORY_TABLE, oldInv.records[0].id, {
-                        Confirmed_Front_FileId: frontPhoto.fields.FileId,
-                        Confirmed_Back_FileId: backPhoto.fields.FileId,
-                        Rename_Approved: true,
-                        Photo_Audit_Status: 'COMPLIANT'
-                    });
+                // Update local state
+                for (const photo of currentPhotos) {
+                    const idx = allRecords.findIndex(r => r.id === photo.id);
+                    if (idx !== -1) {
+                        allRecords[idx].fields.Review_Status = 'ASSIGNED';
+                    }
                 }
 
-                // Update stats and load next
+                // Find and update OLD_INVENTORY
+                try {
+                    let offset = null;
+                    let found = false;
+                    
+                    do {
+                        const url = `https://api.airtable.com/v0/${BASE_ID}/${OLD_INVENTORY_TABLE}${offset ? `?offset=${offset}` : ''}`;
+                        const response = await fetch(url, {
+                            headers: { 'Authorization': `Bearer ${API_KEY}` }
+                        });
+                        const data = await response.json();
+                        
+                        const record = data.records.find(r => r.fields.SKU === currentSKU);
+                        if (record) {
+                            await updateRecord(OLD_INVENTORY_TABLE, record.id, {
+                                Confirmed_Front_FileId: frontPhoto.fields.FileId,
+                                Confirmed_Back_FileId: backPhoto.fields.FileId,
+                                Rename_Approved: true,
+                                Photo_Audit_Status: 'COMPLIANT'
+                            });
+                            found = true;
+                            break;
+                        }
+                        offset = data.offset;
+                    } while (offset && !found);
+                    
+                } catch (e) {
+                    console.warn('Could not update OLD_INVENTORY:', e);
+                }
+
                 doneCount++;
                 pendingCount--;
                 updateStatsUI();
@@ -727,12 +740,16 @@
         }
 
         async function skipSKU() {
-            // Mark all photos for this SKU as SKIPPED
             try {
                 for (const photo of currentPhotos) {
                     await updateRecord(PHOTO_CANDIDATES_TABLE, photo.id, {
                         Review_Status: 'SKIPPED'
                     });
+                    
+                    const idx = allRecords.findIndex(r => r.id === photo.id);
+                    if (idx !== -1) {
+                        allRecords[idx].fields.Review_Status = 'SKIPPED';
+                    }
                 }
 
                 pendingCount--;
@@ -768,16 +785,14 @@
             document.getElementById('content').innerHTML = `
                 <div class="error">
                     <h3>⚠️ Errore</h3>
-                    <p>${message}</p>
                     <pre>${message}</pre>
-                    <button onclick="loadNextSKU()" style="margin-top: 15px; padding: 10px 20px; cursor: pointer;">
+                    <button onclick="loadAllRecords()" style="margin-top: 15px; padding: 10px 20px; cursor: pointer;">
                         Riprova
                     </button>
                 </div>
             `;
         }
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
