@@ -3,114 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🛃 Dogana Import — DirtyTag Photo QC v7</title>
+    <title>🛃 Dogana Import — DirtyTag Photo QC v8</title>
     <style>
         :root {
-            --bg-dark: #1a1a2e;
-            --bg-card: #16213e;
-            --bg-input: #0f3460;
-            --accent: #e94560;
-            --accent-hover: #ff6b6b;
-            --success: #00d26a;
-            --warning: #ffc107;
-            --text: #eee;
-            --text-muted: #888;
+            --black: #0D0D0D;
+            --black-soft: #1A1A1A;
+            --black-card: #242424;
+            --red: #C41E3A;
+            --red-hover: #E63950;
+            --red-muted: rgba(196, 30, 58, 0.15);
+            --beige: #E8DFD0;
+            --beige-muted: #C4B9A8;
+            --white: #FAFAFA;
+            --white-muted: #B0B0B0;
+            --success: #2ECC71;
+            --warning: #F39C12;
             --border: #333;
+            --border-light: #444;
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--black);
+            color: var(--white);
             min-height: 100vh;
+            line-height: 1.5;
         }
-        
-        /* Header */
+
+        /* HEADER */
         .header {
-            background: var(--bg-card);
+            background: var(--black-soft);
             padding: 1rem 2rem;
-            border-bottom: 2px solid var(--accent);
+            border-bottom: 3px solid var(--red);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        .header h1 {
-            font-size: 1.5rem;
+        .header-brand {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
         }
         
-        .header h1 span { font-size: 1.8rem; }
+        .header-brand h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: -0.5px;
+        }
         
-        /* Stats Bar */
+        .header-brand .version {
+            font-size: 0.7rem;
+            background: var(--red);
+            color: var(--white);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* STATS BAR */
         .stats-bar {
             display: flex;
             gap: 1.5rem;
-            font-size: 0.9rem;
+            align-items: center;
         }
         
         .stat {
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 0.5rem 1rem;
+            background: var(--black);
+            border-radius: 8px;
+            min-width: 70px;
         }
         
         .stat-value {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--accent);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--beige);
+            font-variant-numeric: tabular-nums;
         }
         
-        .stat-label { color: var(--text-muted); }
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--white-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
         
         .stat.success .stat-value { color: var(--success); }
         .stat.warning .stat-value { color: var(--warning); }
+        .stat.pending .stat-value { color: var(--red); }
+
+        /* BUTTONS */
+        .btn-icon {
+            background: var(--black);
+            border: 1px solid var(--border);
+            color: var(--white-muted);
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
         
-        /* Filters Section */
+        .btn-icon:hover {
+            border-color: var(--red);
+            color: var(--red);
+            background: var(--red-muted);
+        }
+
+        /* FILTERS */
         .filters-section {
-            background: var(--bg-card);
+            background: var(--black-soft);
             padding: 1rem 2rem;
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-            align-items: center;
+            align-items: flex-end;
             border-bottom: 1px solid var(--border);
         }
         
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
+            gap: 0.4rem;
         }
         
         .filter-group label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            font-size: 0.7rem;
+            color: var(--white-muted);
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
         }
         
-        .filter-group select, .filter-group input {
-            background: var(--bg-input);
+        .filter-group select {
+            background: var(--black);
             border: 1px solid var(--border);
-            color: var(--text);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
+            color: var(--white);
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
             min-width: 150px;
+            cursor: pointer;
+            transition: border-color 0.2s;
         }
         
-        .filter-group select:focus, .filter-group input:focus {
+        .filter-group select:hover,
+        .filter-group select:focus {
+            border-color: var(--beige-muted);
             outline: none;
-            border-color: var(--accent);
         }
-        
-        /* Pagination Controls */
+
+        /* PAGINATION */
         .pagination {
             display: flex;
             align-items: center;
@@ -119,111 +174,149 @@
         }
         
         .pagination button {
-            background: var(--bg-input);
+            background: var(--black);
             border: 1px solid var(--border);
-            color: var(--text);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            color: var(--white);
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
+            font-size: 0.9rem;
         }
         
         .pagination button:hover:not(:disabled) {
-            background: var(--accent);
-            border-color: var(--accent);
+            border-color: var(--red);
+            background: var(--red-muted);
         }
         
         .pagination button:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
         }
         
-        .pagination .page-info {
-            padding: 0.5rem 1rem;
-            background: var(--bg-dark);
-            border-radius: 4px;
+        .page-info {
+            padding: 0.6rem 1rem;
+            background: var(--black-card);
+            border-radius: 6px;
             font-size: 0.85rem;
+            font-variant-numeric: tabular-nums;
+            color: var(--beige);
+            font-weight: 500;
+        }
+
+        /* TOKEN SECTION */
+        .token-section {
+            padding: 3rem 2rem;
+            text-align: center;
+            max-width: 450px;
+            margin: 4rem auto;
+            background: var(--black-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
         }
         
-        /* Token Input */
-        .token-section {
-            padding: 2rem;
-            text-align: center;
-            max-width: 500px;
-            margin: 2rem auto;
+        .token-section h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+        
+        .token-section p {
+            color: var(--white-muted);
+            margin-bottom: 1.5rem;
         }
         
         .token-section input {
             width: 100%;
             padding: 1rem;
-            background: var(--bg-input);
+            background: var(--black);
             border: 1px solid var(--border);
-            color: var(--text);
-            border-radius: 4px;
-            margin: 1rem 0;
-            font-family: monospace;
+            color: var(--white);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .token-section input:focus {
+            outline: none;
+            border-color: var(--red);
         }
         
         .token-section button {
-            background: var(--accent);
+            background: var(--red);
             border: none;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 4px;
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
+            font-weight: 600;
             transition: background 0.2s;
         }
         
-        .token-section button:hover { background: var(--accent-hover); }
-        
-        /* Main Content */
+        .token-section button:hover {
+            background: var(--red-hover);
+        }
+
+        /* MAIN CONTENT */
         .main-content {
-            padding: 2rem;
+            padding: 1.5rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
         }
-        
-        /* Product Card */
+
+        /* PRODUCT CARD */
         .product-card {
-            background: var(--bg-card);
-            border-radius: 8px;
+            background: var(--black-card);
+            border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
         }
         
         .product-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         
         .product-sku {
-            font-size: 1.5rem;
-            font-weight: bold;
-            font-family: monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--beige);
+            letter-spacing: 1px;
         }
         
         .product-meta {
             display: flex;
-            gap: 1rem;
-            font-size: 0.9rem;
-            color: var(--text-muted);
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
         
         .product-meta span {
-            background: var(--bg-input);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
+            background: var(--black);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--white-muted);
         }
         
-        /* Photo Grid */
+        .product-meta span.warning {
+            background: rgba(243, 156, 18, 0.15);
+            color: var(--warning);
+        }
+
+        /* PHOTO GRID */
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
@@ -231,20 +324,29 @@
         .photo-item {
             position: relative;
             aspect-ratio: 1;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
             cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.2s;
+            border: 3px solid var(--border);
+            transition: all 0.2s ease;
+            background: var(--black);
         }
         
         .photo-item:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            border-color: var(--beige-muted);
         }
         
-        .photo-item.selected-front { border-color: #00d26a; }
-        .photo-item.selected-back { border-color: #ffc107; }
+        .photo-item.selected-front {
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.3);
+        }
+        
+        .photo-item.selected-back {
+            border-color: var(--warning);
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.3);
+        }
         
         .photo-item img {
             width: 100%;
@@ -256,36 +358,98 @@
             position: absolute;
             top: 8px;
             left: 8px;
-            padding: 0.3rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
+            padding: 0.35rem 0.7rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .photo-label.front { background: #00d26a; color: #000; }
-        .photo-label.back { background: #ffc107; color: #000; }
+        .photo-label.front {
+            background: var(--success);
+            color: var(--black);
+        }
+        
+        .photo-label.back {
+            background: var(--warning);
+            color: var(--black);
+        }
+        
+        .photo-index {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--white-muted);
+        }
         
         .photo-filename {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0,0,0,0.8);
-            padding: 0.3rem;
-            font-size: 0.7rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 1.5rem 0.5rem 0.4rem;
+            font-size: 0.65rem;
             text-align: center;
+            color: var(--white-muted);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        
-        /* Selection Controls */
+
+        /* SELECTION CONTROLS */
         .selection-controls {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
+            align-items: center;
+            padding: 1rem;
+            background: var(--black);
+            border-radius: 8px;
+        }
+        
+        .selection-info {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+        }
+        
+        .selection-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+        
+        .selection-badge.front {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .selection-badge.back {
+            background: rgba(243, 156, 18, 0.15);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+        
+        .selection-badge.empty {
+            background: var(--black-soft);
+            color: var(--white-muted);
+            border: 1px dashed var(--border);
         }
         
         .control-group {
@@ -295,19 +459,21 @@
         }
         
         .control-group label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            font-size: 0.8rem;
+            color: var(--white-muted);
+            font-weight: 500;
         }
         
         .control-group select {
-            background: var(--bg-input);
+            background: var(--black-card);
             border: 1px solid var(--border);
-            color: var(--text);
-            padding: 0.5rem;
-            border-radius: 4px;
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
         }
-        
-        /* Action Buttons */
+
+        /* ACTION BUTTONS */
         .action-buttons {
             display: flex;
             gap: 1rem;
@@ -315,47 +481,85 @@
         }
         
         .btn {
-            padding: 0.8rem 1.5rem;
+            padding: 0.9rem 1.8rem;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.2s;
+            font-size: 0.95rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: all 0.2s;
         }
         
         .btn-primary {
             background: var(--success);
-            color: #000;
+            color: var(--black);
         }
         
-        .btn-primary:hover { background: #00ff7f; }
+        .btn-primary:hover:not(:disabled) {
+            background: #27ae60;
+            transform: translateY(-1px);
+        }
         
         .btn-primary:disabled {
-            background: #555;
-            color: #888;
+            background: var(--border);
+            color: var(--white-muted);
             cursor: not-allowed;
         }
         
         .btn-danger {
-            background: var(--accent);
-            color: white;
+            background: var(--red);
+            color: var(--white);
         }
         
-        .btn-danger:hover { background: var(--accent-hover); }
+        .btn-danger:hover {
+            background: var(--red-hover);
+            transform: translateY(-1px);
+        }
         
         .btn-secondary {
-            background: var(--bg-input);
-            color: var(--text);
+            background: var(--black);
+            color: var(--white);
             border: 1px solid var(--border);
         }
         
-        .btn-secondary:hover { border-color: var(--accent); }
+        .btn-secondary:hover {
+            border-color: var(--beige-muted);
+            background: var(--black-soft);
+        }
+
+        /* KEYBOARD HINTS */
+        .keyboard-hints {
+            display: flex;
+            gap: 1.2rem;
+            font-size: 0.75rem;
+            color: var(--white-muted);
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
         
-        /* Skip Modal */
+        .keyboard-hints span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .keyboard-hints kbd {
+            background: var(--black);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            border: 1px solid var(--border);
+            min-width: 24px;
+            text-align: center;
+        }
+
+        /* MODALS */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -363,35 +567,43 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(4px);
         }
         
         .modal-overlay.active { display: flex; }
         
         .modal {
-            background: var(--bg-card);
-            border-radius: 12px;
+            background: var(--black-card);
+            border-radius: 16px;
             padding: 2rem;
-            max-width: 500px;
+            max-width: 480px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
+            border: 1px solid var(--border);
         }
         
         .modal h2 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+        
+        .modal-sku {
+            color: var(--beige);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
             margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
         
         .skip-reasons {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 0.6rem;
             margin-bottom: 1.5rem;
         }
         
@@ -400,50 +612,69 @@
             align-items: center;
             gap: 0.8rem;
             padding: 1rem;
-            background: var(--bg-input);
+            background: var(--black);
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
             border: 2px solid transparent;
+            transition: all 0.2s;
         }
         
-        .skip-reason:hover { border-color: var(--accent); }
-        .skip-reason.selected { border-color: var(--accent); background: rgba(233,69,96,0.2); }
+        .skip-reason:hover {
+            border-color: var(--border-light);
+        }
+        
+        .skip-reason.selected {
+            border-color: var(--red);
+            background: var(--red-muted);
+        }
         
         .skip-reason input[type="radio"] { display: none; }
         
         .skip-reason .radio-custom {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border: 2px solid var(--border);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
         }
         
         .skip-reason.selected .radio-custom {
-            border-color: var(--accent);
+            border-color: var(--red);
         }
         
         .skip-reason.selected .radio-custom::after {
             content: '';
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
+            width: 8px;
+            height: 8px;
+            background: var(--red);
             border-radius: 50%;
+        }
+        
+        .skip-reason span:last-child {
+            font-size: 0.9rem;
         }
         
         .skip-notes {
             width: 100%;
             min-height: 80px;
-            background: var(--bg-input);
+            background: var(--black);
             border: 1px solid var(--border);
-            color: var(--text);
+            color: var(--white);
             padding: 1rem;
-            border-radius: 4px;
+            border-radius: 8px;
             margin-bottom: 1.5rem;
             resize: vertical;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        
+        .skip-notes:focus {
+            outline: none;
+            border-color: var(--red);
         }
         
         .modal-actions {
@@ -451,8 +682,8 @@
             gap: 1rem;
             justify-content: flex-end;
         }
-        
-        /* Image Modal (Zoom) */
+
+        /* ZOOM MODAL */
         .zoom-modal {
             display: none;
             position: fixed;
@@ -460,7 +691,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.97);
             z-index: 1001;
             justify-content: center;
             align-items: center;
@@ -473,866 +704,827 @@
             max-width: 95%;
             max-height: 95%;
             object-fit: contain;
+            border-radius: 4px;
         }
-        
-        /* Loading State */
+
+        /* STATES */
         .loading {
             text-align: center;
             padding: 4rem;
-            color: var(--text-muted);
+            color: var(--white-muted);
         }
         
-        .loading .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid var(--border);
-            border-top-color: var(--accent);
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid var(--border);
+            border-top-color: var(--red);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
             margin: 0 auto 1rem;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 4rem;
-            color: var(--text-muted);
+            color: var(--white-muted);
         }
         
         .empty-state h3 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 0.5rem;
-            color: var(--text);
+            color: var(--white);
         }
         
-        /* Keyboard Hints */
-        .keyboard-hints {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 1rem;
+        .empty-state p {
+            color: var(--white-muted);
         }
-        
-        .keyboard-hints kbd {
-            background: var(--bg-input);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-        
-        /* Toast Notifications */
+
+        /* TOAST */
         .toast {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            background: var(--bg-card);
+            background: var(--black-card);
             padding: 1rem 1.5rem;
-            border-radius: 8px;
+            border-radius: 10px;
             border-left: 4px solid var(--success);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
             z-index: 1002;
             transform: translateX(150%);
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .toast.show { transform: translateX(0); }
-        .toast.error { border-left-color: var(--accent); }
+        .toast.error { border-left-color: var(--red); }
         .toast.warning { border-left-color: var(--warning); }
+
+        /* DEBUG PANEL */
+        .debug-panel {
+            background: var(--black);
+            border: 1px solid var(--red);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0 2rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            max-height: 120px;
+            overflow-y: auto;
+            color: var(--white-muted);
+        }
         
-        /* Responsive */
+        .debug-panel.hidden { display: none; }
+        
+        .debug-panel div {
+            padding: 0.2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* NO PHOTOS WARNING */
+        .no-photos-warning {
+            text-align: center;
+            padding: 3rem;
+            background: var(--black);
+            border-radius: 8px;
+            color: var(--warning);
+        }
+        
+        .no-photos-warning p {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--white-muted);
+        }
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .header { flex-direction: column; text-align: center; }
-            .filters-section { justify-content: center; }
-            .pagination { margin-left: 0; margin-top: 1rem; }
-            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+            .header { padding: 1rem; }
+            .stats-bar { gap: 0.8rem; }
+            .stat { padding: 0.4rem 0.6rem; min-width: 55px; }
+            .stat-value { font-size: 1.1rem; }
+            .filters-section { padding: 1rem; }
+            .main-content { padding: 1rem; }
+            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
         }
     </style>
 </head>
 <body>
-    <!-- Token Section (shown first) -->
     <div id="tokenSection" class="token-section">
         <h1>🛃 Dogana Import</h1>
-        <p>Inserisci il tuo Airtable Personal Access Token per iniziare</p>
+        <p>Inserisci il tuo Airtable Personal Access Token</p>
         <input type="password" id="tokenInput" placeholder="pat_xxxxxxxxxxxxx">
-        <br>
         <button onclick="saveToken()">Accedi</button>
     </div>
 
-    <!-- Main App (hidden until authenticated) -->
     <div id="mainApp" style="display: none;">
-        <!-- Header -->
         <header class="header">
-            <h1><span>🛃</span> Dogana Import</h1>
+            <div class="header-brand">
+                <h1>🛃 Dogana Import</h1>
+                <span class="version">v8</span>
+            </div>
             <div class="stats-bar">
-                <div class="stat">
-                    <span class="stat-value" id="statTotal">-</span>
-                    <span class="stat-label">Totale</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value" id="statLoaded">-</span>
-                    <span class="stat-label">Caricati</span>
+                <div class="stat pending">
+                    <span class="stat-value" id="statPending">-</span>
+                    <span class="stat-label">Da Fare</span>
                 </div>
                 <div class="stat success">
                     <span class="stat-value" id="statDone">-</span>
-                    <span class="stat-label">Completati</span>
+                    <span class="stat-label">Fatti</span>
                 </div>
                 <div class="stat warning">
                     <span class="stat-value" id="statSkipped">-</span>
                     <span class="stat-label">Scartati</span>
                 </div>
-                <button onclick="resetToken()" style="background: var(--bg-input); border: 1px solid var(--border); color: var(--text-muted); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
-                    🔑 Cambia Token
-                </button>
+                <div class="stat">
+                    <span class="stat-value" id="statTotal">-</span>
+                    <span class="stat-label">Totale</span>
+                </div>
+                <button class="btn-icon" onclick="resetToken()" title="Cambia Token">🔑</button>
+                <button class="btn-icon" onclick="toggleDebug()" title="Debug">🐛</button>
             </div>
         </header>
 
-        <!-- Filters -->
         <div class="filters-section">
             <div class="filter-group">
                 <label>Categoria</label>
-                <select id="filterCategory">
-                    <option value="">Tutte</option>
-                </select>
+                <select id="filterCategory"><option value="">Tutte</option></select>
             </div>
             <div class="filter-group">
                 <label>Brand</label>
-                <select id="filterBrand">
-                    <option value="">Tutti</option>
-                </select>
+                <select id="filterBrand"><option value="">Tutti</option></select>
             </div>
             <div class="filter-group">
                 <label>Stato</label>
                 <select id="filterStatus">
-                    <option value="NEEDS_REVIEW">Solo da Revisionare</option>
-                    <option value="">Tutti gli stati</option>
-                    <option value="NOT_AUDITED">Non Auditati</option>
-                    <option value="MISSING">Foto Mancanti</option>
+                    <option value="NEEDS_REVIEW">Da Revisionare</option>
+                    <option value="">Tutti</option>
+                    <option value="COMPLIANT">Compliant</option>
                     <option value="SKIPPED">Scartati</option>
                 </select>
             </div>
-            <button class="btn btn-secondary" onclick="applyFilters()">🔍 Applica Filtri</button>
-            
+            <button class="btn btn-secondary" onclick="applyFilters()">🔍 Filtra</button>
             <div class="pagination">
-                <button id="btnPrevPage" onclick="prevPage()" disabled>◀ Precedenti</button>
-                <span class="page-info" id="pageInfo">Pagina 1</span>
-                <button id="btnNextPage" onclick="nextPage()">Prossimi ▶</button>
-                <button class="btn btn-secondary" onclick="loadData()">🔄</button>
+                <button id="btnPrev" onclick="prevRecord()" disabled>◀</button>
+                <span class="page-info" id="pageInfo">0 / 0</span>
+                <button id="btnNext" onclick="nextRecord()">▶</button>
+                <button class="btn btn-secondary" onclick="loadData()" title="Ricarica">🔄</button>
             </div>
         </div>
 
-        <!-- Main Content -->
+        <div class="debug-panel hidden" id="debugPanel"></div>
+        
         <main class="main-content">
             <div id="loadingState" class="loading">
                 <div class="spinner"></div>
-                <p>Caricamento in corso...</p>
+                <p>Caricamento...</p>
             </div>
-            
-            <div id="emptyState" class="empty-state" style="display: none;">
-                <h3>🎉 Nessun prodotto da revisionare</h3>
-                <p>Tutti i prodotti con i filtri selezionati sono stati processati.</p>
+            <div id="emptyState" class="empty-state" style="display:none;">
+                <h3>📭 Nessun prodotto</h3>
+                <p>Cambia i filtri o verifica i dati in Airtable</p>
             </div>
-            
             <div id="productContainer"></div>
         </main>
     </div>
 
-    <!-- Skip Modal -->
+    <!-- SKIP MODAL -->
     <div class="modal-overlay" id="skipModal">
         <div class="modal">
             <h2>❌ Scarta Prodotto</h2>
-            <p style="margin-bottom: 1rem; color: var(--text-muted);">
-                SKU: <strong id="skipModalSku"></strong>
-            </p>
-            <p style="margin-bottom: 1rem;">Seleziona il motivo dello scarto:</p>
-            
+            <p class="modal-sku">SKU: <strong id="skipModalSku"></strong></p>
             <div class="skip-reasons">
-                <label class="skip-reason" onclick="selectSkipReason(this, 'TOO_FEW_PHOTOS')">
-                    <input type="radio" name="skipReason" value="TOO_FEW_PHOTOS">
+                <label class="skip-reason" onclick="selectSkipReason(this,'TOO_FEW_PHOTOS')">
+                    <input type="radio" name="skipReason">
                     <span class="radio-custom"></span>
                     <span>📷 Troppe poche foto</span>
                 </label>
-                <label class="skip-reason" onclick="selectSkipReason(this, 'NO_INTERNAL_LABELS')">
-                    <input type="radio" name="skipReason" value="NO_INTERNAL_LABELS">
+                <label class="skip-reason" onclick="selectSkipReason(this,'NO_INTERNAL_LABELS')">
+                    <input type="radio" name="skipReason">
                     <span class="radio-custom"></span>
                     <span>🏷️ No etichette interne</span>
                 </label>
-                <label class="skip-reason" onclick="selectSkipReason(this, 'LOW_QUALITY_PHOTOS')">
-                    <input type="radio" name="skipReason" value="LOW_QUALITY_PHOTOS">
+                <label class="skip-reason" onclick="selectSkipReason(this,'LOW_QUALITY_PHOTOS')">
+                    <input type="radio" name="skipReason">
                     <span class="radio-custom"></span>
-                    <span>📸 Foto di bassa qualità / da rifare</span>
+                    <span>📸 Foto bassa qualità</span>
                 </label>
-                <label class="skip-reason" onclick="selectSkipReason(this, 'MISSING_FRONT_BACK')">
-                    <input type="radio" name="skipReason" value="MISSING_FRONT_BACK">
+                <label class="skip-reason" onclick="selectSkipReason(this,'MISSING_FRONT_BACK')">
+                    <input type="radio" name="skipReason">
                     <span class="radio-custom"></span>
-                    <span>🔄 Front e/o Back mancante</span>
+                    <span>🔄 Front/Back mancante</span>
                 </label>
-                <label class="skip-reason" onclick="selectSkipReason(this, 'OTHER')">
-                    <input type="radio" name="skipReason" value="OTHER">
+                <label class="skip-reason" onclick="selectSkipReason(this,'OTHER')">
+                    <input type="radio" name="skipReason">
                     <span class="radio-custom"></span>
-                    <span>📝 Altro (specifica nelle note)</span>
+                    <span>📝 Altro</span>
                 </label>
             </div>
-            
             <textarea class="skip-notes" id="skipNotes" placeholder="Note aggiuntive (opzionale)..."></textarea>
-            
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeSkipModal()">Annulla</button>
-                <button class="btn btn-danger" id="confirmSkipBtn" onclick="confirmSkip()" disabled>
-                    Conferma Scarto
-                </button>
+                <button class="btn btn-danger" id="confirmSkipBtn" onclick="confirmSkip()" disabled>Conferma</button>
             </div>
         </div>
     </div>
 
-    <!-- Zoom Modal -->
+    <!-- ZOOM MODAL -->
     <div class="zoom-modal" id="zoomModal" onclick="closeZoomModal()">
-        <img id="zoomImage" src="" alt="Zoom">
+        <img id="zoomImage" src="">
     </div>
-
-    <!-- Toast -->
+    
+    <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
     <script>
-        // ============================================
-        // CONFIGURATION
-        // ============================================
-        const BASE_ID = 'apptPbWnDkDkKEpFV';  // DirtyTag 2.0
-        const RAW_INVENTORY_TABLE = 'tblddAcLcQAyk050u';  // RAW_INVENTORY (vecchio catalogo)
+        // ═══════════════════════════════════════════════════════════════
+        // CONFIG
+        // ═══════════════════════════════════════════════════════════════
+        const BASE_ID = 'apptPbWnDkDkKEpFV';
+        const RAW_INVENTORY_TABLE = 'tblddAcLcQAyk050u';
         const PHOTO_CANDIDATES_TABLE = 'tbl7ogfLnHsVfFdzb';
-        const PAGE_SIZE = 400;
 
-        // ============================================
-        // STATE
-        // ============================================
-        let token = localStorage.getItem('airtable_token') || '';
-        let allRecords = [];
-        let filteredRecords = [];
-        let currentPage = 0;
-        let currentSKU = null;
-        let currentRecordId = null;
-        let currentPhotos = [];
-        let selectedFront = null;
-        let selectedBack = null;
-        let selectedSkipReason = null;
-        let categories = new Set();
-        let brands = new Set();
-        let hoveredPhotoId = null;
-
-        // Stats
-        let stats = {
-            total: 0,
-            loaded: 0,
-            done: 0,
-            skipped: 0
+        // Field Names
+        const F = {
+            SKU: 'SKU',
+            CATEGORY: 'Category',
+            CATEGORY_NAME: 'Category Name (from Category)',
+            BRAND: 'BRANDS',
+            BRAND_NAME: 'Brand Name (from BRANDS)',
+            PHOTO_AUDIT_STATUS: 'Photo_Audit_Status',
+            PHOTO_COUNT: 'Photo_Count',
+            CONFIRMED_FRONT: 'Confirmed_Front_FileId',
+            CONFIRMED_BACK: 'Confirmed_Back_FileId',
+            MIGRATION_AI_MODE: 'Migration_AI_Mode',
+            MIGRATION_TEMPLATE: 'Migration_Template',
+            MIGRATION_STATUS: 'Migration_Status',
+            READY_TO_MIGRATE: 'Ready_To_Migrate',
+            SKIP_REASON: 'Skip_Reason',
+            SKIP_NOTES: 'Skip_Notes',
+            SKIPPED_AT: 'Skipped_At',
+            REQUIRES_RESHOOT: 'Requires_Reshoot',
+            BLOCKER_REASON: 'Blocker_Reason'
         };
 
-        // ============================================
-        // INITIALIZATION
-        // ============================================
+        // ═══════════════════════════════════════════════════════════════
+        // STATE
+        // ═══════════════════════════════════════════════════════════════
+        let token = localStorage.getItem('airtable_token') || '';
+        let allRecords = [];  // FIX: Store all records for accurate stats
+        let records = [];     // Filtered records for display
+        let idx = 0;
+        let currentSKU = null;
+        let currentRecordId = null;
+        let photos = [];
+        let selFront = null;
+        let selBack = null;
+        let skipReason = null;
+        let hoveredPhoto = null;
+        let debugMode = false;
+        let isProcessing = false;  // FIX: Prevent race conditions
+
+        // ═══════════════════════════════════════════════════════════════
+        // INIT
+        // ═══════════════════════════════════════════════════════════════
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 App initialized');
-            console.log('📦 Token in localStorage:', token ? 'YES (' + token.substring(0,15) + '...)' : 'NO');
-            
-            if (token && token.length > 10) {
-                showMainApp();
+            if (token) {
+                showMain();
                 loadData();
             } else {
-                showTokenSection();
+                showToken();
             }
-            
-            // Keyboard shortcuts
-            document.addEventListener('keydown', handleKeyboard);
+            document.addEventListener('keydown', handleKey);
         });
 
         function saveToken() {
-            const inputToken = document.getElementById('tokenInput').value.trim();
-            if (!inputToken) {
-                showToast('Inserisci un token valido', 'error');
+            const t = document.getElementById('tokenInput').value.trim();
+            if (!t) {
+                toast('Inserisci token', 'error');
                 return;
             }
-            if (!inputToken.startsWith('pat')) {
-                showToast('Il token deve iniziare con "pat"', 'error');
-                return;
-            }
-            token = inputToken;
+            token = t;
             localStorage.setItem('airtable_token', token);
-            console.log('💾 Token saved:', token.substring(0,15) + '...');
-            showMainApp();
+            showMain();
             loadData();
         }
 
         function resetToken() {
-            console.log('🗑️ Clearing token...');
             localStorage.removeItem('airtable_token');
             token = '';
-            showTokenSection();
+            showToken();
         }
 
-        function showMainApp() {
+        function showMain() {
             document.getElementById('tokenSection').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
         }
 
-        function showTokenSection() {
+        function showToken() {
             document.getElementById('tokenSection').style.display = 'block';
             document.getElementById('mainApp').style.display = 'none';
-            document.getElementById('tokenInput').value = '';
         }
 
-        // ============================================
-        // DATA LOADING
-        // ============================================
+        function toggleDebug() {
+            debugMode = !debugMode;
+            document.getElementById('debugPanel').classList.toggle('hidden', !debugMode);
+        }
+
+        function log(m) {
+            console.log(m);
+            const p = document.getElementById('debugPanel');
+            if (p) {
+                const ts = new Date().toLocaleTimeString();
+                p.innerHTML += `<div>[${ts}] ${m}</div>`;
+                p.scrollTop = p.scrollHeight;
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // DATA LOADING - FIX: Pagination support
+        // ═══════════════════════════════════════════════════════════════
         async function loadData() {
             showLoading(true);
+            document.getElementById('debugPanel').innerHTML = '';
             
             try {
-                // First, get total count and unique values for filters
-                await loadFilterOptions();
+                const status = document.getElementById('filterStatus')?.value || 'NEEDS_REVIEW';
                 
-                // Then load current page
-                await loadCurrentPage();
+                // Build filter
+                let formula = `AND({${F.PHOTO_COUNT}}>0`;
+                if (status) formula += `,{${F.PHOTO_AUDIT_STATUS}}='${status}'`;
+                formula += ')';
                 
-            } catch (error) {
-                console.error('Load error:', error);
-                showToast('Errore: ' + error.message, 'error');
+                log(`🔍 Filter: ${formula}`);
                 
-                // Show detailed error in UI
-                document.getElementById('loadingState').innerHTML = `
-                    <div style="color: var(--accent); text-align: left; max-width: 600px; margin: 0 auto;">
-                        <h3>❌ Errore di Autenticazione</h3>
-                        <p style="margin: 1rem 0;">${error.message}</p>
-                        <hr style="border-color: var(--border); margin: 1rem 0;">
-                        <p><strong>Verifica il tuo token:</strong></p>
-                        <ol style="margin: 1rem 0; padding-left: 1.5rem;">
-                            <li>Vai su <a href="https://airtable.com/create/tokens" target="_blank" style="color: var(--accent);">airtable.com/create/tokens</a></li>
-                            <li>Crea un nuovo token con:
-                                <ul>
-                                    <li>Scope: <code>data.records:read</code>, <code>data.records:write</code></li>
-                                    <li>Access: <strong>DirtyTag 2.0</strong> — tabella RAW_INVENTORY (${RAW_INVENTORY_TABLE})</li>
-                                </ul>
-                            </li>
-                            <li>Copia il nuovo token e ricarica la pagina</li>
-                        </ol>
-                        <button class="btn btn-secondary" onclick="resetToken()">
-                            🔄 Cambia Token
-                        </button>
-                    </div>
-                `;
+                // FIX: Load all pages
+                allRecords = await fetchAllRecords(formula);
+                log(`✅ Loaded ${allRecords.length} total records`);
+                
+                // Apply client filters
+                records = [...allRecords];
+                const catFilter = document.getElementById('filterCategory')?.value;
+                const brandFilter = document.getElementById('filterBrand')?.value;
+                
+                if (catFilter || brandFilter) {
+                    records = records.filter(r => {
+                        const cat = extractField(r, F.CATEGORY_NAME) || extractField(r, F.CATEGORY) || '';
+                        const brand = extractField(r, F.BRAND_NAME) || extractField(r, F.BRAND) || '';
+                        return (!catFilter || cat.includes(catFilter)) && 
+                               (!brandFilter || brand.includes(brandFilter));
+                    });
+                    log(`📋 After filters: ${records.length} records`);
+                }
+                
+                // Populate filter dropdowns
+                const cats = new Set(), brands = new Set();
+                allRecords.forEach(r => {
+                    const c = extractField(r, F.CATEGORY_NAME) || extractField(r, F.CATEGORY);
+                    const b = extractField(r, F.BRAND_NAME) || extractField(r, F.BRAND);
+                    if (c) cats.add(c);
+                    if (b) brands.add(b);
+                });
+                populateSelect('filterCategory', cats);
+                populateSelect('filterBrand', brands);
+                
+                updateStats();
+                idx = 0;
+                
+                if (records.length > 0) {
+                    await showRecord();
+                } else {
+                    showEmpty();
+                }
+                
+            } catch (e) {
+                log(`❌ ${e.message}`);
+                showError(e.message);
             }
-            
             showLoading(false);
         }
 
-        async function loadFilterOptions() {
-            // Get all records just for filter options (lightweight - only needed fields)
-            const filterFormula = `{Photo_Audit_Status}='NEEDS_REVIEW'`;
-            let offset = '';
-            categories = new Set();
-            brands = new Set();
-            stats.total = 0;
-            stats.done = 0;
-            stats.skipped = 0;
-            
-            // Count all statuses
-            const countFormula = `OR({Photo_Audit_Status}='NEEDS_REVIEW',{Photo_Audit_Status}='COMPLIANT',{Photo_Audit_Status}='SKIPPED',{Photo_Audit_Status}='MISSING')`;
+        // FIX: Fetch all pages from Airtable
+        async function fetchAllRecords(formula) {
+            let all = [];
+            let offset = null;
             
             do {
-                const url = `https://api.airtable.com/v0/${BASE_ID}/${RAW_INVENTORY_TABLE}?` +
-                    `fields[]=SKU&fields[]=Category&fields[]=Brand&fields[]=Photo_Audit_Status` +
-                    `&filterByFormula=${encodeURIComponent(countFormula)}` +
-                    `&pageSize=100` +
-                    (offset ? `&offset=${offset}` : '');
+                let url = `https://api.airtable.com/v0/${BASE_ID}/${RAW_INVENTORY_TABLE}?pageSize=100`;
+                url += `&filterByFormula=${encodeURIComponent(formula)}`;
+                if (offset) url += `&offset=${offset}`;
                 
-                console.log('🔍 API Call:', url);
-                console.log('🔑 Token (first 20 chars):', token.substring(0, 20) + '...');
-                
-                const response = await fetch(url, {
+                const res = await fetch(url, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
-                if (!response.ok) {
-                    const errorBody = await response.json().catch(() => ({}));
-                    console.error('❌ API Error:', response.status, errorBody);
-                    
-                    if (response.status === 401) {
-                        throw new Error(`401 Unauthorized - Token non valido o senza permessi per base ${BASE_ID}. Verifica: 1) Token corretto 2) Accesso a DirtyTag 2.0 3) Scope data.records:read`);
-                    }
-                    if (response.status === 403) {
-                        throw new Error(`403 Forbidden - Token non ha accesso alla tabella RAW_INVENTORY (${RAW_INVENTORY_TABLE})`);
-                    }
-                    if (response.status === 404) {
-                        throw new Error(`404 Not Found - Base ID (${BASE_ID}) o Table ID (${RAW_INVENTORY_TABLE}) non esistono`);
-                    }
-                    throw new Error(`API Error ${response.status}: ${errorBody.error?.message || 'Unknown error'}`);
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(`${res.status}: ${err.error?.message || 'Error'}`);
                 }
                 
-                const data = await response.json();
-                
-                data.records.forEach(r => {
-                    const cat = r.fields.Category;
-                    const brand = r.fields.Brand;
-                    const status = r.fields.Photo_Audit_Status;
-                    
-                    if (cat) categories.add(Array.isArray(cat) ? cat[0] : cat);
-                    if (brand) brands.add(Array.isArray(brand) ? brand[0] : brand);
-                    
-                    stats.total++;
-                    if (status === 'COMPLIANT') stats.done++;
-                    if (status === 'SKIPPED') stats.skipped++;
-                });
-                
+                const data = await res.json();
+                all = all.concat(data.records || []);
                 offset = data.offset;
+                
+                if (offset) log(`📄 Loaded page, offset: ${offset.substring(0,10)}...`);
+                
             } while (offset);
             
-            // Populate filter dropdowns
-            populateFilterDropdown('filterCategory', categories);
-            populateFilterDropdown('filterBrand', brands);
-            
-            updateStats();
+            return all;
         }
 
-        function populateFilterDropdown(elementId, values) {
-            const select = document.getElementById(elementId);
-            const currentValue = select.value;
-            
-            // Keep first option
-            while (select.options.length > 1) {
-                select.remove(1);
-            }
-            
-            // Sort and add options
-            [...values].sort().forEach(val => {
-                const option = document.createElement('option');
-                option.value = val;
-                option.textContent = val;
-                select.appendChild(option);
+        // Helper to extract field value (handles arrays from linked records)
+        function extractField(record, fieldName) {
+            const val = record.fields[fieldName];
+            if (Array.isArray(val)) return val[0];
+            return val;
+        }
+
+        function populateSelect(id, values) {
+            const sel = document.getElementById(id);
+            const cur = sel.value;
+            while (sel.options.length > 1) sel.remove(1);
+            [...values].sort().forEach(v => {
+                const o = document.createElement('option');
+                o.value = v;
+                o.textContent = v;
+                sel.appendChild(o);
             });
-            
-            // Restore selection if still valid
-            if ([...values].includes(currentValue)) {
-                select.value = currentValue;
-            }
-        }
-
-        async function loadCurrentPage() {
-            const category = document.getElementById('filterCategory').value;
-            const brand = document.getElementById('filterBrand').value;
-            const status = document.getElementById('filterStatus').value || 'NEEDS_REVIEW';
-            
-            // Build filter formula
-            let conditions = [];
-            if (status) conditions.push(`{Photo_Audit_Status}='${status}'`);
-            if (category) conditions.push(`FIND('${category}', ARRAYJOIN({Category}, ','))`);
-            if (brand) conditions.push(`FIND('${brand}', ARRAYJOIN({Brand}, ','))`);
-            
-            const formula = conditions.length > 0 
-                ? (conditions.length === 1 ? conditions[0] : `AND(${conditions.join(',')})`)
-                : '';
-            
-            // Calculate offset for pagination
-            const offset = currentPage * PAGE_SIZE;
-            
-            let url = `https://api.airtable.com/v0/${BASE_ID}/${RAW_INVENTORY_TABLE}?` +
-                `fields[]=SKU&fields[]=Category&fields[]=Brand&fields[]=Photo_Audit_Status` +
-                `&fields[]=Photo_Count&fields[]=Confirmed_Front_FileId&fields[]=Confirmed_Back_FileId` +
-                `&pageSize=${PAGE_SIZE}`;
-            
-            if (formula) {
-                url += `&filterByFormula=${encodeURIComponent(formula)}`;
-            }
-            
-            // Note: Airtable doesn't support true offset, we need to paginate through
-            // For simplicity, we'll fetch up to the current page
-            let records = [];
-            let airtableOffset = '';
-            let pagesToSkip = currentPage;
-            let currentPageRecords = [];
-            
-            do {
-                const pageUrl = url + (airtableOffset ? `&offset=${airtableOffset}` : '');
-                const response = await fetch(pageUrl, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (!response.ok) throw new Error('API Error: ' + response.status);
-                
-                const data = await response.json();
-                
-                if (pagesToSkip > 0) {
-                    // Skip this page
-                    pagesToSkip--;
-                } else {
-                    // This is our target page
-                    currentPageRecords = data.records;
-                    break;
-                }
-                
-                airtableOffset = data.offset;
-            } while (airtableOffset && pagesToSkip >= 0);
-            
-            filteredRecords = currentPageRecords;
-            stats.loaded = (currentPage * PAGE_SIZE) + filteredRecords.length;
-            
-            updateStats();
-            updatePagination();
-            renderProducts();
+            if ([...values].includes(cur)) sel.value = cur;
         }
 
         function applyFilters() {
-            currentPage = 0;
-            loadCurrentPage();
+            idx = 0;
+            loadData();
         }
 
-        function prevPage() {
-            if (currentPage > 0) {
-                currentPage--;
-                loadCurrentPage();
+        function prevRecord() {
+            if (idx > 0 && !isProcessing) {
+                idx--;
+                showRecord();
             }
         }
 
-        function nextPage() {
-            currentPage++;
-            loadCurrentPage();
+        function nextRecord() {
+            if (idx < records.length - 1 && !isProcessing) {
+                idx++;
+                showRecord();
+            }
         }
 
-        function updatePagination() {
-            document.getElementById('btnPrevPage').disabled = currentPage === 0;
-            document.getElementById('btnNextPage').disabled = filteredRecords.length < PAGE_SIZE;
-            document.getElementById('pageInfo').textContent = `Pagina ${currentPage + 1}`;
-        }
-
+        // FIX: More accurate stats
         function updateStats() {
-            document.getElementById('statTotal').textContent = stats.total;
-            document.getElementById('statLoaded').textContent = stats.loaded;
-            document.getElementById('statDone').textContent = stats.done;
-            document.getElementById('statSkipped').textContent = stats.skipped;
+            const pending = allRecords.filter(r => r.fields[F.PHOTO_AUDIT_STATUS] === 'NEEDS_REVIEW').length;
+            const done = allRecords.filter(r => r.fields[F.PHOTO_AUDIT_STATUS] === 'COMPLIANT').length;
+            const skipped = allRecords.filter(r => r.fields[F.PHOTO_AUDIT_STATUS] === 'SKIPPED').length;
+            
+            document.getElementById('statTotal').textContent = allRecords.length;
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statDone').textContent = done;
+            document.getElementById('statSkipped').textContent = skipped;
+            document.getElementById('pageInfo').textContent = records.length 
+                ? `${idx + 1} / ${records.length}` 
+                : '0 / 0';
+            document.getElementById('btnPrev').disabled = idx <= 0;
+            document.getElementById('btnNext').disabled = idx >= records.length - 1;
         }
 
-        // ============================================
-        // RENDERING
-        // ============================================
-        function renderProducts() {
-            const container = document.getElementById('productContainer');
-            const emptyState = document.getElementById('emptyState');
-            
-            if (filteredRecords.length === 0) {
-                container.innerHTML = '';
-                emptyState.style.display = 'block';
+        // ═══════════════════════════════════════════════════════════════
+        // RECORD DISPLAY
+        // ═══════════════════════════════════════════════════════════════
+        async function showRecord() {
+            if (!records.length) {
+                showEmpty();
                 return;
             }
             
-            emptyState.style.display = 'none';
+            const r = records[idx];
+            currentRecordId = r.id;
+            currentSKU = r.fields[F.SKU];
             
-            // Render first product that needs review
-            const record = filteredRecords[0];
-            currentRecordId = record.id;
-            currentSKU = record.fields.SKU;
-            
-            // Load photos for this SKU
-            loadPhotosForSKU(currentSKU);
-        }
-
-        async function loadPhotosForSKU(sku) {
-            const container = document.getElementById('productContainer');
-            const record = filteredRecords.find(r => r.fields.SKU === sku);
-            
-            if (!record) return;
+            log(`📦 Loading: ${currentSKU}`);
+            updateStats();
             
             // Show loading state in card
+            const container = document.getElementById('productContainer');
             container.innerHTML = `
                 <div class="product-card">
                     <div class="product-header">
-                        <span class="product-sku">${sku}</span>
-                        <div class="product-meta">
-                            <span>📁 ${record.fields.Category || 'N/A'}</span>
-                            <span>🏷️ ${record.fields.Brand || 'N/A'}</span>
-                            <span>📷 ${record.fields.Photo_Count || '?'} foto</span>
-                        </div>
+                        <span class="product-sku">${currentSKU}</span>
                     </div>
                     <div class="loading">
                         <div class="spinner"></div>
                         <p>Caricamento foto...</p>
                     </div>
-                </div>
-            `;
+                </div>`;
             
+            await loadPhotos(currentSKU, r);
+        }
+
+        async function loadPhotos(sku, invRecord) {
             try {
-                // Fetch photos from PHOTO_CANDIDATES
-                const url = `https://api.airtable.com/v0/${BASE_ID}/${PHOTO_CANDIDATES_TABLE}?` +
-                    `filterByFormula=${encodeURIComponent(`{SKU}='${sku}'`)}` +
-                    `&fields[]=FileId&fields[]=Filename&fields[]=Is_Front&fields[]=Is_Back&fields[]=Review_Status`;
-                
-                const response = await fetch(url, {
+                const url = `https://api.airtable.com/v0/${BASE_ID}/${PHOTO_CANDIDATES_TABLE}?filterByFormula=${encodeURIComponent(`{SKU}='${sku}'`)}`;
+                const res = await fetch(url, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
+                const data = await res.json();
                 
-                if (!response.ok) throw new Error('API Error: ' + response.status);
+                photos = data.records || [];
+                log(`📷 ${photos.length} photos for ${sku}`);
                 
-                const data = await response.json();
-                currentPhotos = data.records;
+                // Reset selections and check for pre-existing flags
+                selFront = null;
+                selBack = null;
+                hoveredPhoto = null;  // FIX: Reset hovered photo
                 
-                // Reset selections
-                selectedFront = null;
-                selectedBack = null;
-                
-                // Check if any are pre-selected
-                currentPhotos.forEach(p => {
-                    if (p.fields.Is_Front) selectedFront = p.id;
-                    if (p.fields.Is_Back) selectedBack = p.id;
+                photos.forEach(p => {
+                    if (p.fields.Is_Front) selFront = p.id;
+                    if (p.fields.Is_Back) selBack = p.id;
                 });
                 
-                renderProductCard(record, currentPhotos);
+                renderCard(invRecord);
                 
-            } catch (error) {
-                console.error('Error loading photos:', error);
-                showToast('Errore caricamento foto: ' + error.message, 'error');
+            } catch (e) {
+                log(`❌ Photos error: ${e.message}`);
+                toast('Errore caricamento foto', 'error');
             }
         }
 
-        function renderProductCard(record, photos) {
-            const container = document.getElementById('productContainer');
-            const sku = record.fields.SKU;
+        function renderCard(r) {
+            const sku = r.fields[F.SKU];
+            const cat = extractField(r, F.CATEGORY_NAME) || extractField(r, F.CATEGORY) || 'N/A';
+            const brand = extractField(r, F.BRAND_NAME) || extractField(r, F.BRAND) || 'N/A';
+            const count = r.fields[F.PHOTO_COUNT] || 0;
+            const blocker = r.fields[F.BLOCKER_REASON] || '';
             
-            const photosHtml = photos.map(p => {
-                const fileId = p.fields.FileId;
-                const filename = p.fields.Filename;
-                const thumbUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
-                const fullUrl = `https://drive.google.com/uc?id=${fileId}`;
-                
-                let labelHtml = '';
-                let selectedClass = '';
-                
-                if (p.id === selectedFront) {
-                    labelHtml = '<span class="photo-label front">FRONT</span>';
-                    selectedClass = 'selected-front';
-                } else if (p.id === selectedBack) {
-                    labelHtml = '<span class="photo-label back">BACK</span>';
-                    selectedClass = 'selected-back';
-                }
-                
-                return `
-                    <div class="photo-item ${selectedClass}" 
-                         data-id="${p.id}" 
-                         data-fileid="${fileId}"
-                         onclick="handlePhotoClick('${p.id}')"
-                         onmouseenter="hoveredPhotoId='${p.id}'"
-                         onmouseleave="hoveredPhotoId=null"
-                         ondblclick="openZoom('${fullUrl}')">
-                        ${labelHtml}
-                        <img src="${thumbUrl}" alt="${filename}" loading="lazy">
-                        <span class="photo-filename">${filename}</span>
-                    </div>
-                `;
-            }).join('');
+            let photoHtml = '';
+            if (!photos.length) {
+                photoHtml = `
+                    <div class="no-photos-warning">
+                        <span style="font-size:2rem">⚠️</span>
+                        <p>Nessuna foto in PHOTO_CANDIDATES</p>
+                        <p>Photo_Count dichiarato: ${count}</p>
+                    </div>`;
+            } else {
+                photoHtml = photos.map((p, i) => {
+                    const fid = p.fields.FileId;
+                    const fn = p.fields.Filename || 'photo';
+                    const thumb = `https://drive.google.com/thumbnail?id=${fid}&sz=w400`;
+                    const full = `https://drive.google.com/uc?id=${fid}`;
+                    
+                    let label = '', cls = '';
+                    if (p.id === selFront) {
+                        label = '<span class="photo-label front">FRONT</span>';
+                        cls = 'selected-front';
+                    } else if (p.id === selBack) {
+                        label = '<span class="photo-label back">BACK</span>';
+                        cls = 'selected-back';
+                    }
+                    
+                    return `
+                        <div class="photo-item ${cls}" 
+                             data-id="${p.id}" 
+                             onclick="clickPhoto('${p.id}')" 
+                             onmouseenter="hoveredPhoto='${p.id}'" 
+                             onmouseleave="hoveredPhoto=null" 
+                             ondblclick="openZoom('${full}')">
+                            ${label}
+                            <span class="photo-index">${i + 1}</span>
+                            <img src="${thumb}" onerror="this.style.background='var(--black)'">
+                            <span class="photo-filename">${fn}</span>
+                        </div>`;
+                }).join('');
+            }
             
-            container.innerHTML = `
+            // Selection badges
+            const frontBadge = selFront 
+                ? `<div class="selection-badge front">✓ FRONT</div>`
+                : `<div class="selection-badge empty">— Front</div>`;
+            const backBadge = selBack
+                ? `<div class="selection-badge back">✓ BACK</div>`
+                : `<div class="selection-badge empty">— Back</div>`;
+            
+            document.getElementById('productContainer').innerHTML = `
                 <div class="product-card">
                     <div class="product-header">
                         <span class="product-sku">${sku}</span>
                         <div class="product-meta">
-                            <span>📁 ${record.fields.Category || 'N/A'}</span>
-                            <span>🏷️ ${record.fields.Brand || 'N/A'}</span>
-                            <span>📷 ${photos.length} foto</span>
+                            <span>📁 ${cat}</span>
+                            <span>🏷️ ${brand}</span>
+                            <span>📷 ${photos.length}</span>
+                            ${blocker ? `<span class="warning">⚠️ ${blocker}</span>` : ''}
                         </div>
                     </div>
                     
-                    <div class="photo-grid">
-                        ${photosHtml || '<p style="color: var(--text-muted);">Nessuna foto disponibile</p>'}
-                    </div>
+                    <div class="photo-grid">${photoHtml}</div>
                     
                     <div class="selection-controls">
+                        <div class="selection-info">
+                            ${frontBadge}
+                            ${backBadge}
+                        </div>
                         <div class="control-group">
                             <label>AI Mode:</label>
-                            <select id="aiModeSelect">
-                                <option value="MANI">MANI (Manichino)</option>
-                                <option value="FLAT">FLAT (Disteso)</option>
-                                <option value="WORN">WORN (Indossato)</option>
-                            </select>
-                        </div>
-                        <div class="control-group" id="templateGroup" style="display: none;">
-                            <label>Template:</label>
-                            <select id="templateSelect">
-                                <option value="default">Default</option>
+                            <select id="aiMode">
+                                <option value="MANI">MANI</option>
+                                <option value="FLAT">FLAT</option>
+                                <option value="WORN">WORN</option>
                             </select>
                         </div>
                     </div>
                     
                     <div class="action-buttons">
-                        <button class="btn btn-primary" id="confirmBtn" onclick="confirmSelection()" disabled>
-                            ✅ Approva e Continua
+                        <button class="btn btn-primary" id="confirmBtn" onclick="confirmApprove()" ${!photos.length ? 'disabled' : ''}>
+                            ✅ Approva
                         </button>
                         <button class="btn btn-danger" onclick="openSkipModal()">
                             ❌ Scarta
                         </button>
-                        <button class="btn btn-secondary" onclick="skipToNext()">
-                            ⏭️ Salta (Dopo)
+                        <button class="btn btn-secondary" onclick="skipNext()">
+                            ⏭️ Salta
                         </button>
                     </div>
                     
                     <div class="keyboard-hints">
-                        <span><kbd>F</kbd> = Front</span>
-                        <span><kbd>B</kbd> = Back</span>
-                        <span><kbd>Enter</kbd> = Conferma</span>
-                        <span><kbd>S</kbd> = Scarta</span>
-                        <span><kbd>DblClick</kbd> = Zoom</span>
+                        <span><kbd>F</kbd> Front</span>
+                        <span><kbd>B</kbd> Back</span>
+                        <span><kbd>Enter</kbd> Approva</span>
+                        <span><kbd>S</kbd> Scarta</span>
+                        <span><kbd>N</kbd> Salta</span>
+                        <span><kbd>Esc</kbd> Chiudi</span>
                     </div>
-                </div>
-            `;
+                </div>`;
             
-            // AI Mode change handler
-            document.getElementById('aiModeSelect').addEventListener('change', (e) => {
-                document.getElementById('templateGroup').style.display = 
-                    e.target.value === 'FLAT' ? 'flex' : 'none';
-            });
-            
-            updateConfirmButton();
+            updateConfirmBtn();
         }
 
-        // ============================================
+        // ═══════════════════════════════════════════════════════════════
         // PHOTO SELECTION
-        // ============================================
-        function handlePhotoClick(photoId) {
-            // If no selection yet, prompt user
-            if (!selectedFront) {
-                setFront(photoId);
-            } else if (!selectedBack && photoId !== selectedFront) {
-                setBack(photoId);
-            } else if (photoId === selectedFront) {
-                // Clicking selected front deselects it
-                selectedFront = null;
-                rerenderPhotos();
-            } else if (photoId === selectedBack) {
-                // Clicking selected back deselects it
-                selectedBack = null;
-                rerenderPhotos();
-            } else {
-                // Both selected, clicking another replaces based on last selection
-                // Default: replace front
-                setFront(photoId);
+        // ═══════════════════════════════════════════════════════════════
+        function clickPhoto(id) {
+            if (isProcessing) return;
+            
+            // FIX: Validate id exists in photos
+            if (!photos.find(p => p.id === id)) {
+                log(`⚠️ Invalid photo ID: ${id}`);
+                return;
             }
             
-            updateConfirmButton();
+            if (!selFront) {
+                setFront(id);
+            } else if (!selBack && id !== selFront) {
+                setBack(id);
+            } else if (id === selFront) {
+                selFront = null;
+                rerender();
+                toast('Front deselezionato', 'warning');
+            } else if (id === selBack) {
+                selBack = null;
+                rerender();
+                toast('Back deselezionato', 'warning');
+            } else {
+                // Replace front
+                setFront(id);
+            }
         }
 
-        function setFront(photoId) {
-            if (photoId === selectedBack) selectedBack = null;
-            selectedFront = photoId;
-            rerenderPhotos();
-            showToast('📷 FRONT selezionato', 'success');
+        function setFront(id) {
+            // FIX: Prevent same photo for both
+            if (id === selBack) selBack = null;
+            selFront = id;
+            rerender();
+            toast('📷 FRONT selezionato', 'success');
         }
 
-        function setBack(photoId) {
-            if (photoId === selectedFront) selectedFront = null;
-            selectedBack = photoId;
-            rerenderPhotos();
-            showToast('📷 BACK selezionato', 'success');
+        function setBack(id) {
+            // FIX: Prevent same photo for both
+            if (id === selFront) selFront = null;
+            selBack = id;
+            rerender();
+            toast('📷 BACK selezionato', 'success');
         }
 
-        function rerenderPhotos() {
+        function rerender() {
             document.querySelectorAll('.photo-item').forEach(el => {
                 const id = el.dataset.id;
                 el.classList.remove('selected-front', 'selected-back');
                 el.querySelector('.photo-label')?.remove();
                 
-                if (id === selectedFront) {
+                if (id === selFront) {
                     el.classList.add('selected-front');
                     el.insertAdjacentHTML('afterbegin', '<span class="photo-label front">FRONT</span>');
-                } else if (id === selectedBack) {
+                } else if (id === selBack) {
                     el.classList.add('selected-back');
                     el.insertAdjacentHTML('afterbegin', '<span class="photo-label back">BACK</span>');
                 }
             });
             
-            updateConfirmButton();
+            // Update selection badges
+            const infoDiv = document.querySelector('.selection-info');
+            if (infoDiv) {
+                const frontBadge = selFront 
+                    ? `<div class="selection-badge front">✓ FRONT</div>`
+                    : `<div class="selection-badge empty">— Front</div>`;
+                const backBadge = selBack
+                    ? `<div class="selection-badge back">✓ BACK</div>`
+                    : `<div class="selection-badge empty">— Back</div>`;
+                infoDiv.innerHTML = frontBadge + backBadge;
+            }
+            
+            updateConfirmBtn();
         }
 
-        function updateConfirmButton() {
+        function updateConfirmBtn() {
             const btn = document.getElementById('confirmBtn');
             if (btn) {
-                btn.disabled = !(selectedFront && selectedBack);
+                btn.disabled = !(selFront && selBack);
             }
         }
 
-        // ============================================
-        // CONFIRM SELECTION
-        // ============================================
-        async function confirmSelection() {
-            if (!selectedFront || !selectedBack) return;
+        // ═══════════════════════════════════════════════════════════════
+        // CONFIRM APPROVE
+        // ═══════════════════════════════════════════════════════════════
+        async function confirmApprove() {
+            if (!selFront || !selBack || isProcessing) return;
             
+            // FIX: Validate selections exist
+            const front = photos.find(p => p.id === selFront);
+            const back = photos.find(p => p.id === selBack);
+            
+            if (!front || !back) {
+                toast('Errore: selezione non valida', 'error');
+                log(`❌ Invalid selection - front: ${!!front}, back: ${!!back}`);
+                return;
+            }
+            
+            isProcessing = true;
             const btn = document.getElementById('confirmBtn');
+            const originalText = btn.textContent;
             btn.disabled = true;
-            btn.textContent = '⏳ Salvando...';
+            btn.textContent = '⏳ Salvataggio...';
             
             try {
-                const frontPhoto = currentPhotos.find(p => p.id === selectedFront);
-                const backPhoto = currentPhotos.find(p => p.id === selectedBack);
-                const aiMode = document.getElementById('aiModeSelect').value;
-                const template = document.getElementById('templateSelect')?.value || 'N/A';
+                const mode = document.getElementById('aiMode').value;
                 
-                // Update PHOTO_CANDIDATES - set Is_Front
-                await updateRecord(PHOTO_CANDIDATES_TABLE, selectedFront, {
-                    Is_Front: true,
-                    Review_Status: 'ASSIGNED'
-                });
+                log(`💾 Saving ${currentSKU}: front=${front.fields.FileId}, back=${back.fields.FileId}, mode=${mode}`);
                 
-                // Update PHOTO_CANDIDATES - set Is_Back
-                await updateRecord(PHOTO_CANDIDATES_TABLE, selectedBack, {
-                    Is_Back: true,
-                    Review_Status: 'ASSIGNED'
-                });
+                // Update PHOTO_CANDIDATES
+                await update(PHOTO_CANDIDATES_TABLE, selFront, { Is_Front: true, Review_Status: 'ASSIGNED' });
+                await update(PHOTO_CANDIDATES_TABLE, selBack, { Is_Back: true, Review_Status: 'ASSIGNED' });
                 
-                // Update remaining photos as ASSIGNED
-                for (const photo of currentPhotos) {
-                    if (photo.id !== selectedFront && photo.id !== selectedBack) {
-                        await updateRecord(PHOTO_CANDIDATES_TABLE, photo.id, {
-                            Review_Status: 'ASSIGNED'
-                        });
+                // Mark other photos as assigned
+                for (const p of photos) {
+                    if (p.id !== selFront && p.id !== selBack) {
+                        await update(PHOTO_CANDIDATES_TABLE, p.id, { Review_Status: 'ASSIGNED' });
                     }
                 }
                 
                 // Update RAW_INVENTORY
-                await updateRecord(RAW_INVENTORY_TABLE, currentRecordId, {
-                    Confirmed_Front_FileId: frontPhoto.fields.FileId,
-                    Confirmed_Back_FileId: backPhoto.fields.FileId,
-                    Photo_Audit_Status: 'COMPLIANT',
-                    Migration_AI_Mode: aiMode,
-                    Migration_Template: aiMode === 'FLAT' ? template : '',
-                    Ready_To_Migrate: true
+                await update(RAW_INVENTORY_TABLE, currentRecordId, {
+                    [F.CONFIRMED_FRONT]: front.fields.FileId,
+                    [F.CONFIRMED_BACK]: back.fields.FileId,
+                    [F.PHOTO_AUDIT_STATUS]: 'COMPLIANT',
+                    [F.MIGRATION_AI_MODE]: mode,
+                    [F.READY_TO_MIGRATE]: true
                 });
                 
-                stats.done++;
+                toast(`✅ ${currentSKU} approvato`, 'success');
+                log(`✅ ${currentSKU} saved successfully`);
+                
+                // Remove from local array and advance
+                records.splice(idx, 1);
+                // Also update allRecords for accurate stats
+                const allIdx = allRecords.findIndex(r => r.id === currentRecordId);
+                if (allIdx >= 0) allRecords.splice(allIdx, 1);
+                
+                if (idx >= records.length) idx = Math.max(0, records.length - 1);
+                
+                if (records.length) {
+                    await showRecord();
+                } else {
+                    showEmpty();
+                }
                 updateStats();
                 
-                showToast(`✅ ${currentSKU} approvato!`, 'success');
-                
-                // Load next
-                filteredRecords.shift();
-                if (filteredRecords.length === 0) {
-                    await loadCurrentPage();
-                } else {
-                    renderProducts();
-                }
-                
-            } catch (error) {
-                console.error('Confirm error:', error);
-                showToast('Errore: ' + error.message, 'error');
+            } catch (e) {
+                log(`❌ Save error: ${e.message}`);
+                toast('Errore salvataggio', 'error');
                 btn.disabled = false;
-                btn.textContent = '✅ Approva e Continua';
+                btn.textContent = originalText;
+            } finally {
+                isProcessing = false;
             }
         }
 
-        // ============================================
-        // SKIP FUNCTIONALITY
-        // ============================================
+        // ═══════════════════════════════════════════════════════════════
+        // SKIP MODAL
+        // ═══════════════════════════════════════════════════════════════
         function openSkipModal() {
+            if (isProcessing) return;
             document.getElementById('skipModalSku').textContent = currentSKU;
             document.getElementById('skipModal').classList.add('active');
-            selectedSkipReason = null;
+            skipReason = null;
             document.querySelectorAll('.skip-reason').forEach(el => el.classList.remove('selected'));
             document.getElementById('skipNotes').value = '';
             document.getElementById('confirmSkipBtn').disabled = true;
@@ -1342,85 +1534,87 @@
             document.getElementById('skipModal').classList.remove('active');
         }
 
-        function selectSkipReason(element, reason) {
-            document.querySelectorAll('.skip-reason').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedSkipReason = reason;
+        function selectSkipReason(el, reason) {
+            document.querySelectorAll('.skip-reason').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            skipReason = reason;
             document.getElementById('confirmSkipBtn').disabled = false;
         }
 
         async function confirmSkip() {
-            if (!selectedSkipReason) return;
+            if (!skipReason || isProcessing) return;
             
+            isProcessing = true;
             const btn = document.getElementById('confirmSkipBtn');
             btn.disabled = true;
-            btn.textContent = '⏳ Scartando...';
+            btn.textContent = '⏳...';
             
             try {
-                const skipNotes = document.getElementById('skipNotes').value.trim();
+                const notes = document.getElementById('skipNotes').value.trim();
                 
-                // 1. Delete all PHOTO_CANDIDATES for this SKU
-                for (const photo of currentPhotos) {
-                    await deleteRecord(PHOTO_CANDIDATES_TABLE, photo.id);
+                log(`🗑️ Skipping ${currentSKU}: reason=${skipReason}`);
+                
+                // Delete photos from PHOTO_CANDIDATES
+                for (const p of photos) {
+                    await del(PHOTO_CANDIDATES_TABLE, p.id);
                 }
                 
-                // 2. NUKE RESET - Update RAW_INVENTORY
-                await updateRecord(RAW_INVENTORY_TABLE, currentRecordId, {
-                    // Reset photo selection
-                    Confirmed_Front_FileId: '',
-                    Confirmed_Back_FileId: '',
-                    
-                    // Reset migration config
-                    Migration_AI_Mode: null,
-                    Migration_Template: '',
-                    Migration_Notes: '',
-                    
-                    // Set skip status
-                    Photo_Audit_Status: 'SKIPPED',
-                    Migration_Status: 'NOT_MIGRATED',
-                    Ready_To_Migrate: false,
-                    
-                    // Skip tracking
-                    Skip_Reason: selectedSkipReason,
-                    Skip_Notes: skipNotes,
-                    Skipped_At: new Date().toISOString(),
-                    Requires_Reshoot: true
+                // Update RAW_INVENTORY with reset
+                await update(RAW_INVENTORY_TABLE, currentRecordId, {
+                    [F.CONFIRMED_FRONT]: '',
+                    [F.CONFIRMED_BACK]: '',
+                    [F.PHOTO_AUDIT_STATUS]: 'SKIPPED',
+                    [F.MIGRATION_AI_MODE]: null,
+                    [F.READY_TO_MIGRATE]: false,
+                    [F.SKIP_REASON]: skipReason,
+                    [F.SKIP_NOTES]: notes,
+                    [F.SKIPPED_AT]: new Date().toISOString(),
+                    [F.REQUIRES_RESHOOT]: true
                 });
                 
-                stats.skipped++;
+                closeSkipModal();
+                toast(`❌ ${currentSKU} scartato`, 'warning');
+                log(`✅ ${currentSKU} skipped`);
+                
+                // Remove from arrays
+                records.splice(idx, 1);
+                const allIdx = allRecords.findIndex(r => r.id === currentRecordId);
+                if (allIdx >= 0) allRecords.splice(allIdx, 1);
+                
+                if (idx >= records.length) idx = Math.max(0, records.length - 1);
+                
+                if (records.length) {
+                    await showRecord();
+                } else {
+                    showEmpty();
+                }
                 updateStats();
                 
-                closeSkipModal();
-                showToast(`❌ ${currentSKU} scartato - ${selectedSkipReason}`, 'warning');
-                
-                // Load next
-                filteredRecords.shift();
-                if (filteredRecords.length === 0) {
-                    await loadCurrentPage();
-                } else {
-                    renderProducts();
-                }
-                
-            } catch (error) {
-                console.error('Skip error:', error);
-                showToast('Errore: ' + error.message, 'error');
+            } catch (e) {
+                log(`❌ Skip error: ${e.message}`);
+                toast('Errore durante skip', 'error');
                 btn.disabled = false;
-                btn.textContent = 'Conferma Scarto';
+                btn.textContent = 'Conferma';
+            } finally {
+                isProcessing = false;
             }
         }
 
-        function skipToNext() {
-            // Just move to next without saving (temporary skip)
-            filteredRecords.push(filteredRecords.shift());
-            renderProducts();
-            showToast('⏭️ Saltato temporaneamente', 'info');
+        function skipNext() {
+            if (isProcessing) return;
+            if (idx < records.length - 1) {
+                idx++;
+            } else if (records.length > 1) {
+                idx = 0;
+            }
+            showRecord();
         }
 
-        // ============================================
+        // ═══════════════════════════════════════════════════════════════
         // API HELPERS
-        // ============================================
-        async function updateRecord(tableId, recordId, fields) {
-            const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${tableId}/${recordId}`, {
+        // ═══════════════════════════════════════════════════════════════
+        async function update(table, id, fields) {
+            const res = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${table}/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -1429,66 +1623,65 @@
                 body: JSON.stringify({ fields })
             });
             
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error?.message || 'Update failed');
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error?.message || 'Update failed');
             }
-            
-            return response.json();
+            return res.json();
         }
 
-        async function deleteRecord(tableId, recordId) {
-            const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${tableId}/${recordId}`, {
+        async function del(table, id) {
+            const res = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${table}/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: { 'Authorization': `Bearer ${token}` }
             });
             
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error?.message || 'Delete failed');
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error?.message || 'Delete failed');
             }
-            
-            return response.json();
         }
 
-        // ============================================
+        // ═══════════════════════════════════════════════════════════════
         // KEYBOARD SHORTCUTS
-        // ============================================
-        function handleKeyboard(e) {
-            // Ignore if typing in input
+        // ═══════════════════════════════════════════════════════════════
+        function handleKey(e) {
+            // Ignore if typing in input/textarea
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (isProcessing) return;
             
             switch (e.key.toLowerCase()) {
                 case 'f':
-                    if (hoveredPhotoId) {
-                        setFront(hoveredPhotoId);
-                    }
+                    if (hoveredPhoto) setFront(hoveredPhoto);
                     break;
                 case 'b':
-                    if (hoveredPhotoId) {
-                        setBack(hoveredPhotoId);
-                    }
+                    if (hoveredPhoto) setBack(hoveredPhoto);
                     break;
                 case 'enter':
-                    if (selectedFront && selectedBack) {
-                        confirmSelection();
-                    }
+                    if (selFront && selBack) confirmApprove();
                     break;
                 case 's':
                     openSkipModal();
+                    break;
+                case 'n':
+                    skipNext();
                     break;
                 case 'escape':
                     closeSkipModal();
                     closeZoomModal();
                     break;
+                case 'arrowleft':
+                    prevRecord();
+                    break;
+                case 'arrowright':
+                    nextRecord();
+                    break;
             }
         }
 
-        // ============================================
-        // ZOOM MODAL
-        // ============================================
+        // ═══════════════════════════════════════════════════════════════
+        // UI HELPERS
+        // ═══════════════════════════════════════════════════════════════
         function openZoom(url) {
             document.getElementById('zoomImage').src = url;
             document.getElementById('zoomModal').classList.add('active');
@@ -1498,25 +1691,31 @@
             document.getElementById('zoomModal').classList.remove('active');
         }
 
-        // ============================================
-        // UI HELPERS
-        // ============================================
         function showLoading(show) {
             document.getElementById('loadingState').style.display = show ? 'block' : 'none';
-            if (show) {
-                document.getElementById('productContainer').innerHTML = '';
-                document.getElementById('emptyState').style.display = 'none';
-            }
+            document.getElementById('emptyState').style.display = 'none';
+            if (show) document.getElementById('productContainer').innerHTML = '';
         }
 
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast ' + type + ' show';
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+        function showEmpty() {
+            document.getElementById('productContainer').innerHTML = '';
+            document.getElementById('emptyState').style.display = 'block';
+        }
+
+        function showError(msg) {
+            document.getElementById('productContainer').innerHTML = `
+                <div class="product-card" style="border-left: 4px solid var(--red)">
+                    <h3 style="color: var(--red); margin-bottom: 0.5rem;">❌ Errore</h3>
+                    <p style="color: var(--white-muted); margin-bottom: 1rem;">${msg}</p>
+                    <button class="btn btn-secondary" onclick="resetToken()">🔑 Cambia Token</button>
+                </div>`;
+        }
+
+        function toast(msg, type = 'success') {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.className = 'toast ' + type + ' show';
+            setTimeout(() => el.classList.remove('show'), 2500);
         }
     </script>
 </body>
