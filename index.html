@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DirtyTag - Photo QC Review v2</title>
+    <title>DirtyTag - Photo QC v7</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,12 +28,6 @@
             margin-bottom: 15px;
         }
 
-        .logo {
-            width: 50px;
-            height: auto;
-            margin-bottom: 8px;
-        }
-
         .header h1 {
             font-size: 1rem;
             color: #fff;
@@ -41,6 +35,15 @@
             font-weight: 400;
             letter-spacing: 3px;
             text-transform: uppercase;
+        }
+
+        .header .version-badge {
+            display: inline-block;
+            background: #333;
+            color: #888;
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
         }
 
         .header .sku-badge {
@@ -56,8 +59,9 @@
         .stats {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 30px;
             margin-bottom: 12px;
+            flex-wrap: wrap;
         }
 
         .stat {
@@ -65,13 +69,17 @@
         }
 
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #e31e24;
         }
 
+        .stat-value.batch {
+            color: #4CAF50;
+        }
+
         .stat-label {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #555;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -79,16 +87,17 @@
 
         .progress-bar {
             width: 100%;
-            max-width: 300px;
-            height: 3px;
+            max-width: 400px;
+            height: 4px;
             background: #1a1a1a;
             overflow: hidden;
             margin: 0 auto 12px;
+            border-radius: 2px;
         }
 
         .progress-fill {
             height: 100%;
-            background: #e31e24;
+            background: linear-gradient(90deg, #e31e24, #ff6b6b);
             transition: width 0.3s;
         }
 
@@ -104,37 +113,39 @@
             min-width: 0;
         }
 
-        .config-section {
-            width: 280px;
+        .sidebar {
+            width: 260px;
             flex-shrink: 0;
         }
 
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 8px;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
         }
 
         .photo-card {
             background: #111;
-            border: 1px solid #222;
+            border: 2px solid #222;
             overflow: hidden;
             transition: all 0.15s;
             cursor: pointer;
+            border-radius: 4px;
         }
 
         .photo-card:hover {
             border-color: #444;
+            transform: scale(1.02);
         }
 
         .photo-card.selected-front {
-            border: 2px solid #e31e24;
-            box-shadow: 0 0 10px rgba(227, 30, 36, 0.3);
+            border: 3px solid #e31e24;
+            box-shadow: 0 0 15px rgba(227, 30, 36, 0.4);
         }
 
         .photo-card.selected-back {
-            border: 2px solid #fff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            border: 3px solid #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
         }
 
         .photo-container {
@@ -155,13 +166,13 @@
 
         .photo-label {
             position: absolute;
-            top: 4px;
-            right: 4px;
-            padding: 2px 6px;
-            font-weight: 600;
-            font-size: 0.6rem;
-            text-transform: uppercase;
+            top: 5px;
+            left: 5px;
+            padding: 3px 8px;
+            font-size: 0.65rem;
+            font-weight: 700;
             letter-spacing: 1px;
+            border-radius: 2px;
         }
 
         .photo-label.front {
@@ -174,352 +185,224 @@
             color: #000;
         }
 
-        .photo-info {
-            padding: 6px;
-        }
-
         .photo-filename {
-            font-size: 0.55rem;
-            color: #444;
+            padding: 6px;
+            font-size: 0.6rem;
+            color: #666;
+            text-align: center;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 4px;
+            background: #0d0d0d;
         }
 
-        .photo-sku-tag {
-            font-size: 0.5rem;
-            color: #e31e24;
-            margin-bottom: 4px;
-        }
-
-        .photo-actions {
-            display: flex;
-            gap: 3px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 4px;
-            border: none;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.6rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-            text-transform: uppercase;
-        }
-
-        .btn-front {
-            background: #1a0808;
-            color: #e31e24;
-            border: 1px solid #e31e24;
-        }
-
-        .btn-front:hover, .btn-front.active {
-            background: #e31e24;
-            color: white;
-        }
-
-        .btn-back {
-            background: #1a1a1a;
-            color: #fff;
-            border: 1px solid #fff;
-        }
-
-        .btn-back:hover, .btn-back.active {
-            background: #fff;
-            color: #000;
-        }
-
-        /* Config Panel */
-        .config-panel {
+        /* Sidebar Sections */
+        .sidebar-section {
             background: #111;
             border: 1px solid #222;
-            padding: 15px;
-            position: sticky;
-            top: 15px;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 12px;
         }
 
-        .config-title {
+        .sidebar-section h3 {
             font-size: 0.7rem;
-            font-weight: 600;
-            color: #e31e24;
+            color: #666;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
             border-bottom: 1px solid #222;
         }
 
-        .config-group {
-            margin-bottom: 15px;
+        .selection-status {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
-        .config-label {
-            font-size: 0.65rem;
-            color: #666;
+        .selection-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            background: #0a0a0a;
+            border-radius: 3px;
+        }
+
+        .selection-item.active {
+            background: #1a1a1a;
+        }
+
+        .selection-item .label {
+            font-size: 0.6rem;
+            color: #555;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 6px;
-            display: block;
         }
 
-        .config-select {
-            width: 100%;
-            padding: 8px 10px;
-            background: #0a0a0a;
-            border: 1px solid #333;
-            color: #fff;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.75rem;
-            cursor: pointer;
+        .selection-item .status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 3px;
         }
 
-        .config-select:focus {
-            outline: none;
-            border-color: #e31e24;
-        }
-
-        .config-select option {
-            background: #0a0a0a;
-            color: #fff;
-        }
-
-        .platform-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .platform-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .platform-checkbox input {
-            display: none;
-        }
-
-        .platform-checkbox .checkmark {
-            width: 16px;
-            height: 16px;
-            border: 1px solid #444;
-            background: #0a0a0a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.6rem;
-            color: transparent;
-            transition: all 0.15s;
-        }
-
-        .platform-checkbox input:checked + .checkmark {
-            background: #e31e24;
-            border-color: #e31e24;
-            color: #fff;
-        }
-
-        .platform-checkbox span:last-child {
-            font-size: 0.7rem;
-            color: #888;
-        }
-
-        .platform-checkbox:hover span:last-child {
-            color: #fff;
-        }
-
-        .config-textarea {
-            width: 100%;
-            padding: 8px 10px;
-            background: #0a0a0a;
-            border: 1px solid #333;
-            color: #fff;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.7rem;
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        .config-textarea:focus {
-            outline: none;
-            border-color: #e31e24;
-        }
-
-        .selection-status {
-            background: #0a0a0a;
-            padding: 10px;
-            margin-bottom: 15px;
-            font-size: 0.65rem;
-        }
-
-        .selection-status .item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-            color: #555;
-        }
-
-        .selection-status .item.selected {
-            color: #fff;
-        }
-
-        .selection-status .item .value {
-            color: #e31e24;
-            font-weight: 500;
-            max-width: 140px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .selection-status .item.selected .value {
+        .selection-item .status.selected {
             color: #4CAF50;
         }
 
-        .selection-status .item.error .value {
-            color: #ff4444 !important;
+        .selection-item .status.pending {
+            color: #ff9800;
         }
 
-        .nav-buttons {
-            display: flex;
-            flex-direction: column;
+        /* Flag Buttons */
+        .flag-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-top: 15px;
         }
 
-        .nav-btn {
-            padding: 12px;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border: none;
+        .flag-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 8px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #888;
+            font-size: 0.65rem;
+            font-family: inherit;
             cursor: pointer;
             transition: all 0.15s;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .nav-btn.confirm {
+        .flag-btn:hover {
+            background: #252525;
+            border-color: #444;
+            color: #fff;
+        }
+
+        .flag-btn.active {
+            background: #2a1a1a;
+            border-color: #e31e24;
+            color: #e31e24;
+        }
+
+        .flag-btn .icon {
+            font-size: 1rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 12px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .action-btn.confirm {
             background: #e31e24;
             color: white;
         }
 
-        .nav-btn.confirm:hover {
-            background: #ff2a30;
+        .action-btn.confirm:hover:not(:disabled) {
+            background: #ff3b3b;
         }
 
-        .nav-btn.confirm:disabled {
-            background: #2a0a0a;
-            color: #4a1a1a;
+        .action-btn.confirm:disabled {
+            background: #333;
+            color: #666;
             cursor: not-allowed;
         }
 
-        .nav-btn.skip {
-            background: transparent;
-            color: #555;
+        .action-btn.skip {
+            background: #222;
+            color: #888;
             border: 1px solid #333;
         }
 
-        .nav-btn.skip:hover {
+        .action-btn.skip:hover {
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        .action-btn.flag-submit {
+            background: #ff9800;
+            color: #000;
+        }
+
+        .action-btn.flag-submit:hover {
+            background: #ffb74d;
+        }
+
+        /* Keyboard Hints */
+        .keyboard-hints {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .key-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.55rem;
+            color: #555;
+        }
+
+        .key-hint kbd {
             background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 2px 5px;
+            border-radius: 2px;
+            font-family: inherit;
             color: #888;
         }
 
-        .keyboard-hints {
-            margin-top: 12px;
-            font-size: 0.55rem;
-            color: #333;
-            text-align: center;
-        }
-
-        .keyboard-hints kbd {
-            background: #1a1a1a;
-            padding: 2px 5px;
-            margin: 0 2px;
-            border: 1px solid #333;
-        }
-
-        /* Loading & States */
-        .loading {
-            text-align: center;
-            padding: 60px;
-        }
-
-        .loading-spinner {
-            width: 30px;
-            height: 30px;
-            border: 2px solid #1a1a1a;
-            border-top-color: #e31e24;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        .loading p {
-            color: #444;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px;
-        }
-
-        .empty-state h2 {
-            color: #e31e24;
-            font-size: 1rem;
-            font-weight: 400;
-            margin-bottom: 10px;
-        }
-
-        .empty-state p {
-            color: #444;
-            font-size: 0.75rem;
-        }
-
-        .error {
-            background: #1a0808;
-            border: 1px solid #e31e24;
-            color: #ff6b6b;
-            padding: 20px;
-            text-align: center;
-            margin: 20px auto;
-            max-width: 500px;
-        }
-
-        .error h3 {
-            color: #e31e24;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-        }
-
-        .error pre {
-            text-align: left;
-            background: #0a0505;
-            padding: 10px;
+        /* Batch Navigation */
+        .batch-nav {
+            display: flex;
+            gap: 8px;
             margin-top: 10px;
-            font-size: 0.6rem;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            color: #666;
         }
 
-        .error button {
-            margin-top: 15px;
-            padding: 8px 20px;
-            background: #e31e24;
-            color: white;
-            border: none;
-            font-family: 'Roboto Mono', monospace;
+        .batch-btn {
+            flex: 1;
+            padding: 8px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #888;
+            font-family: inherit;
+            font-size: 0.65rem;
             cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .batch-btn:hover:not(:disabled) {
+            background: #252525;
+            color: #fff;
+        }
+
+        .batch-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* Modal */
@@ -530,7 +413,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -549,292 +432,267 @@
         .modal-close {
             position: absolute;
             top: 20px;
-            right: 30px;
-            font-size: 1.5rem;
-            color: white;
-            cursor: pointer;
-        }
-
-        /* Login */
-        .login-panel {
-            background: #111;
-            border: 1px solid #222;
-            padding: 30px;
-            margin: 100px auto;
-            max-width: 350px;
-        }
-
-        .login-panel .logo-login {
-            width: 60px;
-            margin: 0 auto 20px;
-            display: block;
-        }
-
-        .login-panel h2 {
-            text-align: center;
-            font-weight: 400;
-            letter-spacing: 3px;
-            margin-bottom: 25px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            color: #888;
-        }
-
-        .login-panel input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #333;
-            background: #0a0a0a;
-            color: #fff;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.75rem;
-            margin-bottom: 15px;
-        }
-
-        .login-panel input:focus {
-            outline: none;
-            border-color: #e31e24;
-        }
-
-        .login-panel button {
-            width: 100%;
-            padding: 12px;
-            background: #e31e24;
-            color: white;
+            right: 20px;
+            background: none;
             border: none;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
+            color: #fff;
+            font-size: 2rem;
             cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
-        .login-panel button:hover {
-            background: #ff2a30;
-        }
-
-        .login-panel p {
-            margin-top: 15px;
-            font-size: 0.6rem;
-            color: #444;
-            text-align: center;
-        }
-
-        /* Toast notification */
+        /* Toast */
         .toast {
             position: fixed;
             bottom: 20px;
             left: 50%;
-            transform: translateX(-50%);
-            background: #1a1a1a;
-            border: 1px solid #333;
-            padding: 12px 24px;
-            font-size: 0.75rem;
+            transform: translateX(-50%) translateY(100px);
+            background: #222;
             color: #fff;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            transition: transform 0.3s;
             z-index: 1001;
-            display: none;
-        }
-
-        .toast.success {
-            border-color: #4CAF50;
-            color: #4CAF50;
-        }
-
-        .toast.error {
-            border-color: #e31e24;
-            color: #e31e24;
         }
 
         .toast.show {
-            display: block;
-            animation: fadeInOut 2s ease;
+            transform: translateX(-50%) translateY(0);
         }
 
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0; }
-            10%, 90% { opacity: 1; }
+        .toast.success {
+            background: #4CAF50;
         }
 
-        /* Debug panel */
-        .debug-panel {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
+        .toast.error {
+            background: #e31e24;
+        }
+
+        .toast.warning {
+            background: #ff9800;
+            color: #000;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            max-width: 400px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .login-screen h2 {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            letter-spacing: 3px;
+        }
+
+        .login-screen input {
+            width: 100%;
+            padding: 12px;
             background: #111;
             border: 1px solid #333;
-            padding: 10px;
-            font-size: 0.55rem;
-            color: #666;
-            max-width: 300px;
-            display: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+            border-radius: 4px;
         }
 
-        .debug-panel.show {
-            display: block;
+        .login-screen button {
+            width: 100%;
+            padding: 12px;
+            background: #e31e24;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border-radius: 4px;
         }
 
-        .debug-panel h4 {
-            color: #e31e24;
-            margin-bottom: 5px;
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #555;
         }
 
-        .version-tag {
-            font-size: 0.5rem;
-            color: #333;
-            margin-left: 10px;
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #222;
+            border-top-color: #e31e24;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #555;
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        /* AI Mode Badge */
+        .ai-mode-badge {
+            display: inline-block;
+            background: #4CAF50;
+            color: #000;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 3px;
+            margin-top: 8px;
+        }
+
+        /* Product Info */
+        .product-info {
+            font-size: 0.65rem;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        .product-info span {
+            color: #888;
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        <!-- Login Panel -->
-        <div id="login-panel" class="login-panel">
-            <img src="https://raw.githubusercontent.com/FedericoLuigiDOrsi/dirtytag-system/main/assets/logo.png" alt="DirtyTag" class="logo-login" onerror="this.style.display='none'">
-            <h2>Photo QC + Migration</h2>
-            <input type="password" id="api-key" placeholder="Airtable API Key" />
-            <button onclick="startApp()">Accedi</button>
-            <p>Token DirtyTag 2.0</p>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <h2>DIRTYTAG PHOTO QC v7</h2>
+        <input type="password" id="api-token" placeholder="Airtable API Token">
+        <button onclick="login()">Accedi</button>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" style="display: none;">
+        <div class="header">
+            <h1>PHOTO QC</h1>
+            <div class="version-badge">v7 • BATCH MODE • MANI ONLY</div>
+            <div class="sku-badge" id="current-sku">---</div>
+            <div class="ai-mode-badge">🤖 AI MODE: MANI</div>
+            <div class="product-info" id="product-info"></div>
         </div>
 
-        <!-- Main App -->
-        <div id="main-app" style="display: none;">
-            <div class="header">
-                <img src="https://raw.githubusercontent.com/FedericoLuigiDOrsi/dirtytag-system/main/assets/logo.png" alt="DirtyTag" class="logo" onerror="this.style.display='none'">
-                <h1>Photo QC + Migration <span class="version-tag">v2.1</span></h1>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-value" id="stat-pending">-</div>
-                        <div class="stat-label">Da Fare</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="stat-done">-</div>
-                        <div class="stat-label">Completati</div>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="pending-count">0</div>
+                <div class="stat-label">In Coda</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="done-count">0</div>
+                <div class="stat-label">Completati</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value batch" id="batch-info">1/1</div>
+                <div class="stat-label">Batch (50)</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="batch-progress">0/50</div>
+                <div class="stat-label">Nel Batch</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+
+        <div class="main-container">
+            <div class="photos-section">
+                <div id="photo-grid" class="photo-grid">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Caricamento foto...
                     </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
-                </div>
-                <div class="sku-badge" id="current-sku">CARICAMENTO</div>
             </div>
 
-            <div class="main-container">
-                <div class="photos-section">
-                    <div id="content">
-                        <div class="loading">
-                            <div class="loading-spinner"></div>
-                            <p>Caricamento...</p>
+            <div class="sidebar">
+                <!-- Selection Status -->
+                <div class="sidebar-section">
+                    <h3>Selezione</h3>
+                    <div class="selection-status">
+                        <div class="selection-item" id="front-status">
+                            <div class="label">Front</div>
+                            <div class="status pending" id="front-status-text">—</div>
+                        </div>
+                        <div class="selection-item" id="back-status">
+                            <div class="label">Back</div>
+                            <div class="status pending" id="back-status-text">—</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="config-section">
-                    <div class="config-panel">
-                        <div class="config-title">Configurazione</div>
+                <!-- Flag Buttons -->
+                <div class="sidebar-section">
+                    <h3>⚠️ Segnalazioni</h3>
+                    <div class="flag-grid">
+                        <button class="flag-btn" id="flag-missing-front" onclick="toggleFlag('missingFront')">
+                            <span class="icon">📷</span>
+                            <span>No Front</span>
+                        </button>
+                        <button class="flag-btn" id="flag-missing-back" onclick="toggleFlag('missingBack')">
+                            <span class="icon">📷</span>
+                            <span>No Back</span>
+                        </button>
+                        <button class="flag-btn" id="flag-reshoot" onclick="toggleFlag('needsReshoot')">
+                            <span class="icon">🔄</span>
+                            <span>Rifare</span>
+                        </button>
+                        <button class="flag-btn" id="flag-maybe-sold" onclick="toggleFlag('maybeSold')">
+                            <span class="icon">💰</span>
+                            <span>Venduto?</span>
+                        </button>
+                    </div>
+                </div>
 
-                        <div class="selection-status">
-                            <div class="item" id="status-front">
-                                <span>FRONT</span>
-                                <span class="value">—</span>
-                            </div>
-                            <div class="item" id="status-back">
-                                <span>BACK</span>
-                                <span class="value">—</span>
-                            </div>
-                        </div>
+                <!-- Actions -->
+                <div class="sidebar-section">
+                    <h3>Azioni</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn confirm" id="confirm-btn" onclick="confirmSelection()" disabled>
+                            ✓ Conferma & Prossimo
+                        </button>
+                        <button class="action-btn flag-submit" id="flag-btn" onclick="submitWithFlags()" style="display: none;">
+                            ⚠️ Segnala & Prossimo
+                        </button>
+                        <button class="action-btn skip" onclick="skipSKU()">
+                            ⏭️ Salta SKU
+                        </button>
+                    </div>
 
-                        <div class="config-group">
-                            <label class="config-label">AI Mode</label>
-                            <select id="ai-mode" class="config-select">
-                                <option value="MANI">MANI</option>
-                                <option value="WORN">WORN</option>
-                                <option value="FLAT">FLAT</option>
-                            </select>
-                        </div>
+                    <div class="batch-nav">
+                        <button class="batch-btn" id="prev-batch-btn" onclick="loadPrevBatch()" disabled>
+                            ← Batch Prec
+                        </button>
+                        <button class="batch-btn" id="next-batch-btn" onclick="loadNextBatch()" disabled>
+                            Batch Succ →
+                        </button>
+                    </div>
 
-                        <div class="config-group" id="template-group" style="display: none;">
-                            <label class="config-label">Template</label>
-                            <select id="template-select" class="config-select">
-                                <option value="">Seleziona...</option>
-                                <option value="Piumino">Piumino</option>
-                                <option value="Parka">Parka</option>
-                                <option value="Trench">Trench</option>
-                                <option value="Bomber">Bomber</option>
-                                <option value="Giacca Tecnica">Giacca Tecnica</option>
-                                <option value="Giacca in Pelle">Giacca in Pelle</option>
-                                <option value="Cappotto">Cappotto</option>
-                                <option value="Maglioncino">Maglioncino</option>
-                                <option value="Maglione Girocollo">Maglione Girocollo</option>
-                                <option value="Felpa con Zip">Felpa con Zip</option>
-                                <option value="Felpa Girocollo">Felpa Girocollo</option>
-                                <option value="Felpa con Cappuccio">Felpa con Cappuccio</option>
-                                <option value="Cardigan">Cardigan</option>
-                                <option value="Pantaloni regular">Pantaloni regular</option>
-                                <option value="Pantaloni slim / Skinny">Pantaloni slim / Skinny</option>
-                                <option value="Pantaloni Baggy">Pantaloni Baggy</option>
-                                <option value="Pantaloncini">Pantaloncini</option>
-                                <option value="Gonna">Gonna</option>
-                                <option value="Camicia">Camicia</option>
-                                <option value="Camicia mezze maniche">Camicia mezze maniche</option>
-                                <option value="Polo">Polo</option>
-                                <option value="Tshirt">Tshirt</option>
-                                <option value="Maglietta maniche lunghe">Maglietta maniche lunghe</option>
-                                <option value="Blazer">Blazer</option>
-                                <option value="Completo Pantaloni">Completo Pantaloni</option>
-                                <option value="Completo Gonna">Completo Gonna</option>
-                                <option value="Abito lungo">Abito lungo</option>
-                                <option value="Abito Corto">Abito Corto</option>
-                                <option value="Smanicato">Smanicato</option>
-                                <option value="Giacca di jeans">Giacca di jeans</option>
-                                <option value="Shearling">Shearling</option>
-                                <option value="Pelliccia">Pelliccia</option>
-                                <option value="Workjacket">Workjacket</option>
-                                <option value="Tracksuit">Tracksuit</option>
-                                <option value="Canotta">Canotta</option>
-                            </select>
-                        </div>
-
-                        <div class="config-group">
-                            <label class="config-label">Piattaforme</label>
-                            <div class="platform-grid">
-                                <label class="platform-checkbox">
-                                    <input type="checkbox" id="platform-vinted" checked>
-                                    <span class="checkmark">✓</span>
-                                    <span>Vinted</span>
-                                </label>
-                                <label class="platform-checkbox">
-                                    <input type="checkbox" id="platform-vestiaire" checked>
-                                    <span class="checkmark">✓</span>
-                                    <span>Vestiaire</span>
-                                </label>
-                                <label class="platform-checkbox">
-                                    <input type="checkbox" id="platform-catawiki" checked>
-                                    <span class="checkmark">✓</span>
-                                    <span>Catawiki</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="config-group">
-                            <label class="config-label">Note (opzionale)</label>
-                            <textarea id="notes" class="config-textarea" placeholder="Note per l'operatore..."></textarea>
-                        </div>
-
-                        <div class="nav-buttons">
-                            <button class="nav-btn confirm" id="confirm-btn" onclick="confirmAndMigrate()" disabled>
-                                Conferma
-                            </button>
-                            <button class="nav-btn skip" onclick="skipSKU()">
-                                Salta SKU
-                            </button>
-                        </div>
-
-                        <div class="keyboard-hints">
-                            <kbd>F</kbd> Front
-                            <kbd>B</kbd> Back
-                            <kbd>Enter</kbd> Conferma
-                            <kbd>D</kbd> Debug
-                        </div>
+                    <div class="keyboard-hints">
+                        <span class="key-hint"><kbd>F</kbd> Front</span>
+                        <span class="key-hint"><kbd>B</kbd> Back</span>
+                        <span class="key-hint"><kbd>1</kbd> No Front</span>
+                        <span class="key-hint"><kbd>2</kbd> No Back</span>
+                        <span class="key-hint"><kbd>3</kbd> Rifare</span>
+                        <span class="key-hint"><kbd>4</kbd> Venduto?</span>
+                        <span class="key-hint"><kbd>Enter</kbd> Conferma</span>
+                        <span class="key-hint"><kbd>S</kbd> Salta</span>
                     </div>
                 </div>
             </div>
@@ -842,433 +700,494 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal" id="modal" onclick="closeModal()">
-        <span class="modal-close">×</span>
-        <img id="modal-img" src="" alt="Full size">
+    <div id="modal" class="modal" onclick="closeModal()">
+        <button class="modal-close">&times;</button>
+        <img id="modal-img" src="" alt="Zoom">
     </div>
 
     <!-- Toast -->
-    <div class="toast" id="toast"></div>
-
-    <!-- Debug Panel -->
-    <div class="debug-panel" id="debug-panel">
-        <h4>🔧 DEBUG</h4>
-        <div id="debug-content"></div>
-    </div>
+    <div id="toast" class="toast"></div>
 
     <script>
-        // Configuration - SINGLE BASE (DirtyTag 2.0 only)
+        // ============================================
+        // CONFIGURATION
+        // ============================================
         const BASE_ID = 'apptPbWnDkDkKEpFV';
-        
         const PHOTO_CANDIDATES_TABLE = 'tbl7ogfLnHsVfFdzb';
         const OLD_INVENTORY_TABLE = 'tblddAcLcQAyk050u';
         
-        let API_KEY = '';
+        const BATCH_SIZE = 50;
+        const AI_MODE = 'MANI'; // Hardcoded as per requirements
+        const DEFAULT_PLATFORMS = ['Vinted', 'Vestiaire', 'Catawiki'];
+
+        // ============================================
+        // STATE
+        // ============================================
+        let apiToken = '';
         let allRecords = [];
-        let pendingRecords = [];
-        let currentSKU = null;
+        let currentBatch = [];
+        let currentBatchIndex = 0;
+        let totalBatches = 0;
+        let currentSKU = '';
         let currentPhotos = [];
+        let currentSKUIndex = 0;
+        let batchSKUs = [];
         
-        // CRITICAL FIX: Store complete selection data, not just IDs
-        let selectedFrontData = null;  // { recordId, fileId, sku, filename }
-        let selectedBackData = null;   // { recordId, fileId, sku, filename }
+        let selectedFront = null;
+        let selectedBack = null;
+        let selectedFrontData = null;
+        let selectedBackData = null;
+        
+        let flags = {
+            missingFront: false,
+            missingBack: false,
+            needsReshoot: false,
+            maybeSold: false
+        };
         
         let pendingCount = 0;
         let doneCount = 0;
-        let debugMode = false;
+        let batchDoneCount = 0;
 
-        // Init
-        window.onload = function() {
-            const savedKey = localStorage.getItem('dirtytag_api_key_v2');
-            if (savedKey) {
-                document.getElementById('api-key').value = savedKey;
-            }
-
-            // AI Mode change handler
-            document.getElementById('ai-mode').addEventListener('change', function() {
-                document.getElementById('template-group').style.display = 
-                    this.value === 'FLAT' ? 'block' : 'none';
-                updateConfirmButton();
-            });
-
-            document.getElementById('template-select').addEventListener('change', updateConfirmButton);
-        };
-
-        function startApp() {
-            const key = document.getElementById('api-key').value.trim();
-            if (!key) {
-                alert('Inserisci la chiave API');
-                return;
-            }
-            API_KEY = key;
-            localStorage.setItem('dirtytag_api_key_v2', key);
-            
-            document.getElementById('login-panel').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
-            
-            loadAllRecords();
-        }
-
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type} show`;
-            setTimeout(() => toast.className = 'toast', 2000);
-        }
-
-        function updateDebug() {
-            if (!debugMode) return;
-            
-            const content = document.getElementById('debug-content');
-            content.innerHTML = `
-                <div>currentSKU: <b>${currentSKU || 'null'}</b></div>
-                <div>currentPhotos: ${currentPhotos.length} items</div>
-                <hr style="border-color:#333;margin:5px 0;">
-                <div>selectedFrontData:</div>
-                <div style="color:#4CAF50;">${selectedFrontData ? JSON.stringify(selectedFrontData, null, 1) : 'null'}</div>
-                <hr style="border-color:#333;margin:5px 0;">
-                <div>selectedBackData:</div>
-                <div style="color:#4CAF50;">${selectedBackData ? JSON.stringify(selectedBackData, null, 1) : 'null'}</div>
-            `;
-        }
-
-        function toggleDebug() {
-            debugMode = !debugMode;
-            document.getElementById('debug-panel').classList.toggle('show', debugMode);
-            if (debugMode) updateDebug();
-        }
-
+        // ============================================
+        // API
+        // ============================================
         async function apiRequest(table, options = {}) {
             let url = `https://api.airtable.com/v0/${BASE_ID}/${table}`;
             
-            if (options.recordId) {
-                url += `/${options.recordId}`;
-            }
-            if (options.offset) {
-                url += `?offset=${options.offset}`;
-            }
-
             const fetchOptions = {
                 headers: {
-                    'Authorization': `Bearer ${API_KEY}`,
+                    'Authorization': `Bearer ${apiToken}`,
                     'Content-Type': 'application/json'
                 }
             };
 
+            if (options.recordId) {
+                url += `/${options.recordId}`;
+            }
+
             if (options.method) {
                 fetchOptions.method = options.method;
             }
+
             if (options.body) {
                 fetchOptions.body = JSON.stringify(options.body);
             }
 
-            const response = await fetch(url, fetchOptions);
-            const data = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(`API Error: ${response.status} - ${JSON.stringify(data.error || data)}`);
+            if (options.offset) {
+                url += `?offset=${options.offset}`;
             }
 
-            return data;
+            if (options.filterByFormula) {
+                const separator = url.includes('?') ? '&' : '?';
+                url += `${separator}filterByFormula=${encodeURIComponent(options.filterByFormula)}`;
+            }
+
+            if (options.maxRecords) {
+                const separator = url.includes('?') ? '&' : '?';
+                url += `${separator}maxRecords=${options.maxRecords}`;
+            }
+
+            const response = await fetch(url, fetchOptions);
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error?.message || 'API Error');
+            }
+
+            return response.json();
         }
 
-        async function loadAllRecords() {
-            document.getElementById('content').innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Caricamento record...</p>
-                </div>
-            `;
+        // ============================================
+        // AUTH
+        // ============================================
+        function login() {
+            const token = document.getElementById('api-token').value.trim();
+            if (!token) {
+                showToast('Inserisci il token API', 'error');
+                return;
+            }
 
+            apiToken = token;
+            localStorage.setItem('airtable_token', token);
+            
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            
+            loadAllRecords();
+        }
+
+        function checkAuth() {
+            const savedToken = localStorage.getItem('airtable_token');
+            if (savedToken) {
+                apiToken = savedToken;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                loadAllRecords();
+            }
+        }
+
+        // ============================================
+        // DATA LOADING
+        // ============================================
+        async function loadAllRecords() {
+            showLoading();
+            
             try {
+                // Load all PENDING photo candidates
                 allRecords = [];
                 let offset = null;
                 
                 do {
-                    const data = await apiRequest(PHOTO_CANDIDATES_TABLE, { offset });
+                    const params = {
+                        filterByFormula: "{Review_Status}='PENDING'"
+                    };
+                    if (offset) params.offset = offset;
+                    
+                    const data = await apiRequest(PHOTO_CANDIDATES_TABLE, params);
                     allRecords = allRecords.concat(data.records);
                     offset = data.offset;
                 } while (offset);
 
-                pendingRecords = allRecords.filter(r => r.fields.Review_Status === 'PENDING');
-                const assignedRecords = allRecords.filter(r => r.fields.Review_Status === 'ASSIGNED');
-
-                const pendingSKUs = [...new Set(pendingRecords.map(r => r.fields.SKU).filter(Boolean))];
-                const assignedSKUs = [...new Set(assignedRecords.map(r => r.fields.SKU).filter(Boolean))];
-
-                pendingCount = pendingSKUs.length;
-                doneCount = assignedSKUs.length;
+                // Get unique SKUs and organize into batches
+                const skuSet = new Set(allRecords.map(r => r.fields.SKU));
+                const allSKUs = Array.from(skuSet);
+                
+                pendingCount = allSKUs.length;
+                totalBatches = Math.ceil(allSKUs.length / BATCH_SIZE);
+                currentBatchIndex = 0;
 
                 updateStatsUI();
-                loadNextSKU();
+                
+                if (allSKUs.length === 0) {
+                    showEmptyState();
+                    return;
+                }
+
+                loadBatch(0);
 
             } catch (error) {
-                showError(error.message);
+                showToast('Errore caricamento: ' + error.message, 'error');
             }
         }
 
-        function updateStatsUI() {
-            document.getElementById('stat-pending').textContent = pendingCount;
-            document.getElementById('stat-done').textContent = doneCount;
+        function loadBatch(batchIndex) {
+            const skuSet = new Set(allRecords.filter(r => r.fields.Review_Status === 'PENDING').map(r => r.fields.SKU));
+            const allSKUs = Array.from(skuSet);
             
-            const total = pendingCount + doneCount;
-            const progress = total > 0 ? (doneCount / total) * 100 : 0;
-            document.getElementById('progress-fill').style.width = `${progress}%`;
+            const start = batchIndex * BATCH_SIZE;
+            const end = Math.min(start + BATCH_SIZE, allSKUs.length);
+            
+            batchSKUs = allSKUs.slice(start, end);
+            currentBatchIndex = batchIndex;
+            totalBatches = Math.ceil(allSKUs.length / BATCH_SIZE);
+            currentSKUIndex = 0;
+            batchDoneCount = 0;
+
+            updateBatchNav();
+            updateStatsUI();
+
+            if (batchSKUs.length > 0) {
+                loadSKU(batchSKUs[0]);
+            } else {
+                showEmptyState();
+            }
+        }
+
+        function loadNextBatch() {
+            if (currentBatchIndex < totalBatches - 1) {
+                loadBatch(currentBatchIndex + 1);
+            }
+        }
+
+        function loadPrevBatch() {
+            if (currentBatchIndex > 0) {
+                loadBatch(currentBatchIndex - 1);
+            }
+        }
+
+        function updateBatchNav() {
+            document.getElementById('prev-batch-btn').disabled = currentBatchIndex === 0;
+            document.getElementById('next-batch-btn').disabled = currentBatchIndex >= totalBatches - 1;
+            document.getElementById('batch-info').textContent = `${currentBatchIndex + 1}/${totalBatches || 1}`;
+        }
+
+        // ============================================
+        // SKU HANDLING
+        // ============================================
+        function loadSKU(sku) {
+            currentSKU = sku;
+            currentPhotos = allRecords.filter(r => r.fields.SKU === sku && r.fields.Review_Status === 'PENDING');
+            
+            // Reset selection
+            selectedFront = null;
+            selectedBack = null;
+            selectedFrontData = null;
+            selectedBackData = null;
+            resetFlags();
+
+            document.getElementById('current-sku').textContent = sku;
+            document.getElementById('batch-progress').textContent = `${currentSKUIndex + 1}/${batchSKUs.length}`;
+            
+            updateSelectionStatus();
+            renderPhotos();
+            updateConfirmButton();
         }
 
         function loadNextSKU() {
-            // CRITICAL: Reset selection data completely
-            selectedFrontData = null;
-            selectedBackData = null;
-            updateSelectionStatus();
-
-            // Reset form
-            document.getElementById('ai-mode').value = 'MANI';
-            document.getElementById('template-group').style.display = 'none';
-            document.getElementById('template-select').value = '';
-            document.getElementById('platform-vinted').checked = true;
-            document.getElementById('platform-vestiaire').checked = true;
-            document.getElementById('platform-catawiki').checked = true;
-            document.getElementById('notes').value = '';
-
-            // Refresh pending records from allRecords
-            pendingRecords = allRecords.filter(r => r.fields.Review_Status === 'PENDING');
+            currentSKUIndex++;
+            batchDoneCount++;
             
-            if (pendingRecords.length === 0) {
+            if (currentSKUIndex < batchSKUs.length) {
+                loadSKU(batchSKUs[currentSKUIndex]);
+            } else if (currentBatchIndex < totalBatches - 1) {
+                showToast('Batch completato! Carico il prossimo...', 'success');
+                setTimeout(() => loadNextBatch(), 1000);
+            } else {
                 showEmptyState();
-                return;
+                showToast('🎉 Tutti gli SKU completati!', 'success');
             }
-
-            // Get first pending SKU
-            currentSKU = pendingRecords[0].fields.SKU;
-            document.getElementById('current-sku').textContent = currentSKU;
-
-            // CRITICAL: Filter photos ONLY for current SKU
-            currentPhotos = pendingRecords.filter(r => r.fields.SKU === currentSKU);
             
-            console.log(`[loadNextSKU] SKU: ${currentSKU}, Photos: ${currentPhotos.length}`);
-            
-            renderPhotos();
-            updateDebug();
+            updateStatsUI();
         }
 
+        // ============================================
+        // RENDERING
+        // ============================================
         function renderPhotos() {
-            const container = document.getElementById('content');
+            const grid = document.getElementById('photo-grid');
             
             if (currentPhotos.length === 0) {
-                loadNextSKU();
+                grid.innerHTML = '<div class="empty-state"><div class="icon">📷</div>Nessuna foto per questo SKU</div>';
                 return;
             }
 
-            let html = '<div class="photo-grid">';
-            
-            currentPhotos.forEach((photo, index) => {
+            grid.innerHTML = currentPhotos.map((photo, index) => {
                 const fileId = photo.fields.FileId;
-                const filename = photo.fields.Filename;
-                const photoSKU = photo.fields.SKU;
-                const thumbnailUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w200`;
-                const fullUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
-                
-                const isFront = selectedFrontData?.recordId === photo.id;
-                const isBack = selectedBackData?.recordId === photo.id;
+                const filename = photo.fields.Filename || 'photo';
+                const thumbnailUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
+                const fullUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
                 
                 let cardClass = 'photo-card';
-                if (isFront) cardClass += ' selected-front';
-                if (isBack) cardClass += ' selected-back';
+                let labelHtml = '';
+                
+                if (selectedFront === photo.id) {
+                    cardClass += ' selected-front';
+                    labelHtml = '<div class="photo-label front">FRONT</div>';
+                } else if (selectedBack === photo.id) {
+                    cardClass += ' selected-back';
+                    labelHtml = '<div class="photo-label back">BACK</div>';
+                }
 
-                // Show SKU mismatch warning
-                const skuMismatch = photoSKU !== currentSKU;
-
-                html += `
-                    <div class="${cardClass}" id="card-${photo.id}" data-id="${photo.id}" data-file-id="${fileId}" data-sku="${photoSKU}">
-                        <div class="photo-container" onclick="openModal('${fullUrl}')">
+                return `
+                    <div class="${cardClass}" data-id="${photo.id}" data-index="${index}" onclick="handlePhotoClick('${photo.id}', '${fileId}')" ondblclick="openModal('${fullUrl}')">
+                        <div class="photo-container">
                             <img src="${thumbnailUrl}" alt="${filename}" loading="lazy">
-                            ${isFront ? '<span class="photo-label front">F</span>' : ''}
-                            ${isBack ? '<span class="photo-label back">B</span>' : ''}
+                            ${labelHtml}
                         </div>
-                        <div class="photo-info">
-                            ${skuMismatch ? `<div class="photo-sku-tag">⚠️ ${photoSKU}</div>` : ''}
-                            <div class="photo-filename">${filename}</div>
-                            <div class="photo-actions">
-                                <button class="btn btn-front ${isFront ? 'active' : ''}" onclick="event.stopPropagation(); setFront('${photo.id}', '${fileId}', '${photoSKU}', '${filename}')">F</button>
-                                <button class="btn btn-back ${isBack ? 'active' : ''}" onclick="event.stopPropagation(); setBack('${photo.id}', '${fileId}', '${photoSKU}', '${filename}')">B</button>
-                            </div>
-                        </div>
+                        <div class="photo-filename">${filename}</div>
                     </div>
                 `;
-            });
+            }).join('');
+        }
 
-            html += '</div>';
-            container.innerHTML = html;
+        function showLoading() {
+            document.getElementById('photo-grid').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Caricamento...
+                </div>
+            `;
+        }
+
+        function showEmptyState() {
+            document.getElementById('photo-grid').innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">✅</div>
+                    <div>Nessun SKU in attesa di review</div>
+                </div>
+            `;
+            document.getElementById('current-sku').textContent = '---';
+        }
+
+        // ============================================
+        // SELECTION
+        // ============================================
+        function handlePhotoClick(recordId, fileId) {
+            const photo = currentPhotos.find(p => p.id === recordId);
+            if (!photo) return;
+
+            // If nothing selected, set as FRONT
+            if (!selectedFront) {
+                selectedFront = recordId;
+                selectedFrontData = { recordId, fileId };
+            }
+            // If FRONT selected, clicking same deselects, clicking other sets as BACK
+            else if (selectedFront === recordId) {
+                selectedFront = null;
+                selectedFrontData = null;
+            }
+            else if (!selectedBack) {
+                selectedBack = recordId;
+                selectedBackData = { recordId, fileId };
+            }
+            // If BACK selected, clicking same deselects
+            else if (selectedBack === recordId) {
+                selectedBack = null;
+                selectedBackData = null;
+            }
+            // Both selected, clicking either resets that one
+            else if (selectedFront === recordId) {
+                selectedFront = null;
+                selectedFrontData = null;
+            }
+            else if (selectedBack === recordId) {
+                selectedBack = null;
+                selectedBackData = null;
+            }
+
+            renderPhotos();
+            updateSelectionStatus();
             updateConfirmButton();
         }
 
-        // CRITICAL FIX: Store complete data, not just ID
-        function setFront(recordId, fileId, sku, filename) {
-            if (selectedFrontData?.recordId === recordId) {
-                // Deselect
-                selectedFrontData = null;
-            } else {
-                // Select with full data
-                selectedFrontData = {
-                    recordId: recordId,
-                    fileId: fileId,
-                    sku: sku,
-                    filename: filename
-                };
-                // Clear back if same photo
-                if (selectedBackData?.recordId === recordId) {
-                    selectedBackData = null;
+        function selectAsFront() {
+            // Find first unselected photo
+            const unselected = currentPhotos.find(p => p.id !== selectedFront && p.id !== selectedBack);
+            if (unselected) {
+                if (selectedFront) {
+                    // Replace current front
+                    selectedFront = unselected.id;
+                    selectedFrontData = { recordId: unselected.id, fileId: unselected.fields.FileId };
+                } else {
+                    selectedFront = unselected.id;
+                    selectedFrontData = { recordId: unselected.id, fileId: unselected.fields.FileId };
                 }
+                renderPhotos();
+                updateSelectionStatus();
+                updateConfirmButton();
             }
-            
-            console.log(`[setFront] Selected:`, selectedFrontData);
-            
-            renderPhotos();
-            updateSelectionStatus();
-            updateDebug();
         }
 
-        function setBack(recordId, fileId, sku, filename) {
-            if (selectedBackData?.recordId === recordId) {
-                // Deselect
-                selectedBackData = null;
-            } else {
-                // Select with full data
-                selectedBackData = {
-                    recordId: recordId,
-                    fileId: fileId,
-                    sku: sku,
-                    filename: filename
-                };
-                // Clear front if same photo
-                if (selectedFrontData?.recordId === recordId) {
-                    selectedFrontData = null;
+        function selectAsBack() {
+            const unselected = currentPhotos.find(p => p.id !== selectedFront && p.id !== selectedBack);
+            if (unselected) {
+                if (selectedBack) {
+                    selectedBack = unselected.id;
+                    selectedBackData = { recordId: unselected.id, fileId: unselected.fields.FileId };
+                } else {
+                    selectedBack = unselected.id;
+                    selectedBackData = { recordId: unselected.id, fileId: unselected.fields.FileId };
                 }
+                renderPhotos();
+                updateSelectionStatus();
+                updateConfirmButton();
             }
-            
-            console.log(`[setBack] Selected:`, selectedBackData);
-            
-            renderPhotos();
-            updateSelectionStatus();
-            updateDebug();
         }
 
         function updateSelectionStatus() {
-            const frontEl = document.getElementById('status-front');
-            const backEl = document.getElementById('status-back');
+            const frontText = document.getElementById('front-status-text');
+            const backText = document.getElementById('back-status-text');
             
-            // Front status
-            if (selectedFrontData) {
-                const skuMatch = selectedFrontData.sku === currentSKU;
-                frontEl.classList.add('selected');
-                frontEl.classList.toggle('error', !skuMatch);
-                frontEl.querySelector('.value').textContent = skuMatch 
-                    ? selectedFrontData.filename 
-                    : `⚠️ ${selectedFrontData.sku}`;
+            if (selectedFront) {
+                frontText.textContent = '✓';
+                frontText.className = 'status selected';
             } else {
-                frontEl.classList.remove('selected', 'error');
-                frontEl.querySelector('.value').textContent = '—';
+                frontText.textContent = '—';
+                frontText.className = 'status pending';
             }
-
-            // Back status
-            if (selectedBackData) {
-                const skuMatch = selectedBackData.sku === currentSKU;
-                backEl.classList.add('selected');
-                backEl.classList.toggle('error', !skuMatch);
-                backEl.querySelector('.value').textContent = skuMatch 
-                    ? selectedBackData.filename 
-                    : `⚠️ ${selectedBackData.sku}`;
+            
+            if (selectedBack) {
+                backText.textContent = '✓';
+                backText.className = 'status selected';
             } else {
-                backEl.classList.remove('selected', 'error');
-                backEl.querySelector('.value').textContent = '—';
+                backText.textContent = '—';
+                backText.className = 'status pending';
             }
-
-            updateConfirmButton();
         }
 
         function updateConfirmButton() {
             const btn = document.getElementById('confirm-btn');
-            const aiMode = document.getElementById('ai-mode').value;
-            const template = document.getElementById('template-select').value;
+            const hasFlags = Object.values(flags).some(v => v);
+            const hasSelection = selectedFront && selectedBack;
             
-            const hasPhotos = selectedFrontData && selectedBackData;
-            const hasTemplate = aiMode !== 'FLAT' || template;
+            btn.disabled = !hasSelection && !hasFlags;
             
-            // CRITICAL: Validate SKU match
-            const frontSkuMatch = selectedFrontData?.sku === currentSKU;
-            const backSkuMatch = selectedBackData?.sku === currentSKU;
-            const skuValid = frontSkuMatch && backSkuMatch;
-            
-            btn.disabled = !(hasPhotos && hasTemplate && skuValid);
-            
-            // Update button text if SKU mismatch
-            if (hasPhotos && !skuValid) {
-                btn.textContent = '⚠️ SKU Mismatch';
+            // Show/hide flag submit button
+            const flagBtn = document.getElementById('flag-btn');
+            if (hasFlags && !hasSelection) {
+                flagBtn.style.display = 'block';
+                btn.style.display = 'none';
             } else {
-                btn.textContent = 'Conferma';
+                flagBtn.style.display = 'none';
+                btn.style.display = 'block';
             }
         }
 
-        async function confirmAndMigrate() {
-            // CRITICAL VALIDATION
-            if (!selectedFrontData || !selectedBackData) {
-                showToast('Seleziona FRONT e BACK', 'error');
-                return;
-            }
+        // ============================================
+        // FLAGS
+        // ============================================
+        function toggleFlag(flagName) {
+            flags[flagName] = !flags[flagName];
+            
+            const btnMap = {
+                missingFront: 'flag-missing-front',
+                missingBack: 'flag-missing-back',
+                needsReshoot: 'flag-reshoot',
+                maybeSold: 'flag-maybe-sold'
+            };
+            
+            const btn = document.getElementById(btnMap[flagName]);
+            btn.classList.toggle('active', flags[flagName]);
+            
+            updateConfirmButton();
+        }
 
-            // Double-check SKU match
-            if (selectedFrontData.sku !== currentSKU) {
-                showToast(`ERRORE: Front photo è di ${selectedFrontData.sku}, non ${currentSKU}`, 'error');
-                console.error('SKU MISMATCH - Front:', selectedFrontData, 'Expected:', currentSKU);
-                return;
-            }
+        function resetFlags() {
+            flags = {
+                missingFront: false,
+                missingBack: false,
+                needsReshoot: false,
+                maybeSold: false
+            };
+            
+            document.querySelectorAll('.flag-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById('flag-btn').style.display = 'none';
+            document.getElementById('confirm-btn').style.display = 'block';
+        }
 
-            if (selectedBackData.sku !== currentSKU) {
-                showToast(`ERRORE: Back photo è di ${selectedBackData.sku}, non ${currentSKU}`, 'error');
-                console.error('SKU MISMATCH - Back:', selectedBackData, 'Expected:', currentSKU);
-                return;
-            }
-
+        // ============================================
+        // ACTIONS
+        // ============================================
+        async function confirmSelection() {
             const btn = document.getElementById('confirm-btn');
             btn.disabled = true;
-            btn.textContent = 'Elaborazione...';
+            btn.textContent = '⏳ Salvando...';
 
             try {
-                // Log for audit
-                console.log('=== CONFIRM & MIGRATE ===');
-                console.log('currentSKU:', currentSKU);
-                console.log('Front FileId:', selectedFrontData.fileId);
-                console.log('Front SKU:', selectedFrontData.sku);
-                console.log('Back FileId:', selectedBackData.fileId);
-                console.log('Back SKU:', selectedBackData.sku);
-                console.log('=========================');
-
-                // Get form values
-                const aiMode = document.getElementById('ai-mode').value;
-                const template = document.getElementById('template-select').value;
-                const platforms = [];
-                if (document.getElementById('platform-vinted').checked) platforms.push('Vinted');
-                if (document.getElementById('platform-vestiaire').checked) platforms.push('Vestiaire');
-                if (document.getElementById('platform-catawiki').checked) platforms.push('Catawiki');
-                const notes = document.getElementById('notes').value;
-
                 // 1. Update PHOTO_CANDIDATES
-                await apiRequest(PHOTO_CANDIDATES_TABLE, {
-                    recordId: selectedFrontData.recordId,
-                    method: 'PATCH',
-                    body: { fields: { Is_Front: true, Review_Status: 'ASSIGNED' } }
-                });
+                if (selectedFront) {
+                    await apiRequest(PHOTO_CANDIDATES_TABLE, {
+                        recordId: selectedFront,
+                        method: 'PATCH',
+                        body: { fields: { Is_Front: true, Review_Status: 'ASSIGNED' } }
+                    });
+                }
 
-                await apiRequest(PHOTO_CANDIDATES_TABLE, {
-                    recordId: selectedBackData.recordId,
-                    method: 'PATCH',
-                    body: { fields: { Is_Back: true, Review_Status: 'ASSIGNED' } }
-                });
+                if (selectedBack) {
+                    await apiRequest(PHOTO_CANDIDATES_TABLE, {
+                        recordId: selectedBack,
+                        method: 'PATCH',
+                        body: { fields: { Is_Back: true, Review_Status: 'ASSIGNED' } }
+                    });
+                }
 
-                // Mark other photos for this SKU as ASSIGNED
+                // Mark other photos as ASSIGNED
                 for (const photo of currentPhotos) {
-                    if (photo.id !== selectedFrontData.recordId && photo.id !== selectedBackData.recordId) {
+                    if (photo.id !== selectedFront && photo.id !== selectedBack) {
                         await apiRequest(PHOTO_CANDIDATES_TABLE, {
                             recordId: photo.id,
                             method: 'PATCH',
@@ -1277,7 +1196,7 @@
                     }
                 }
 
-                // 2. Find and update OLD_INVENTORY with ALL migration data
+                // 2. Find and update OLD_INVENTORY
                 let oldInvRecord = null;
                 let offset = null;
                 do {
@@ -1289,34 +1208,29 @@
 
                 if (oldInvRecord) {
                     const updateFields = {
-                        // CRITICAL: Use FileId from selectedFrontData/selectedBackData
                         Confirmed_Front_FileId: selectedFrontData.fileId,
                         Confirmed_Back_FileId: selectedBackData.fileId,
                         Photo_Audit_Status: 'COMPLIANT',
-                        Migration_AI_Mode: aiMode,
-                        Migration_Platforms: platforms,
+                        Migration_AI_Mode: AI_MODE,
+                        Migration_Platforms: DEFAULT_PLATFORMS,
                         Ready_To_Migrate: true
                     };
 
-                    // Add template only if FLAT mode
-                    if (aiMode === 'FLAT' && template) {
-                        updateFields.Migration_Template = template;
+                    // Include any active flags
+                    if (flags.missingFront) updateFields.Flag_Missing_Front = true;
+                    if (flags.missingBack) updateFields.Flag_Missing_Back = true;
+                    if (flags.needsReshoot) updateFields.Flag_Needs_Reshoot = true;
+                    if (flags.maybeSold) updateFields.Flag_Maybe_Sold = true;
+                    
+                    if (Object.values(flags).some(v => v)) {
+                        updateFields.QC_Flagged_Date = new Date().toISOString().split('T')[0];
                     }
-
-                    // Add notes if present
-                    if (notes) {
-                        updateFields.Migration_Notes = notes;
-                    }
-
-                    console.log('Updating OLD_INVENTORY with:', updateFields);
 
                     await apiRequest(OLD_INVENTORY_TABLE, {
                         recordId: oldInvRecord.id,
                         method: 'PATCH',
                         body: { fields: updateFields }
                     });
-                } else {
-                    console.warn(`OLD_INVENTORY record not found for SKU: ${currentSKU}`);
                 }
 
                 // Update local state
@@ -1331,21 +1245,92 @@
                 pendingCount--;
                 updateStatsUI();
                 
-                showToast(`${currentSKU} pronto per migrazione`);
+                showToast(`✓ ${currentSKU} pronto per migrazione`, 'success');
                 
-                btn.textContent = 'Conferma';
+                btn.textContent = '✓ Conferma & Prossimo';
+                btn.disabled = false;
                 loadNextSKU();
 
             } catch (error) {
-                showError(error.message);
+                showToast('Errore: ' + error.message, 'error');
                 btn.disabled = false;
-                btn.textContent = 'Conferma';
+                btn.textContent = '✓ Conferma & Prossimo';
+            }
+        }
+
+        async function submitWithFlags() {
+            const btn = document.getElementById('flag-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Segnalando...';
+
+            try {
+                // Find OLD_INVENTORY record
+                let oldInvRecord = null;
+                let offset = null;
+                do {
+                    const data = await apiRequest(OLD_INVENTORY_TABLE, { offset });
+                    oldInvRecord = data.records.find(r => r.fields.SKU === currentSKU);
+                    if (oldInvRecord) break;
+                    offset = data.offset;
+                } while (offset);
+
+                if (oldInvRecord) {
+                    const updateFields = {
+                        Photo_Audit_Status: 'FLAGGED',
+                        QC_Flagged_Date: new Date().toISOString().split('T')[0]
+                    };
+
+                    if (flags.missingFront) updateFields.Flag_Missing_Front = true;
+                    if (flags.missingBack) updateFields.Flag_Missing_Back = true;
+                    if (flags.needsReshoot) updateFields.Flag_Needs_Reshoot = true;
+                    if (flags.maybeSold) updateFields.Flag_Maybe_Sold = true;
+
+                    await apiRequest(OLD_INVENTORY_TABLE, {
+                        recordId: oldInvRecord.id,
+                        method: 'PATCH',
+                        body: { fields: updateFields }
+                    });
+                }
+
+                // Mark photos as FLAGGED
+                for (const photo of currentPhotos) {
+                    await apiRequest(PHOTO_CANDIDATES_TABLE, {
+                        recordId: photo.id,
+                        method: 'PATCH',
+                        body: { fields: { Review_Status: 'FLAGGED' } }
+                    });
+                    
+                    const idx = allRecords.findIndex(r => r.id === photo.id);
+                    if (idx !== -1) {
+                        allRecords[idx].fields.Review_Status = 'FLAGGED';
+                    }
+                }
+
+                pendingCount--;
+                updateStatsUI();
+                
+                const flagNames = [];
+                if (flags.missingFront) flagNames.push('No Front');
+                if (flags.missingBack) flagNames.push('No Back');
+                if (flags.needsReshoot) flagNames.push('Rifare');
+                if (flags.maybeSold) flagNames.push('Venduto?');
+                
+                showToast(`⚠️ ${currentSKU} segnalato: ${flagNames.join(', ')}`, 'warning');
+                
+                btn.textContent = '⚠️ Segnala & Prossimo';
+                btn.disabled = false;
+                loadNextSKU();
+
+            } catch (error) {
+                showToast('Errore: ' + error.message, 'error');
+                btn.disabled = false;
+                btn.textContent = '⚠️ Segnala & Prossimo';
             }
         }
 
         async function skipSKU() {
-            const btn = document.querySelector('.nav-btn.skip');
-            btn.textContent = 'Skipping...';
+            const btn = document.querySelector('.action-btn.skip');
+            btn.textContent = '⏳ Skipping...';
 
             try {
                 for (const photo of currentPhotos) {
@@ -1363,14 +1348,26 @@
 
                 pendingCount--;
                 updateStatsUI();
-                showToast(`${currentSKU} skippato`, 'error');
-                btn.textContent = 'Salta SKU';
+                showToast(`⏭️ ${currentSKU} saltato`, 'error');
+                btn.textContent = '⏭️ Salta SKU';
                 loadNextSKU();
 
             } catch (error) {
-                showError(error.message);
-                btn.textContent = 'Salta SKU';
+                showToast('Errore: ' + error.message, 'error');
+                btn.textContent = '⏭️ Salta SKU';
             }
+        }
+
+        // ============================================
+        // UI HELPERS
+        // ============================================
+        function updateStatsUI() {
+            document.getElementById('pending-count').textContent = pendingCount;
+            document.getElementById('done-count').textContent = doneCount;
+            
+            const total = pendingCount + doneCount;
+            const percent = total > 0 ? (doneCount / total) * 100 : 0;
+            document.getElementById('progress-fill').style.width = `${percent}%`;
         }
 
         function openModal(url) {
@@ -1382,60 +1379,69 @@
             document.getElementById('modal').classList.remove('active');
         }
 
-        function showEmptyState() {
-            document.getElementById('current-sku').textContent = 'COMPLETATO';
-            document.getElementById('content').innerHTML = `
-                <div class="empty-state">
-                    <h2>✓ Review Completata</h2>
-                    <p>Tutti gli SKU sono stati processati.</p>
-                </div>
-            `;
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show ' + type;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
-        function showError(message) {
-            document.getElementById('content').innerHTML = `
-                <div class="error">
-                    <h3>Errore</h3>
-                    <pre>${message}</pre>
-                    <button onclick="loadAllRecords()">Riprova</button>
-                </div>
-            `;
-        }
-
-        // Keyboard shortcuts
+        // ============================================
+        // KEYBOARD SHORTCUTS
+        // ============================================
         document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
-            
-            if (e.key === 'Escape') closeModal();
-            
-            if (e.key === 'd' || e.key === 'D') toggleDebug();
-            
-            if (e.key === 'Enter' && !document.getElementById('confirm-btn').disabled) {
-                confirmAndMigrate();
-            }
-            
-            if ((e.key === 'f' || e.key === 'F') && currentPhotos.length > 0) {
-                const hoveredCard = document.querySelector('.photo-card:hover');
-                if (hoveredCard) {
-                    const id = hoveredCard.dataset.id;
-                    const fileId = hoveredCard.dataset.fileId;
-                    const sku = hoveredCard.dataset.sku;
-                    const filename = hoveredCard.querySelector('.photo-filename').textContent;
-                    setFront(id, fileId, sku, filename);
-                }
-            }
-            
-            if ((e.key === 'b' || e.key === 'B') && currentPhotos.length > 0) {
-                const hoveredCard = document.querySelector('.photo-card:hover');
-                if (hoveredCard) {
-                    const id = hoveredCard.dataset.id;
-                    const fileId = hoveredCard.dataset.fileId;
-                    const sku = hoveredCard.dataset.sku;
-                    const filename = hoveredCard.querySelector('.photo-filename').textContent;
-                    setBack(id, fileId, sku, filename);
-                }
+            // Ignore if typing in input
+            if (e.target.tagName === 'INPUT') return;
+
+            switch(e.key.toLowerCase()) {
+                case 'f':
+                    selectAsFront();
+                    break;
+                case 'b':
+                    selectAsBack();
+                    break;
+                case '1':
+                    toggleFlag('missingFront');
+                    break;
+                case '2':
+                    toggleFlag('missingBack');
+                    break;
+                case '3':
+                    toggleFlag('needsReshoot');
+                    break;
+                case '4':
+                    toggleFlag('maybeSold');
+                    break;
+                case 'enter':
+                    e.preventDefault();
+                    if (Object.values(flags).some(v => v) && !selectedFront && !selectedBack) {
+                        submitWithFlags();
+                    } else if (selectedFront && selectedBack) {
+                        confirmSelection();
+                    }
+                    break;
+                case 's':
+                    skipSKU();
+                    break;
+                case 'escape':
+                    closeModal();
+                    break;
+                case 'arrowright':
+                    if (e.ctrlKey || e.metaKey) loadNextBatch();
+                    break;
+                case 'arrowleft':
+                    if (e.ctrlKey || e.metaKey) loadPrevBatch();
+                    break;
             }
         });
+
+        // ============================================
+        // INIT
+        // ============================================
+        checkAuth();
     </script>
 </body>
 </html>
