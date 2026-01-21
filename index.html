@@ -19,792 +19,104 @@
             --success: #2ECC71;
             --warning: #F39C12;
             --border: #333;
-            --border-light: #444;
         }
-        
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--black);
-            color: var(--white);
-            min-height: 100vh;
-            line-height: 1.5;
-        }
-
-        .header {
-            background: var(--black-soft);
-            padding: 1rem 2rem;
-            border-bottom: 3px solid var(--red);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .header-brand h1 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--white);
-            letter-spacing: -0.5px;
-        }
-        
-        .header-brand .version {
-            font-size: 0.7rem;
-            background: var(--red);
-            color: var(--white);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .stats-bar {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-        
-        .stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            background: var(--black);
-            border-radius: 8px;
-            min-width: 70px;
-        }
-        
-        .stat-value {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--beige);
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--white-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+        .header { background: var(--black-soft); padding: 1rem 2rem; border-bottom: 3px solid var(--red); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+        .header-brand { display: flex; align-items: center; gap: 1rem; }
+        .header-brand h1 { font-size: 1.4rem; font-weight: 700; }
+        .header-brand .version { font-size: 0.7rem; background: var(--red); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; }
+        .stats-bar { display: flex; gap: 1.5rem; align-items: center; }
+        .stat { display: flex; flex-direction: column; align-items: center; padding: 0.5rem 1rem; background: var(--black); border-radius: 8px; min-width: 70px; }
+        .stat-value { font-size: 1.3rem; font-weight: 700; color: var(--beige); }
+        .stat-label { font-size: 0.7rem; color: var(--white-muted); text-transform: uppercase; }
         .stat.success .stat-value { color: var(--success); }
         .stat.warning .stat-value { color: var(--warning); }
         .stat.pending .stat-value { color: var(--red); }
-
-        .btn-icon {
-            background: var(--black);
-            border: 1px solid var(--border);
-            color: var(--white-muted);
-            padding: 0.6rem 0.8rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-        
-        .btn-icon:hover {
-            border-color: var(--red);
-            color: var(--red);
-            background: var(--red-muted);
-        }
-
-        .filters-section {
-            background: var(--black-soft);
-            padding: 1rem 2rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: flex-end;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-        
-        .filter-group label {
-            font-size: 0.7rem;
-            color: var(--white-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-        
-        .filter-group select {
-            background: var(--black);
-            border: 1px solid var(--border);
-            color: var(--white);
-            padding: 0.6rem 1rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            min-width: 150px;
-            cursor: pointer;
-            transition: border-color 0.2s;
-        }
-        
-        .filter-group select:hover,
-        .filter-group select:focus {
-            border-color: var(--beige-muted);
-            outline: none;
-        }
-
-        .pagination {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-left: auto;
-        }
-        
-        .pagination button {
-            background: var(--black);
-            border: 1px solid var(--border);
-            color: var(--white);
-            padding: 0.6rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-        
-        .pagination button:hover:not(:disabled) {
-            border-color: var(--red);
-            background: var(--red-muted);
-        }
-        
-        .pagination button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        
-        .page-info {
-            padding: 0.6rem 1rem;
-            background: var(--black-card);
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-variant-numeric: tabular-nums;
-            color: var(--beige);
-            font-weight: 500;
-        }
-
-        .token-section {
-            padding: 3rem 2rem;
-            text-align: center;
-            max-width: 450px;
-            margin: 4rem auto;
-            background: var(--black-card);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-        
-        .token-section h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: var(--white);
-        }
-        
-        .token-section p {
-            color: var(--white-muted);
-            margin-bottom: 1.5rem;
-        }
-        
-        .token-section input {
-            width: 100%;
-            padding: 1rem;
-            background: var(--black);
-            border: 1px solid var(--border);
-            color: var(--white);
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-        }
-        
-        .token-section input:focus {
-            outline: none;
-            border-color: var(--red);
-        }
-        
-        .token-section button {
-            background: var(--red);
-            border: none;
-            color: var(--white);
-            padding: 1rem 2.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-        
-        .token-section button:hover {
-            background: var(--red-hover);
-        }
-
-        .main-content {
-            padding: 1.5rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .product-card {
-            background: var(--black-card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border);
-        }
-        
-        .product-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .product-sku {
-            font-size: 1.6rem;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--beige);
-            letter-spacing: 1px;
-        }
-        
-        .product-meta {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .product-meta span {
-            background: var(--black);
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            color: var(--white-muted);
-        }
-        
-        .product-meta span.warning {
-            background: rgba(243, 156, 18, 0.15);
-            color: var(--warning);
-        }
-
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .photo-item {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 3px solid var(--border);
-            transition: all 0.2s ease;
-            background: var(--black);
-        }
-        
-        .photo-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            border-color: var(--beige-muted);
-        }
-        
-        .photo-item.selected-front {
-            border-color: var(--success);
-            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.3);
-        }
-        
-        .photo-item.selected-back {
-            border-color: var(--warning);
-            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.3);
-        }
-        
-        .photo-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        
-        .photo-label {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            padding: 0.35rem 0.7rem;
-            border-radius: 5px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            z-index: 10;
-        }
-        
-        .photo-label.front {
-            background: var(--success);
-            color: var(--black);
-        }
-        
-        .photo-label.back {
-            background: var(--warning);
-            color: var(--black);
-        }
-        
-        .photo-index {
-            position: absolute;
-            top: 8px;
-            right: 40px;
-            width: 24px;
-            height: 24px;
-            background: rgba(0,0,0,0.7);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--white-muted);
-            z-index: 10;
-        }
-        
-        /* ROTATE BUTTON - v10 NEW */
-        .photo-rotate {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 28px;
-            height: 28px;
-            background: rgba(0,0,0,0.8);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            color: var(--white-muted);
-            cursor: pointer;
-            z-index: 20;
-            transition: all 0.2s;
-        }
-        
-        .photo-rotate:hover {
-            background: var(--red);
-            color: var(--white);
-            border-color: var(--red);
-            transform: scale(1.1);
-        }
-        
-        .photo-filename {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            padding: 1.5rem 0.5rem 0.4rem;
-            font-size: 0.65rem;
-            text-align: center;
-            color: var(--white-muted);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .selection-controls {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            align-items: center;
-            padding: 1rem;
-            background: var(--black);
-            border-radius: 8px;
-        }
-        
-        .selection-info {
-            display: flex;
-            gap: 1rem;
-            flex: 1;
-        }
-        
-        .selection-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-        }
-        
-        .selection-badge.front {
-            background: rgba(46, 204, 113, 0.15);
-            color: var(--success);
-            border: 1px solid var(--success);
-        }
-        
-        .selection-badge.back {
-            background: rgba(243, 156, 18, 0.15);
-            color: var(--warning);
-            border: 1px solid var(--warning);
-        }
-        
-        .selection-badge.empty {
-            background: var(--black-soft);
-            color: var(--white-muted);
-            border: 1px dashed var(--border);
-        }
-        
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .control-group label {
-            font-size: 0.8rem;
-            color: var(--white-muted);
-            font-weight: 500;
-        }
-        
-        .control-group select {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            color: var(--white);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 0.9rem 1.8rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.2s;
-        }
-        
-        .btn-primary {
-            background: var(--success);
-            color: var(--black);
-        }
-        
-        .btn-primary:hover:not(:disabled) {
-            background: #27ae60;
-            transform: translateY(-1px);
-        }
-        
-        .btn-primary:disabled {
-            background: var(--border);
-            color: var(--white-muted);
-            cursor: not-allowed;
-        }
-        
-        .btn-danger {
-            background: var(--red);
-            color: var(--white);
-        }
-        
-        .btn-danger:hover {
-            background: var(--red-hover);
-            transform: translateY(-1px);
-        }
-        
-        .btn-secondary {
-            background: var(--black);
-            color: var(--white);
-            border: 1px solid var(--border);
-        }
-        
-        .btn-secondary:hover {
-            border-color: var(--beige-muted);
-            background: var(--black-soft);
-        }
-
-        .keyboard-hints {
-            display: flex;
-            gap: 1.2rem;
-            font-size: 0.75rem;
-            color: var(--white-muted);
-            margin-top: 1rem;
-            flex-wrap: wrap;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-        }
-        
-        .keyboard-hints span {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        
-        .keyboard-hints kbd {
-            background: var(--black);
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            border: 1px solid var(--border);
-            min-width: 24px;
-            text-align: center;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(4px);
-        }
-        
+        .btn-icon { background: var(--black); border: 1px solid var(--border); color: var(--white-muted); padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; }
+        .btn-icon:hover { border-color: var(--red); color: var(--red); }
+        .filters-section { background: var(--black-soft); padding: 1rem 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; border-bottom: 1px solid var(--border); }
+        .filter-group { display: flex; flex-direction: column; gap: 0.4rem; }
+        .filter-group label { font-size: 0.7rem; color: var(--white-muted); text-transform: uppercase; }
+        .filter-group select { background: var(--black); border: 1px solid var(--border); color: var(--white); padding: 0.6rem 1rem; border-radius: 6px; min-width: 150px; }
+        .pagination { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+        .pagination button { background: var(--black); border: 1px solid var(--border); color: var(--white); padding: 0.6rem 1rem; border-radius: 6px; cursor: pointer; }
+        .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .page-info { padding: 0.6rem 1rem; background: var(--black-card); border-radius: 6px; color: var(--beige); }
+        .token-section { padding: 3rem 2rem; text-align: center; max-width: 450px; margin: 4rem auto; background: var(--black-card); border-radius: 12px; border: 1px solid var(--border); }
+        .token-section h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .token-section p { color: var(--white-muted); margin-bottom: 1.5rem; }
+        .token-section input { width: 100%; padding: 1rem; background: var(--black); border: 1px solid var(--border); color: var(--white); border-radius: 8px; margin-bottom: 1rem; font-family: monospace; }
+        .token-section button { background: var(--red); border: none; color: var(--white); padding: 1rem 2.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .main-content { padding: 1.5rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .product-card { background: var(--black-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); }
+        .product-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+        .product-sku { font-size: 1.6rem; font-weight: 700; font-family: monospace; color: var(--beige); }
+        .product-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .product-meta span { background: var(--black); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem; color: var(--white-muted); }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .photo-item { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; cursor: pointer; border: 3px solid var(--border); background: var(--black); }
+        .photo-item:hover { transform: translateY(-2px); border-color: var(--beige-muted); }
+        .photo-item.selected-front { border-color: var(--success); box-shadow: 0 0 0 3px rgba(46,204,113,0.3); }
+        .photo-item.selected-back { border-color: var(--warning); box-shadow: 0 0 0 3px rgba(243,156,18,0.3); }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .photo-label { position: absolute; top: 8px; left: 8px; padding: 0.35rem 0.7rem; border-radius: 5px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; z-index: 10; }
+        .photo-label.front { background: var(--success); color: var(--black); }
+        .photo-label.back { background: var(--warning); color: var(--black); }
+        .photo-index { position: absolute; top: 8px; right: 40px; width: 24px; height: 24px; background: rgba(0,0,0,0.7); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--white-muted); z-index: 10; }
+        .photo-rotate { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; background: rgba(0,0,0,0.8); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--white-muted); cursor: pointer; z-index: 20; }
+        .photo-rotate:hover { background: var(--red); color: var(--white); }
+        .photo-filename { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 1.5rem 0.5rem 0.4rem; font-size: 0.65rem; text-align: center; color: var(--white-muted); }
+        .selection-controls { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; padding: 1rem; background: var(--black); border-radius: 8px; }
+        .selection-info { display: flex; gap: 1rem; flex: 1; }
+        .selection-badge { padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; }
+        .selection-badge.front { background: rgba(46,204,113,0.15); color: var(--success); border: 1px solid var(--success); }
+        .selection-badge.back { background: rgba(243,156,18,0.15); color: var(--warning); border: 1px solid var(--warning); }
+        .selection-badge.empty { background: var(--black-soft); color: var(--white-muted); border: 1px dashed var(--border); }
+        .control-group { display: flex; align-items: center; gap: 0.5rem; }
+        .control-group label { font-size: 0.8rem; color: var(--white-muted); }
+        .control-group select { background: var(--black-card); border: 1px solid var(--border); color: var(--white); padding: 0.5rem 1rem; border-radius: 6px; }
+        .action-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn { padding: 0.9rem 1.8rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: var(--success); color: var(--black); }
+        .btn-primary:disabled { background: var(--border); color: var(--white-muted); cursor: not-allowed; }
+        .btn-danger { background: var(--red); color: var(--white); }
+        .btn-secondary { background: var(--black); color: var(--white); border: 1px solid var(--border); }
+        .keyboard-hints { display: flex; gap: 1.2rem; font-size: 0.75rem; color: var(--white-muted); margin-top: 1rem; flex-wrap: wrap; padding-top: 1rem; border-top: 1px solid var(--border); }
+        .keyboard-hints kbd { background: var(--black); padding: 0.25rem 0.5rem; border-radius: 4px; font-family: monospace; border: 1px solid var(--border); }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; }
         .modal-overlay.active { display: flex; }
-        
-        .modal {
-            background: var(--black-card);
-            border-radius: 16px;
-            padding: 2rem;
-            max-width: 480px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-        }
-        
-        .modal h2 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: var(--white);
-        }
-        
-        .modal-sku {
-            color: var(--beige);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .skip-reasons {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .skip-reason {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 1rem;
-            background: var(--black);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .skip-reason:hover {
-            border-color: var(--beige-muted);
-        }
-        
-        .skip-reason.selected {
-            border-color: var(--red);
-            background: var(--red-muted);
-        }
-        
+        .modal { background: var(--black-card); border-radius: 16px; padding: 2rem; max-width: 480px; width: 90%; border: 1px solid var(--border); }
+        .modal h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .modal-sku { color: var(--beige); font-family: monospace; margin-bottom: 1.5rem; }
+        .skip-reasons { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
+        .skip-reason { display: flex; align-items: center; gap: 0.8rem; padding: 1rem; background: var(--black); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+        .skip-reason:hover { border-color: var(--beige-muted); }
+        .skip-reason.selected { border-color: var(--red); background: var(--red-muted); }
         .skip-reason input { display: none; }
-        
-        .radio-custom {
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--border);
-            border-radius: 50%;
-            flex-shrink: 0;
-            transition: all 0.2s;
-        }
-        
-        .skip-reason.selected .radio-custom {
-            border-color: var(--red);
-            background: var(--red);
-        }
-        
-        .skip-notes {
-            width: 100%;
-            padding: 1rem;
-            background: var(--black);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--white);
-            resize: vertical;
-            min-height: 80px;
-            font-family: inherit;
-            margin-bottom: 1.5rem;
-        }
-        
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-
-        .zoom-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
-            cursor: zoom-out;
-            justify-content: center;
-            align-items: center;
-        }
-        
+        .radio-custom { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 50%; }
+        .skip-reason.selected .radio-custom { border-color: var(--red); background: var(--red); }
+        .skip-notes { width: 100%; padding: 1rem; background: var(--black); border: 1px solid var(--border); border-radius: 8px; color: var(--white); resize: vertical; min-height: 80px; margin-bottom: 1.5rem; }
+        .modal-actions { display: flex; gap: 1rem; justify-content: flex-end; }
+        .zoom-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 2000; cursor: zoom-out; justify-content: center; align-items: center; }
         .zoom-modal.active { display: flex; }
-        
-        .zoom-modal img {
-            max-width: 90vw;
-            max-height: 90vh;
-            object-fit: contain;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--white-muted);
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--red);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--white-muted);
-        }
-        
-        .empty-state h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--white);
-        }
-
-        .no-photos-warning {
-            text-align: center;
-            padding: 3rem;
-            background: rgba(243, 156, 18, 0.1);
-            border: 1px dashed var(--warning);
-            border-radius: 10px;
-            color: var(--warning);
-        }
-
-        .debug-panel {
-            background: #111;
-            border: 1px solid var(--border);
-            padding: 1rem;
-            margin: 1rem 2rem;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            max-height: 200px;
-            overflow-y: auto;
-            color: var(--white-muted);
-        }
-        
+        .zoom-modal img { max-width: 90vw; max-height: 90vh; }
+        .loading { text-align: center; padding: 3rem; color: var(--white-muted); }
+        .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .empty-state { text-align: center; padding: 4rem 2rem; color: var(--white-muted); }
+        .empty-state h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--white); }
+        .no-photos-warning { text-align: center; padding: 3rem; background: rgba(243,156,18,0.1); border: 1px dashed var(--warning); border-radius: 10px; color: var(--warning); }
+        .debug-panel { background: #111; border: 1px solid var(--border); padding: 1rem; margin: 1rem 2rem; border-radius: 8px; font-family: monospace; font-size: 0.75rem; max-height: 250px; overflow-y: auto; color: var(--white-muted); }
         .debug-panel.hidden { display: none; }
-        
         .debug-panel .error { color: #ff6b6b; }
         .debug-panel .success { color: var(--success); }
         .debug-panel .warn { color: var(--warning); }
-
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-weight: 500;
-            z-index: 3000;
-            opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-        
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-        
-        .toast.success {
-            background: var(--success);
-            color: var(--black);
-        }
-        
-        .toast.error {
-            background: var(--red);
-            color: var(--white);
-        }
-        
-        .toast.warning {
-            background: var(--warning);
-            color: var(--black);
-        }
-
-        @media (max-width: 768px) {
-            .header { padding: 1rem; }
-            .stats-bar { gap: 0.8rem; }
-            .stat { padding: 0.4rem 0.6rem; min-width: 55px; }
-            .stat-value { font-size: 1.1rem; }
-            .filters-section { padding: 1rem; }
-            .main-content { padding: 1rem; }
-            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-        }
+        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); padding: 1rem 2rem; border-radius: 8px; font-weight: 500; z-index: 3000; opacity: 0; transition: all 0.3s; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.success { background: var(--success); color: var(--black); }
+        .toast.error { background: var(--red); color: var(--white); }
+        .toast.warning { background: var(--warning); color: var(--black); }
     </style>
 </head>
 <body>
@@ -822,38 +134,19 @@
                 <span class="version">v10</span>
             </div>
             <div class="stats-bar">
-                <div class="stat pending">
-                    <span class="stat-value" id="statPending">-</span>
-                    <span class="stat-label">Da Fare</span>
-                </div>
-                <div class="stat success">
-                    <span class="stat-value" id="statDone">-</span>
-                    <span class="stat-label">Fatti</span>
-                </div>
-                <div class="stat warning">
-                    <span class="stat-value" id="statSkipped">-</span>
-                    <span class="stat-label">Scartati</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value" id="statTotal">-</span>
-                    <span class="stat-label">Totale</span>
-                </div>
-                <button class="btn-icon" onclick="resetToken()" title="Cambia Token">🔑</button>
-                <button class="btn-icon" onclick="toggleDebug()" title="Debug">🐛</button>
+                <div class="stat pending"><span class="stat-value" id="statPending">-</span><span class="stat-label">Da Fare</span></div>
+                <div class="stat success"><span class="stat-value" id="statDone">-</span><span class="stat-label">Fatti</span></div>
+                <div class="stat warning"><span class="stat-value" id="statSkipped">-</span><span class="stat-label">Scartati</span></div>
+                <div class="stat"><span class="stat-value" id="statTotal">-</span><span class="stat-label">Totale</span></div>
+                <button class="btn-icon" onclick="resetToken()">🔑</button>
+                <button class="btn-icon" onclick="toggleDebug()">🐛</button>
             </div>
         </header>
 
         <div class="filters-section">
-            <div class="filter-group">
-                <label>Categoria</label>
-                <select id="filterCategory"><option value="">Tutte</option></select>
-            </div>
-            <div class="filter-group">
-                <label>Brand</label>
-                <select id="filterBrand"><option value="">Tutti</option></select>
-            </div>
-            <div class="filter-group">
-                <label>Stato</label>
+            <div class="filter-group"><label>Categoria</label><select id="filterCategory"><option value="">Tutte</option></select></div>
+            <div class="filter-group"><label>Brand</label><select id="filterBrand"><option value="">Tutti</option></select></div>
+            <div class="filter-group"><label>Stato</label>
                 <select id="filterStatus">
                     <option value="NEEDS_REVIEW">Da Revisionare</option>
                     <option value="">Tutti</option>
@@ -866,58 +159,30 @@
                 <button id="btnPrev" onclick="prevRecord()" disabled>◀</button>
                 <span class="page-info" id="pageInfo">0 / 0</span>
                 <button id="btnNext" onclick="nextRecord()">▶</button>
-                <button class="btn btn-secondary" onclick="loadData()" title="Ricarica">🔄</button>
+                <button class="btn btn-secondary" onclick="loadData()">🔄</button>
             </div>
         </div>
 
         <div class="debug-panel hidden" id="debugPanel"></div>
-        
         <main class="main-content">
-            <div id="loadingState" class="loading">
-                <div class="spinner"></div>
-                <p>Caricamento...</p>
-            </div>
-            <div id="emptyState" class="empty-state" style="display:none;">
-                <h3>📭 Nessun prodotto</h3>
-                <p>Cambia i filtri o verifica i dati in Airtable</p>
-            </div>
+            <div id="loadingState" class="loading"><div class="spinner"></div><p>Caricamento...</p></div>
+            <div id="emptyState" class="empty-state" style="display:none;"><h3>📭 Nessun prodotto</h3><p>Cambia i filtri</p></div>
             <div id="productContainer"></div>
         </main>
     </div>
 
-    <!-- SKIP MODAL -->
     <div class="modal-overlay" id="skipModal">
         <div class="modal">
             <h2>❌ Scarta Prodotto</h2>
             <p class="modal-sku">SKU: <strong id="skipModalSku"></strong></p>
             <div class="skip-reasons">
-                <label class="skip-reason" onclick="selectSkipReason(this,'TOO_FEW_PHOTOS')">
-                    <input type="radio" name="skipReason">
-                    <span class="radio-custom"></span>
-                    <span>📷 Troppe poche foto</span>
-                </label>
-                <label class="skip-reason" onclick="selectSkipReason(this,'NO_INTERNAL_LABELS')">
-                    <input type="radio" name="skipReason">
-                    <span class="radio-custom"></span>
-                    <span>🏷️ No etichette interne</span>
-                </label>
-                <label class="skip-reason" onclick="selectSkipReason(this,'LOW_QUALITY_PHOTOS')">
-                    <input type="radio" name="skipReason">
-                    <span class="radio-custom"></span>
-                    <span>📸 Foto bassa qualità</span>
-                </label>
-                <label class="skip-reason" onclick="selectSkipReason(this,'MISSING_FRONT_BACK')">
-                    <input type="radio" name="skipReason">
-                    <span class="radio-custom"></span>
-                    <span>🔄 Front/Back mancante</span>
-                </label>
-                <label class="skip-reason" onclick="selectSkipReason(this,'OTHER')">
-                    <input type="radio" name="skipReason">
-                    <span class="radio-custom"></span>
-                    <span>📝 Altro</span>
-                </label>
+                <label class="skip-reason" onclick="selectSkipReason(this,'TOO_FEW_PHOTOS')"><input type="radio" name="skipReason"><span class="radio-custom"></span><span>📷 Troppe poche foto</span></label>
+                <label class="skip-reason" onclick="selectSkipReason(this,'NO_INTERNAL_LABELS')"><input type="radio" name="skipReason"><span class="radio-custom"></span><span>🏷️ No etichette interne</span></label>
+                <label class="skip-reason" onclick="selectSkipReason(this,'LOW_QUALITY_PHOTOS')"><input type="radio" name="skipReason"><span class="radio-custom"></span><span>📸 Foto bassa qualità</span></label>
+                <label class="skip-reason" onclick="selectSkipReason(this,'MISSING_FRONT_BACK')"><input type="radio" name="skipReason"><span class="radio-custom"></span><span>🔄 Front/Back mancante</span></label>
+                <label class="skip-reason" onclick="selectSkipReason(this,'OTHER')"><input type="radio" name="skipReason"><span class="radio-custom"></span><span>📝 Altro</span></label>
             </div>
-            <textarea class="skip-notes" id="skipNotes" placeholder="Note aggiuntive (opzionale)..."></textarea>
+            <textarea class="skip-notes" id="skipNotes" placeholder="Note (opzionale)..."></textarea>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeSkipModal()">Annulla</button>
                 <button class="btn btn-danger" id="confirmSkipBtn" onclick="confirmSkip()" disabled>Conferma</button>
@@ -925,25 +190,15 @@
         </div>
     </div>
 
-    <!-- ZOOM MODAL -->
-    <div class="zoom-modal" id="zoomModal" onclick="closeZoomModal()">
-        <img id="zoomImage" src="">
-    </div>
-    
-    <!-- TOAST -->
+    <div class="zoom-modal" id="zoomModal" onclick="closeZoomModal()"><img id="zoomImage" src=""></div>
     <div class="toast" id="toast"></div>
 
     <script>
-        // ═══════════════════════════════════════════════════════════════
-        // CONFIG — v10 FIX CRITICO: Nome tabella corretto!
-        // ═══════════════════════════════════════════════════════════════
-        const BASE_ID = 'apptPbWnDkDkKEpFV';  // DirtyTag 2.0
-        
-        // v10 FIX: La tabella si chiama OLD_INVENTORY, non RAW_INVENTORY!
-        const OLD_INVENTORY_TABLE = 'OLD_INVENTORY';
-        const PHOTO_CANDIDATES_TABLE = 'PHOTO_CANDIDATES';
+        // CONFIG — v10: Table ID esatto
+        const BASE_ID = 'apptPbWnDkDkKEpFV';
+        const RAW_INVENTORY_TABLE = 'tblddAcLcQAyk050u';
+        const PHOTO_CANDIDATES_TABLE = 'tbl7ogfLnHsVfFdzb';
 
-        // Field Names — allineati con schema documentazione
         const F = {
             SKU: 'SKU',
             CATEGORY: 'Category',
@@ -955,809 +210,312 @@
             CONFIRMED_FRONT: 'Confirmed_Front_FileId',
             CONFIRMED_BACK: 'Confirmed_Back_FileId',
             MIGRATION_AI_MODE: 'Migration_AI_Mode',
-            MIGRATION_TEMPLATE: 'Migration_Template',
-            MIGRATION_STATUS: 'Migration_Status',
             READY_TO_MIGRATE: 'Ready_To_Migrate',
             SKIP_REASON: 'Skip_Reason',
             SKIP_NOTES: 'Skip_Notes',
             SKIPPED_AT: 'Skipped_At',
-            REQUIRES_RESHOOT: 'Requires_Reshoot',
-            BLOCKER_REASON: 'Blocker_Reason'
+            REQUIRES_RESHOOT: 'Requires_Reshoot'
         };
 
-        // ═══════════════════════════════════════════════════════════════
-        // STATE
-        // ═══════════════════════════════════════════════════════════════
         let token = localStorage.getItem('airtable_token') || '';
-        let allRecords = [];
-        let records = [];
-        let idx = 0;
-        let currentSKU = null;
-        let currentRecordId = null;
-        let photos = [];
-        let selFront = null;
-        let selBack = null;
-        let skipReason = null;
-        let hoveredPhoto = null;
-        let debugMode = false;
-        let isProcessing = false;
-        
-        // v10 NEW: Rotazione foto (stato locale)
-        let photoRotations = {};  // { photoId: degrees }
+        let allRecords = [], records = [], idx = 0;
+        let currentSKU = null, currentRecordId = null;
+        let photos = [], selFront = null, selBack = null;
+        let skipReason = null, hoveredPhoto = null;
+        let debugMode = false, isProcessing = false;
+        let photoRotations = {};
 
-        // ═══════════════════════════════════════════════════════════════
-        // INIT
-        // ═══════════════════════════════════════════════════════════════
         document.addEventListener('DOMContentLoaded', () => {
-            if (token) {
-                showMain();
-                loadData();
-            } else {
-                showToken();
-            }
+            if (token) { showMain(); loadData(); } else { showToken(); }
             document.addEventListener('keydown', handleKey);
         });
 
         function saveToken() {
             const t = document.getElementById('tokenInput').value.trim();
             if (!t) return alert('Inserisci un token');
-            token = t;
-            localStorage.setItem('airtable_token', token);
-            showMain();
-            loadData();
+            token = t; localStorage.setItem('airtable_token', token);
+            showMain(); loadData();
         }
-
-        function resetToken() {
-            localStorage.removeItem('airtable_token');
-            token = '';
-            showToken();
-        }
-
-        function showMain() {
-            document.getElementById('tokenSection').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-        }
-
-        function showToken() {
-            document.getElementById('tokenSection').style.display = 'block';
-            document.getElementById('mainApp').style.display = 'none';
-        }
-
-        function toggleDebug() {
-            debugMode = !debugMode;
-            document.getElementById('debugPanel').classList.toggle('hidden', !debugMode);
-        }
-
+        function resetToken() { localStorage.removeItem('airtable_token'); token = ''; showToken(); }
+        function showMain() { document.getElementById('tokenSection').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; }
+        function showToken() { document.getElementById('tokenSection').style.display = 'block'; document.getElementById('mainApp').style.display = 'none'; }
+        function toggleDebug() { debugMode = !debugMode; document.getElementById('debugPanel').classList.toggle('hidden', !debugMode); }
         function log(m, type = '') {
             console.log(m);
             const p = document.getElementById('debugPanel');
-            if (p) {
-                const ts = new Date().toLocaleTimeString();
-                p.innerHTML += `<div class="${type}">[${ts}] ${m}</div>`;
-                p.scrollTop = p.scrollHeight;
-            }
+            if (p) { p.innerHTML += `<div class="${type}">[${new Date().toLocaleTimeString()}] ${m}</div>`; p.scrollTop = p.scrollHeight; }
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // DATA LOADING
-        // ═══════════════════════════════════════════════════════════════
         async function loadData() {
             showLoading(true);
             document.getElementById('debugPanel').innerHTML = '';
-            
             try {
                 const status = document.getElementById('filterStatus')?.value || 'NEEDS_REVIEW';
-                
                 let formula = `AND({${F.PHOTO_COUNT}}>0`;
                 if (status) formula += `,{${F.PHOTO_AUDIT_STATUS}}='${status}'`;
                 formula += ')';
-                
                 log(`🔍 Filter: ${formula}`);
-                log(`📡 Table: ${OLD_INVENTORY_TABLE}`);
-                
+                log(`📡 Base: ${BASE_ID} | Table: ${RAW_INVENTORY_TABLE}`);
                 allRecords = await fetchAllRecords(formula);
-                log(`✅ Loaded ${allRecords.length} total records`, 'success');
-                
+                log(`✅ Loaded ${allRecords.length} records`, 'success');
                 records = [...allRecords];
-                const catFilter = document.getElementById('filterCategory')?.value;
-                const brandFilter = document.getElementById('filterBrand')?.value;
-                
-                if (catFilter || brandFilter) {
-                    records = records.filter(r => {
-                        const cat = extractField(r, F.CATEGORY_NAME) || extractField(r, F.CATEGORY) || '';
-                        const brand = extractField(r, F.BRAND_NAME) || extractField(r, F.BRAND) || '';
-                        return (!catFilter || cat.includes(catFilter)) && 
-                               (!brandFilter || brand.includes(brandFilter));
-                    });
-                    log(`📋 After filters: ${records.length} records`);
-                }
-                
                 const cats = new Set(), brands = new Set();
                 allRecords.forEach(r => {
                     const c = extractField(r, F.CATEGORY_NAME) || extractField(r, F.CATEGORY);
                     const b = extractField(r, F.BRAND_NAME) || extractField(r, F.BRAND);
-                    if (c) cats.add(c);
-                    if (b) brands.add(b);
+                    if (c) cats.add(c); if (b) brands.add(b);
                 });
                 populateSelect('filterCategory', cats);
                 populateSelect('filterBrand', brands);
-                
-                updateStats();
-                idx = 0;
-                
-                if (records.length > 0) {
-                    await showRecord();
-                } else {
-                    showEmpty();
-                }
-                
-            } catch (e) {
-                log(`❌ ${e.message}`, 'error');
-                showError(e.message);
-            }
+                updateStats(); idx = 0;
+                if (records.length > 0) await showRecord(); else showEmpty();
+            } catch (e) { log(`❌ ${e.message}`, 'error'); showError(e.message); }
             showLoading(false);
         }
 
         async function fetchAllRecords(formula) {
-            let all = [];
-            let offset = null;
-            
+            let all = [], offset = null;
             do {
-                // v10: Usa OLD_INVENTORY_TABLE
-                let url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(OLD_INVENTORY_TABLE)}?pageSize=100`;
-                url += `&filterByFormula=${encodeURIComponent(formula)}`;
+                let url = `https://api.airtable.com/v0/${BASE_ID}/${RAW_INVENTORY_TABLE}?pageSize=100&filterByFormula=${encodeURIComponent(formula)}`;
                 if (offset) url += `&offset=${offset}`;
-                
-                const res = await fetch(url, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (!res.ok) {
-                    const err = await res.json();
-                    log(`❌ API Error: ${JSON.stringify(err)}`, 'error');
-                    throw new Error(`${res.status}: ${err.error?.message || 'Error'}`);
-                }
-                
+                const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (!res.ok) { const err = await res.json(); throw new Error(`${res.status}: ${err.error?.message || JSON.stringify(err)}`); }
                 const data = await res.json();
                 all = all.concat(data.records || []);
                 offset = data.offset;
-                
-                if (offset) log(`📄 Loaded page, total so far: ${all.length}`);
-                
             } while (offset);
-            
             return all;
         }
 
-        function extractField(record, fieldName) {
-            const val = record.fields[fieldName];
-            if (Array.isArray(val)) return val[0];
-            return val;
-        }
-
+        function extractField(r, f) { const v = r.fields[f]; return Array.isArray(v) ? v[0] : v; }
         function populateSelect(id, values) {
-            const sel = document.getElementById(id);
-            const cur = sel.value;
+            const sel = document.getElementById(id), cur = sel.value;
             while (sel.options.length > 1) sel.remove(1);
-            [...values].sort().forEach(v => {
-                const o = document.createElement('option');
-                o.value = v;
-                o.textContent = v;
-                sel.appendChild(o);
-            });
+            [...values].sort().forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
             if ([...values].includes(cur)) sel.value = cur;
         }
-
-        function applyFilters() {
-            idx = 0;
-            loadData();
-        }
-
-        function prevRecord() {
-            if (idx > 0 && !isProcessing) {
-                idx--;
-                showRecord();
-            }
-        }
-
-        function nextRecord() {
-            if (idx < records.length - 1 && !isProcessing) {
-                idx++;
-                showRecord();
-            }
-        }
-
+        function applyFilters() { idx = 0; loadData(); }
+        function prevRecord() { if (idx > 0 && !isProcessing) { idx--; showRecord(); } }
+        function nextRecord() { if (idx < records.length - 1 && !isProcessing) { idx++; showRecord(); } }
         function updateStats() {
             const pending = allRecords.filter(r => r.fields[F.PHOTO_AUDIT_STATUS] === 'NEEDS_REVIEW').length;
             const done = allRecords.filter(r => r.fields[F.PHOTO_AUDIT_STATUS] === 'COMPLIANT').length;
             const skipped = allRecords.filter(r => r.fields[F.PHOTO_AUDIT_STATUS] === 'SKIPPED').length;
-            
             document.getElementById('statTotal').textContent = allRecords.length;
             document.getElementById('statPending').textContent = pending;
             document.getElementById('statDone').textContent = done;
             document.getElementById('statSkipped').textContent = skipped;
-            document.getElementById('pageInfo').textContent = records.length 
-                ? `${idx + 1} / ${records.length}` 
-                : '0 / 0';
+            document.getElementById('pageInfo').textContent = records.length ? `${idx + 1} / ${records.length}` : '0 / 0';
             document.getElementById('btnPrev').disabled = idx <= 0;
             document.getElementById('btnNext').disabled = idx >= records.length - 1;
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // RECORD DISPLAY
-        // ═══════════════════════════════════════════════════════════════
         async function showRecord() {
-            if (!records.length) {
-                showEmpty();
-                return;
-            }
-            
-            const r = records[idx];
-            currentRecordId = r.id;
-            currentSKU = r.fields[F.SKU];
-            
-            // v10: Reset rotazioni per nuovo SKU
-            photoRotations = {};
-            
-            log(`📦 Loading: ${currentSKU}`);
-            updateStats();
-            
-            const container = document.getElementById('productContainer');
-            container.innerHTML = `
-                <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-sku">${currentSKU}</span>
-                    </div>
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Caricamento foto...</p>
-                    </div>
-                </div>`;
-            
+            if (!records.length) { showEmpty(); return; }
+            const r = records[idx]; currentRecordId = r.id; currentSKU = r.fields[F.SKU]; photoRotations = {};
+            log(`📦 Loading: ${currentSKU}`); updateStats();
+            document.getElementById('productContainer').innerHTML = `<div class="product-card"><div class="product-header"><span class="product-sku">${currentSKU}</span></div><div class="loading"><div class="spinner"></div></div></div>`;
             await loadPhotos(currentSKU, r);
         }
 
         async function loadPhotos(sku, invRecord) {
             try {
-                const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(PHOTO_CANDIDATES_TABLE)}?filterByFormula=${encodeURIComponent(`{SKU}='${sku}'`)}`;
-                const res = await fetch(url, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (!res.ok) {
-                    const err = await res.json();
-                    throw new Error(err.error?.message || 'Failed to load photos');
-                }
-                
+                const url = `https://api.airtable.com/v0/${BASE_ID}/${PHOTO_CANDIDATES_TABLE}?filterByFormula=${encodeURIComponent(`{SKU}='${sku}'`)}`;
+                const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message); }
                 const data = await res.json();
-                
-                photos = data.records || [];
-                log(`📷 ${photos.length} photos for ${sku}`);
-                
-                selFront = null;
-                selBack = null;
-                hoveredPhoto = null;
-                
-                photos.forEach(p => {
-                    if (p.fields.Is_Front) selFront = p.id;
-                    if (p.fields.Is_Back) selBack = p.id;
-                });
-                
+                photos = data.records || []; log(`📷 ${photos.length} photos`);
+                selFront = null; selBack = null; hoveredPhoto = null;
+                photos.forEach(p => { if (p.fields.Is_Front) selFront = p.id; if (p.fields.Is_Back) selBack = p.id; });
                 renderCard(invRecord);
-                
-            } catch (e) {
-                log(`❌ Photos error: ${e.message}`, 'error');
-                toast('Errore caricamento foto', 'error');
-            }
+            } catch (e) { log(`❌ ${e.message}`, 'error'); toast('Errore foto', 'error'); }
         }
 
         function renderCard(r) {
             const sku = r.fields[F.SKU];
             const cat = extractField(r, F.CATEGORY_NAME) || extractField(r, F.CATEGORY) || 'N/A';
             const brand = extractField(r, F.BRAND_NAME) || extractField(r, F.BRAND) || 'N/A';
-            const count = r.fields[F.PHOTO_COUNT] || 0;
-            const blocker = r.fields[F.BLOCKER_REASON] || '';
-            
             let photoHtml = '';
-            if (!photos.length) {
-                photoHtml = `
-                    <div class="no-photos-warning">
-                        <span style="font-size:2rem">⚠️</span>
-                        <p>Nessuna foto in PHOTO_CANDIDATES</p>
-                        <p>Photo_Count dichiarato: ${count}</p>
-                    </div>`;
-            } else {
+            if (!photos.length) { photoHtml = `<div class="no-photos-warning">⚠️ Nessuna foto</div>`; }
+            else {
                 photoHtml = photos.map((p, i) => {
-                    const fid = p.fields.FileId;
-                    const fn = p.fields.Filename || 'photo';
+                    const fid = p.fields.FileId, fn = p.fields.Filename || 'photo';
                     const thumb = `https://drive.google.com/thumbnail?id=${fid}&sz=w400`;
                     const full = `https://drive.google.com/uc?id=${fid}`;
-                    
-                    // v10: Rotazione
-                    const rotation = photoRotations[p.id] || 0;
-                    const rotateStyle = rotation ? `transform: rotate(${rotation}deg)` : '';
-                    
+                    const rot = photoRotations[p.id] || 0;
                     let label = '', cls = '';
-                    if (p.id === selFront) {
-                        label = '<span class="photo-label front">FRONT</span>';
-                        cls = 'selected-front';
-                    } else if (p.id === selBack) {
-                        label = '<span class="photo-label back">BACK</span>';
-                        cls = 'selected-back';
-                    }
-                    
-                    return `
-                        <div class="photo-item ${cls}" 
-                             data-id="${p.id}" 
-                             onclick="clickPhoto('${p.id}')" 
-                             onmouseenter="hoveredPhoto='${p.id}'" 
-                             onmouseleave="hoveredPhoto=null" 
-                             ondblclick="openZoom('${full}')">
-                            ${label}
-                            <span class="photo-index">${i + 1}</span>
-                            <button class="photo-rotate" onclick="event.stopPropagation(); rotatePhoto('${p.id}')" title="Ruota 90°">🔄</button>
-                            <img src="${thumb}" style="${rotateStyle}" onerror="this.style.background='var(--black)'">
-                            <span class="photo-filename">${fn}</span>
-                        </div>`;
+                    if (p.id === selFront) { label = '<span class="photo-label front">FRONT</span>'; cls = 'selected-front'; }
+                    else if (p.id === selBack) { label = '<span class="photo-label back">BACK</span>'; cls = 'selected-back'; }
+                    return `<div class="photo-item ${cls}" data-id="${p.id}" onclick="clickPhoto('${p.id}')" onmouseenter="hoveredPhoto='${p.id}'" onmouseleave="hoveredPhoto=null" ondblclick="openZoom('${full}')">${label}<span class="photo-index">${i+1}</span><button class="photo-rotate" onclick="event.stopPropagation();rotatePhoto('${p.id}')">🔄</button><img src="${thumb}" style="transform:rotate(${rot}deg)"><span class="photo-filename">${fn}</span></div>`;
                 }).join('');
             }
-            
-            const frontBadge = selFront 
-                ? `<div class="selection-badge front">✓ FRONT</div>`
-                : `<div class="selection-badge empty">— Front</div>`;
-            const backBadge = selBack
-                ? `<div class="selection-badge back">✓ BACK</div>`
-                : `<div class="selection-badge empty">— Back</div>`;
-            
+            const fb = selFront ? `<div class="selection-badge front">✓ FRONT</div>` : `<div class="selection-badge empty">— Front</div>`;
+            const bb = selBack ? `<div class="selection-badge back">✓ BACK</div>` : `<div class="selection-badge empty">— Back</div>`;
             document.getElementById('productContainer').innerHTML = `
                 <div class="product-card">
-                    <div class="product-header">
-                        <span class="product-sku">${sku}</span>
-                        <div class="product-meta">
-                            <span>📁 ${cat}</span>
-                            <span>🏷️ ${brand}</span>
-                            <span>📷 ${photos.length}</span>
-                            ${blocker ? `<span class="warning">⚠️ ${blocker}</span>` : ''}
-                        </div>
-                    </div>
-                    
+                    <div class="product-header"><span class="product-sku">${sku}</span><div class="product-meta"><span>📁 ${cat}</span><span>🏷️ ${brand}</span><span>📷 ${photos.length}</span></div></div>
                     <div class="photo-grid">${photoHtml}</div>
-                    
-                    <div class="selection-controls">
-                        <div class="selection-info">
-                            ${frontBadge}
-                            ${backBadge}
-                        </div>
-                        <div class="control-group">
-                            <label>AI Mode:</label>
-                            <select id="aiMode">
-                                <option value="MANI">MANI</option>
-                                <option value="FLAT">FLAT</option>
-                                <option value="WORN">WORN</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" id="confirmBtn" onclick="confirmApprove()" ${!photos.length ? 'disabled' : ''}>
-                            ✅ Approva
-                        </button>
-                        <button class="btn btn-danger" onclick="openSkipModal()">
-                            ❌ Scarta
-                        </button>
-                        <button class="btn btn-secondary" onclick="skipNext()">
-                            ⏭️ Salta
-                        </button>
-                    </div>
-                    
-                    <div class="keyboard-hints">
-                        <span><kbd>F</kbd> Front</span>
-                        <span><kbd>B</kbd> Back</span>
-                        <span><kbd>R</kbd> Ruota</span>
-                        <span><kbd>Enter</kbd> Approva</span>
-                        <span><kbd>S</kbd> Scarta</span>
-                        <span><kbd>N</kbd> Salta</span>
-                    </div>
+                    <div class="selection-controls"><div class="selection-info">${fb}${bb}</div><div class="control-group"><label>AI:</label><select id="aiMode"><option>MANI</option><option>FLAT</option><option>WORN</option></select></div></div>
+                    <div class="action-buttons"><button class="btn btn-primary" id="confirmBtn" onclick="confirmApprove()" ${!photos.length?'disabled':''}>✅ Approva</button><button class="btn btn-danger" onclick="openSkipModal()">❌ Scarta</button><button class="btn btn-secondary" onclick="skipNext()">⏭️ Salta</button></div>
+                    <div class="keyboard-hints"><span><kbd>F</kbd> Front</span><span><kbd>B</kbd> Back</span><span><kbd>R</kbd> Ruota</span><span><kbd>Enter</kbd> Approva</span><span><kbd>S</kbd> Scarta</span></div>
                 </div>`;
-            
             updateConfirmBtn();
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // PHOTO ROTATION — v10 NEW
-        // ═══════════════════════════════════════════════════════════════
-        function rotatePhoto(photoId) {
-            const current = photoRotations[photoId] || 0;
-            photoRotations[photoId] = (current + 90) % 360;
-            
-            // Aggiorna solo l'immagine specifica
-            const photoItem = document.querySelector(`.photo-item[data-id="${photoId}"]`);
-            if (photoItem) {
-                const img = photoItem.querySelector('img');
-                if (img) {
-                    img.style.transform = `rotate(${photoRotations[photoId]}deg)`;
-                }
-            }
-            
-            log(`🔄 Rotated ${photoId} to ${photoRotations[photoId]}°`);
+        function rotatePhoto(id) {
+            photoRotations[id] = ((photoRotations[id] || 0) + 90) % 360;
+            const el = document.querySelector(`.photo-item[data-id="${id}"] img`);
+            if (el) el.style.transform = `rotate(${photoRotations[id]}deg)`;
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // PHOTO SELECTION
-        // ═══════════════════════════════════════════════════════════════
         function clickPhoto(id) {
-            if (isProcessing) return;
-            
-            if (!photos.find(p => p.id === id)) {
-                log(`⚠️ Invalid photo ID: ${id}`, 'warn');
-                return;
-            }
-            
-            if (!selFront) {
-                setFront(id);
-            } else if (!selBack && id !== selFront) {
-                setBack(id);
-            } else if (id === selFront) {
-                selFront = null;
-                rerender();
-                toast('Front deselezionato', 'warning');
-            } else if (id === selBack) {
-                selBack = null;
-                rerender();
-                toast('Back deselezionato', 'warning');
-            } else {
-                setFront(id);
-            }
+            if (isProcessing || !photos.find(p => p.id === id)) return;
+            if (!selFront) setFront(id);
+            else if (!selBack && id !== selFront) setBack(id);
+            else if (id === selFront) { selFront = null; rerender(); toast('Front rimosso', 'warning'); }
+            else if (id === selBack) { selBack = null; rerender(); toast('Back rimosso', 'warning'); }
+            else setFront(id);
         }
-
-        function setFront(id) {
-            if (id === selBack) selBack = null;
-            selFront = id;
-            rerender();
-            toast('📷 FRONT selezionato', 'success');
-        }
-
-        function setBack(id) {
-            if (id === selFront) selFront = null;
-            selBack = id;
-            rerender();
-            toast('📷 BACK selezionato', 'success');
-        }
-
+        function setFront(id) { if (id === selBack) selBack = null; selFront = id; rerender(); toast('FRONT ✓', 'success'); }
+        function setBack(id) { if (id === selFront) selFront = null; selBack = id; rerender(); toast('BACK ✓', 'success'); }
         function rerender() {
             document.querySelectorAll('.photo-item').forEach(el => {
                 const id = el.dataset.id;
                 el.classList.remove('selected-front', 'selected-back');
                 el.querySelector('.photo-label')?.remove();
-                
-                if (id === selFront) {
-                    el.classList.add('selected-front');
-                    el.insertAdjacentHTML('afterbegin', '<span class="photo-label front">FRONT</span>');
-                } else if (id === selBack) {
-                    el.classList.add('selected-back');
-                    el.insertAdjacentHTML('afterbegin', '<span class="photo-label back">BACK</span>');
-                }
+                if (id === selFront) { el.classList.add('selected-front'); el.insertAdjacentHTML('afterbegin', '<span class="photo-label front">FRONT</span>'); }
+                else if (id === selBack) { el.classList.add('selected-back'); el.insertAdjacentHTML('afterbegin', '<span class="photo-label back">BACK</span>'); }
             });
-            
-            const infoDiv = document.querySelector('.selection-info');
-            if (infoDiv) {
-                const frontBadge = selFront 
-                    ? `<div class="selection-badge front">✓ FRONT</div>`
-                    : `<div class="selection-badge empty">— Front</div>`;
-                const backBadge = selBack
-                    ? `<div class="selection-badge back">✓ BACK</div>`
-                    : `<div class="selection-badge empty">— Back</div>`;
-                infoDiv.innerHTML = frontBadge + backBadge;
-            }
-            
+            const info = document.querySelector('.selection-info');
+            if (info) info.innerHTML = (selFront ? `<div class="selection-badge front">✓ FRONT</div>` : `<div class="selection-badge empty">— Front</div>`) + (selBack ? `<div class="selection-badge back">✓ BACK</div>` : `<div class="selection-badge empty">— Back</div>`);
             updateConfirmBtn();
         }
+        function updateConfirmBtn() { const btn = document.getElementById('confirmBtn'); if (btn) btn.disabled = !(selFront && selBack); }
 
-        function updateConfirmBtn() {
-            const btn = document.getElementById('confirmBtn');
-            if (btn) {
-                btn.disabled = !(selFront && selBack);
-            }
-        }
-
-        // ═══════════════════════════════════════════════════════════════
-        // CONFIRM APPROVE
-        // ═══════════════════════════════════════════════════════════════
         async function confirmApprove() {
             if (!selFront || !selBack || isProcessing) return;
-            
-            const front = photos.find(p => p.id === selFront);
-            const back = photos.find(p => p.id === selBack);
-            
-            if (!front || !back) {
-                toast('Errore: selezione non valida', 'error');
-                log(`❌ Invalid selection - front: ${!!front}, back: ${!!back}`, 'error');
-                return;
-            }
-            
+            const front = photos.find(p => p.id === selFront), back = photos.find(p => p.id === selBack);
+            if (!front || !back) { toast('Selezione invalida', 'error'); return; }
             isProcessing = true;
-            const btn = document.getElementById('confirmBtn');
-            const originalText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = '⏳ Salvataggio...';
-            
+            const btn = document.getElementById('confirmBtn'); btn.disabled = true; btn.textContent = '⏳...';
             try {
                 const mode = document.getElementById('aiMode').value;
-                
-                log(`💾 Saving ${currentSKU}: front=${front.fields.FileId}, back=${back.fields.FileId}, mode=${mode}`);
-                
-                // Update PHOTO_CANDIDATES
-                await update(PHOTO_CANDIDATES_TABLE, selFront, { 
-                    Is_Front: true,
-                    Review_Status: 'ASSIGNED' 
-                });
-                await update(PHOTO_CANDIDATES_TABLE, selBack, { 
-                    Is_Back: true,
-                    Review_Status: 'ASSIGNED' 
-                });
-                
-                for (const p of photos) {
-                    if (p.id !== selFront && p.id !== selBack) {
-                        await update(PHOTO_CANDIDATES_TABLE, p.id, { Review_Status: 'ASSIGNED' });
-                    }
-                }
-                
-                // Update OLD_INVENTORY (v10 fix: nome tabella corretto)
-                await update(OLD_INVENTORY_TABLE, currentRecordId, {
-                    [F.CONFIRMED_FRONT]: front.fields.FileId,
-                    [F.CONFIRMED_BACK]: back.fields.FileId,
-                    [F.PHOTO_AUDIT_STATUS]: 'COMPLIANT',
-                    [F.MIGRATION_AI_MODE]: mode,
-                    [F.READY_TO_MIGRATE]: true
-                });
-                
-                toast(`✅ ${currentSKU} approvato`, 'success');
-                log(`✅ ${currentSKU} saved successfully`, 'success');
-                
-                records.splice(idx, 1);
-                const allIdx = allRecords.findIndex(r => r.id === currentRecordId);
-                if (allIdx >= 0) allRecords.splice(allIdx, 1);
-                
-                if (idx >= records.length) idx = Math.max(0, records.length - 1);
-                
-                if (records.length) {
-                    await showRecord();
-                } else {
-                    showEmpty();
-                }
-                updateStats();
-                
-            } catch (e) {
-                log(`❌ Save error: ${e.message}`, 'error');
-                toast('Errore salvataggio', 'error');
-                btn.disabled = false;
-                btn.textContent = originalText;
-            } finally {
-                isProcessing = false;
-            }
+                log(`💾 Saving ${currentSKU}`);
+                await update(PHOTO_CANDIDATES_TABLE, selFront, { Is_Front: true, Review_Status: 'ASSIGNED' });
+                await update(PHOTO_CANDIDATES_TABLE, selBack, { Is_Back: true, Review_Status: 'ASSIGNED' });
+                for (const p of photos) { if (p.id !== selFront && p.id !== selBack) await update(PHOTO_CANDIDATES_TABLE, p.id, { Review_Status: 'ASSIGNED' }); }
+                await update(RAW_INVENTORY_TABLE, currentRecordId, { [F.CONFIRMED_FRONT]: front.fields.FileId, [F.CONFIRMED_BACK]: back.fields.FileId, [F.PHOTO_AUDIT_STATUS]: 'COMPLIANT', [F.MIGRATION_AI_MODE]: mode, [F.READY_TO_MIGRATE]: true });
+                toast(`✅ ${currentSKU} OK`, 'success'); log(`✅ Saved`, 'success');
+                removeCurrentAndAdvance();
+            } catch (e) { log(`❌ ${e.message}`, 'error'); toast('Errore', 'error'); btn.disabled = false; btn.textContent = '✅ Approva'; }
+            finally { isProcessing = false; }
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // SKIP MODAL
-        // ═══════════════════════════════════════════════════════════════
-        function openSkipModal() {
-            if (isProcessing) return;
-            document.getElementById('skipModalSku').textContent = currentSKU;
-            document.getElementById('skipModal').classList.add('active');
-            skipReason = null;
-            document.querySelectorAll('.skip-reason').forEach(el => el.classList.remove('selected'));
-            document.getElementById('skipNotes').value = '';
-            document.getElementById('confirmSkipBtn').disabled = true;
-        }
+        function openSkipModal() { if (isProcessing) return; document.getElementById('skipModalSku').textContent = currentSKU; document.getElementById('skipModal').classList.add('active'); skipReason = null; document.querySelectorAll('.skip-reason').forEach(el => el.classList.remove('selected')); document.getElementById('skipNotes').value = ''; document.getElementById('confirmSkipBtn').disabled = true; }
+        function closeSkipModal() { document.getElementById('skipModal').classList.remove('active'); }
+        function selectSkipReason(el, reason) { document.querySelectorAll('.skip-reason').forEach(e => e.classList.remove('selected')); el.classList.add('selected'); skipReason = reason; document.getElementById('confirmSkipBtn').disabled = false; }
 
-        function closeSkipModal() {
-            document.getElementById('skipModal').classList.remove('active');
-        }
-
-        function selectSkipReason(el, reason) {
-            document.querySelectorAll('.skip-reason').forEach(e => e.classList.remove('selected'));
-            el.classList.add('selected');
-            skipReason = reason;
-            document.getElementById('confirmSkipBtn').disabled = false;
-        }
-
-        // v10 FIX: Skip con error handling migliorato
         async function confirmSkip() {
             if (!skipReason || isProcessing) return;
-            
             isProcessing = true;
-            const btn = document.getElementById('confirmSkipBtn');
-            btn.disabled = true;
-            btn.textContent = '⏳...';
-            
+            const btn = document.getElementById('confirmSkipBtn'); btn.disabled = true; btn.textContent = '⏳...';
             try {
                 const notes = document.getElementById('skipNotes').value.trim();
+                log(`🗑️ Skipping ${currentSKU}: ${skipReason}`);
                 
-                log(`🗑️ Skipping ${currentSKU}: reason=${skipReason}`);
-                
-                // Step 1: Delete photos from PHOTO_CANDIDATES
-                log(`📸 Deleting ${photos.length} photos...`);
+                // Delete photos
                 for (const p of photos) {
-                    try {
-                        await del(PHOTO_CANDIDATES_TABLE, p.id);
-                        log(`  ✓ Deleted photo ${p.id.substring(0,10)}...`);
-                    } catch (delErr) {
-                        log(`  ⚠️ Failed to delete photo: ${delErr.message}`, 'warn');
-                        // Continua comunque
-                    }
+                    try { await del(PHOTO_CANDIDATES_TABLE, p.id); log(`  ✓ Del photo`, 'success'); }
+                    catch (e) { log(`  ⚠️ Del fail: ${e.message}`, 'warn'); }
                 }
                 
-                // Step 2: Update OLD_INVENTORY (v10 fix: nome tabella corretto)
-                log(`📝 Updating ${OLD_INVENTORY_TABLE}...`);
-                await update(OLD_INVENTORY_TABLE, currentRecordId, {
-                    [F.CONFIRMED_FRONT]: null,
-                    [F.CONFIRMED_BACK]: null,
-                    [F.PHOTO_AUDIT_STATUS]: 'SKIPPED',
-                    [F.MIGRATION_AI_MODE]: null,
-                    [F.READY_TO_MIGRATE]: false,
-                    [F.SKIP_REASON]: skipReason,
-                    [F.SKIP_NOTES]: notes || null,
-                    [F.SKIPPED_AT]: new Date().toISOString(),
-                    [F.REQUIRES_RESHOOT]: true
-                });
+                // Update status first (required)
+                log(`  → Photo_Audit_Status = SKIPPED`);
+                await update(RAW_INVENTORY_TABLE, currentRecordId, { [F.PHOTO_AUDIT_STATUS]: 'SKIPPED' });
+                log(`  ✓ Status OK`, 'success');
+                
+                // Try optional fields one by one
+                const optFields = [
+                    ['Ready_To_Migrate', false],
+                    ['Confirmed_Front_FileId', null],
+                    ['Confirmed_Back_FileId', null],
+                    ['Migration_AI_Mode', null],
+                    ['Skip_Reason', skipReason],
+                    ['Skip_Notes', notes || null],
+                    ['Skipped_At', new Date().toISOString()],
+                    ['Requires_Reshoot', true]
+                ];
+                
+                for (const [name, val] of optFields) {
+                    try {
+                        log(`  → ${name}`);
+                        await update(RAW_INVENTORY_TABLE, currentRecordId, { [name]: val });
+                        log(`  ✓ ${name} OK`, 'success');
+                    } catch (e) {
+                        log(`  ⚠️ ${name} FAIL: ${e.message}`, 'warn');
+                    }
+                }
                 
                 closeSkipModal();
                 toast(`❌ ${currentSKU} scartato`, 'warning');
-                log(`✅ ${currentSKU} skipped successfully`, 'success');
-                
-                records.splice(idx, 1);
-                const allIdx = allRecords.findIndex(r => r.id === currentRecordId);
-                if (allIdx >= 0) allRecords.splice(allIdx, 1);
-                
-                if (idx >= records.length) idx = Math.max(0, records.length - 1);
-                
-                if (records.length) {
-                    await showRecord();
-                } else {
-                    showEmpty();
-                }
-                updateStats();
-                
+                log(`✅ Skip done`, 'success');
+                removeCurrentAndAdvance();
             } catch (e) {
                 log(`❌ Skip error: ${e.message}`, 'error');
                 toast(`Errore: ${e.message}`, 'error');
-                btn.disabled = false;
-                btn.textContent = 'Conferma';
-            } finally {
-                isProcessing = false;
-            }
+                btn.disabled = false; btn.textContent = 'Conferma';
+            } finally { isProcessing = false; }
         }
 
-        function skipNext() {
-            if (isProcessing) return;
-            if (idx < records.length - 1) {
-                idx++;
-            } else if (records.length > 1) {
-                idx = 0;
-            }
-            showRecord();
+        function skipNext() { if (isProcessing) return; if (idx < records.length - 1) idx++; else if (records.length > 1) idx = 0; showRecord(); }
+
+        function removeCurrentAndAdvance() {
+            records.splice(idx, 1);
+            const ai = allRecords.findIndex(r => r.id === currentRecordId);
+            if (ai >= 0) allRecords.splice(ai, 1);
+            if (idx >= records.length) idx = Math.max(0, records.length - 1);
+            if (records.length) showRecord(); else showEmpty();
+            updateStats();
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // API HELPERS
-        // ═══════════════════════════════════════════════════════════════
         async function update(table, id, fields) {
-            const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(table)}/${id}`;
-            log(`📤 PATCH ${table}/${id.substring(0,10)}...`);
-            
-            const res = await fetch(url, {
+            const res = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${table}/${id}`, {
                 method: 'PATCH',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ fields })
             });
-            
-            if (!res.ok) {
-                const err = await res.json();
-                const errMsg = err.error?.message || JSON.stringify(err);
-                log(`❌ PATCH failed: ${errMsg}`, 'error');
-                throw new Error(errMsg);
-            }
-            
-            log(`  ✓ PATCH success`, 'success');
+            if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || JSON.stringify(err)); }
             return res.json();
         }
 
         async function del(table, id) {
-            const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(table)}/${id}`;
-            
-            const res = await fetch(url, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${token}` }
+            const res = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${table}/${id}`, {
+                method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
             });
-            
-            if (!res.ok) {
-                const err = await res.json();
-                const errMsg = err.error?.message || JSON.stringify(err);
-                throw new Error(errMsg);
-            }
+            if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message); }
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // KEYBOARD SHORTCUTS — v10: Added R for rotate
-        // ═══════════════════════════════════════════════════════════════
         function handleKey(e) {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (isProcessing) return;
-            
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || isProcessing) return;
             switch (e.key.toLowerCase()) {
-                case 'f':
-                    if (hoveredPhoto) setFront(hoveredPhoto);
-                    break;
-                case 'b':
-                    if (hoveredPhoto) setBack(hoveredPhoto);
-                    break;
-                case 'r':
-                    // v10: Ruota foto sotto il mouse
-                    if (hoveredPhoto) rotatePhoto(hoveredPhoto);
-                    break;
-                case 'enter':
-                    if (selFront && selBack) confirmApprove();
-                    break;
-                case 's':
-                    openSkipModal();
-                    break;
-                case 'n':
-                    skipNext();
-                    break;
-                case 'escape':
-                    closeSkipModal();
-                    closeZoomModal();
-                    break;
-                case 'arrowleft':
-                    prevRecord();
-                    break;
-                case 'arrowright':
-                    nextRecord();
-                    break;
+                case 'f': if (hoveredPhoto) setFront(hoveredPhoto); break;
+                case 'b': if (hoveredPhoto) setBack(hoveredPhoto); break;
+                case 'r': if (hoveredPhoto) rotatePhoto(hoveredPhoto); break;
+                case 'enter': if (selFront && selBack) confirmApprove(); break;
+                case 's': openSkipModal(); break;
+                case 'n': skipNext(); break;
+                case 'escape': closeSkipModal(); closeZoomModal(); break;
+                case 'arrowleft': prevRecord(); break;
+                case 'arrowright': nextRecord(); break;
             }
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // UI HELPERS
-        // ═══════════════════════════════════════════════════════════════
-        function openZoom(url) {
-            document.getElementById('zoomImage').src = url;
-            document.getElementById('zoomModal').classList.add('active');
-        }
-
-        function closeZoomModal() {
-            document.getElementById('zoomModal').classList.remove('active');
-        }
-
-        function showLoading(show) {
-            document.getElementById('loadingState').style.display = show ? 'block' : 'none';
-            document.getElementById('emptyState').style.display = 'none';
-            if (show) document.getElementById('productContainer').innerHTML = '';
-        }
-
-        function showEmpty() {
-            document.getElementById('productContainer').innerHTML = '';
-            document.getElementById('emptyState').style.display = 'block';
-        }
-
-        function showError(msg) {
-            document.getElementById('productContainer').innerHTML = `
-                <div class="product-card" style="border-left: 4px solid var(--red)">
-                    <h3 style="color: var(--red); margin-bottom: 0.5rem;">❌ Errore</h3>
-                    <p style="color: var(--white-muted); margin-bottom: 1rem;">${msg}</p>
-                    <button class="btn btn-secondary" onclick="resetToken()">🔑 Cambia Token</button>
-                </div>`;
-        }
-
-        function toast(msg, type = 'success') {
-            const el = document.getElementById('toast');
-            el.textContent = msg;
-            el.className = 'toast ' + type + ' show';
-            setTimeout(() => el.classList.remove('show'), 2500);
-        }
+        function openZoom(url) { document.getElementById('zoomImage').src = url; document.getElementById('zoomModal').classList.add('active'); }
+        function closeZoomModal() { document.getElementById('zoomModal').classList.remove('active'); }
+        function showLoading(show) { document.getElementById('loadingState').style.display = show ? 'block' : 'none'; document.getElementById('emptyState').style.display = 'none'; if (show) document.getElementById('productContainer').innerHTML = ''; }
+        function showEmpty() { document.getElementById('productContainer').innerHTML = ''; document.getElementById('emptyState').style.display = 'block'; }
+        function showError(msg) { document.getElementById('productContainer').innerHTML = `<div class="product-card" style="border-left:4px solid var(--red)"><h3 style="color:var(--red)">❌ Errore</h3><p>${msg}</p><button class="btn btn-secondary" onclick="resetToken()">🔑 Cambia Token</button></div>`; }
+        function toast(msg, type = 'success') { const el = document.getElementById('toast'); el.textContent = msg; el.className = 'toast ' + type + ' show'; setTimeout(() => el.classList.remove('show'), 2500); }
     </script>
 </body>
 </html>
