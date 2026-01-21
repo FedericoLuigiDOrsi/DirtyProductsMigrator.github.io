@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🛃 Dogana Import — DirtyTag Photo QC v8</title>
+    <title>🛃 Dogana Import — DirtyTag Photo QC v9</title>
     <style>
         :root {
             --black: #0D0D0D;
@@ -613,14 +613,14 @@
             gap: 0.8rem;
             padding: 1rem;
             background: var(--black);
+            border: 1px solid var(--border);
             border-radius: 8px;
             cursor: pointer;
-            border: 2px solid transparent;
             transition: all 0.2s;
         }
         
         .skip-reason:hover {
-            border-color: var(--border-light);
+            border-color: var(--beige-muted);
         }
         
         .skip-reason.selected {
@@ -628,53 +628,33 @@
             background: var(--red-muted);
         }
         
-        .skip-reason input[type="radio"] { display: none; }
+        .skip-reason input { display: none; }
         
-        .skip-reason .radio-custom {
+        .radio-custom {
             width: 18px;
             height: 18px;
             border: 2px solid var(--border);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             flex-shrink: 0;
             transition: all 0.2s;
         }
         
         .skip-reason.selected .radio-custom {
             border-color: var(--red);
-        }
-        
-        .skip-reason.selected .radio-custom::after {
-            content: '';
-            width: 8px;
-            height: 8px;
             background: var(--red);
-            border-radius: 50%;
-        }
-        
-        .skip-reason span:last-child {
-            font-size: 0.9rem;
         }
         
         .skip-notes {
             width: 100%;
-            min-height: 80px;
+            padding: 1rem;
             background: var(--black);
             border: 1px solid var(--border);
-            color: var(--white);
-            padding: 1rem;
             border-radius: 8px;
-            margin-bottom: 1.5rem;
+            color: var(--white);
             resize: vertical;
+            min-height: 80px;
             font-family: inherit;
-            font-size: 0.9rem;
-        }
-        
-        .skip-notes:focus {
-            outline: none;
-            border-color: var(--red);
+            margin-bottom: 1.5rem;
         }
         
         .modal-actions {
@@ -691,113 +671,114 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.97);
-            z-index: 1001;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            cursor: zoom-out;
             justify-content: center;
             align-items: center;
-            cursor: zoom-out;
         }
         
         .zoom-modal.active { display: flex; }
         
         .zoom-modal img {
-            max-width: 95%;
-            max-height: 95%;
+            max-width: 90vw;
+            max-height: 90vh;
             object-fit: contain;
-            border-radius: 4px;
         }
 
-        /* STATES */
+        /* LOADING */
         .loading {
             text-align: center;
-            padding: 4rem;
+            padding: 3rem;
             color: var(--white-muted);
         }
         
         .spinner {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border: 3px solid var(--border);
             border-top-color: var(--red);
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            animation: spin 1s linear infinite;
             margin: 0 auto 1rem;
         }
         
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* EMPTY STATE */
         .empty-state {
             text-align: center;
-            padding: 4rem;
+            padding: 4rem 2rem;
             color: var(--white-muted);
         }
         
         .empty-state h3 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
             color: var(--white);
-        }
-        
-        .empty-state p {
-            color: var(--white-muted);
-        }
-
-        /* TOAST */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--black-card);
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            border-left: 4px solid var(--success);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-            z-index: 1002;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .toast.show { transform: translateX(0); }
-        .toast.error { border-left-color: var(--red); }
-        .toast.warning { border-left-color: var(--warning); }
-
-        /* DEBUG PANEL */
-        .debug-panel {
-            background: var(--black);
-            border: 1px solid var(--red);
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 0 2rem 1rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            max-height: 120px;
-            overflow-y: auto;
-            color: var(--white-muted);
-        }
-        
-        .debug-panel.hidden { display: none; }
-        
-        .debug-panel div {
-            padding: 0.2rem 0;
-            border-bottom: 1px solid var(--border);
         }
 
         /* NO PHOTOS WARNING */
         .no-photos-warning {
             text-align: center;
             padding: 3rem;
-            background: var(--black);
-            border-radius: 8px;
+            background: rgba(243, 156, 18, 0.1);
+            border: 1px dashed var(--warning);
+            border-radius: 10px;
             color: var(--warning);
         }
-        
-        .no-photos-warning p {
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
+
+        /* DEBUG PANEL */
+        .debug-panel {
+            background: #111;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            margin: 1rem 2rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            max-height: 200px;
+            overflow-y: auto;
             color: var(--white-muted);
+        }
+        
+        .debug-panel.hidden { display: none; }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        .toast.success {
+            background: var(--success);
+            color: var(--black);
+        }
+        
+        .toast.error {
+            background: var(--red);
+            color: var(--white);
+        }
+        
+        .toast.warning {
+            background: var(--warning);
+            color: var(--black);
         }
 
         /* RESPONSIVE */
@@ -824,7 +805,7 @@
         <header class="header">
             <div class="header-brand">
                 <h1>🛃 Dogana Import</h1>
-                <span class="version">v8</span>
+                <span class="version">v9</span>
             </div>
             <div class="stats-bar">
                 <div class="stat pending">
@@ -940,13 +921,15 @@
 
     <script>
         // ═══════════════════════════════════════════════════════════════
-        // CONFIG
+        // CONFIG — v9 FIX: Usa nomi tabella invece di Table ID
         // ═══════════════════════════════════════════════════════════════
-        const BASE_ID = 'apptPbWnDkDkKEpFV';
-        const RAW_INVENTORY_TABLE = 'tblddAcLcQAyk050u';
-        const PHOTO_CANDIDATES_TABLE = 'tbl7ogfLnHsVfFdzb';
+        const BASE_ID = 'apptPbWnDkDkKEpFV';  // DirtyTag 2.0
+        
+        // FIX v9: Usa NOMI tabella (API Airtable li accetta)
+        const RAW_INVENTORY_TABLE = 'RAW_INVENTORY';      // Nome tabella corretto
+        const PHOTO_CANDIDATES_TABLE = 'PHOTO_CANDIDATES'; // Nome tabella corretto
 
-        // Field Names
+        // Field Names — v9 FIX: Allineati con schema documentazione
         const F = {
             SKU: 'SKU',
             CATEGORY: 'Category',
@@ -957,7 +940,7 @@
             PHOTO_COUNT: 'Photo_Count',
             CONFIRMED_FRONT: 'Confirmed_Front_FileId',
             CONFIRMED_BACK: 'Confirmed_Back_FileId',
-            MIGRATION_AI_MODE: 'Migration_AI_Mode',
+            MIGRATION_AI_MODE: 'Migration_AI_Mode',        // Corretto per DirtyTag 2.0
             MIGRATION_TEMPLATE: 'Migration_Template',
             MIGRATION_STATUS: 'Migration_Status',
             READY_TO_MIGRATE: 'Ready_To_Migrate',
@@ -972,8 +955,8 @@
         // STATE
         // ═══════════════════════════════════════════════════════════════
         let token = localStorage.getItem('airtable_token') || '';
-        let allRecords = [];  // FIX: Store all records for accurate stats
-        let records = [];     // Filtered records for display
+        let allRecords = [];
+        let records = [];
         let idx = 0;
         let currentSKU = null;
         let currentRecordId = null;
@@ -983,7 +966,7 @@
         let skipReason = null;
         let hoveredPhoto = null;
         let debugMode = false;
-        let isProcessing = false;  // FIX: Prevent race conditions
+        let isProcessing = false;
 
         // ═══════════════════════════════════════════════════════════════
         // INIT
@@ -1000,10 +983,7 @@
 
         function saveToken() {
             const t = document.getElementById('tokenInput').value.trim();
-            if (!t) {
-                toast('Inserisci token', 'error');
-                return;
-            }
+            if (!t) return alert('Inserisci un token');
             token = t;
             localStorage.setItem('airtable_token', token);
             showMain();
@@ -1042,7 +1022,7 @@
         }
 
         // ═══════════════════════════════════════════════════════════════
-        // DATA LOADING - FIX: Pagination support
+        // DATA LOADING
         // ═══════════════════════════════════════════════════════════════
         async function loadData() {
             showLoading(true);
@@ -1051,18 +1031,15 @@
             try {
                 const status = document.getElementById('filterStatus')?.value || 'NEEDS_REVIEW';
                 
-                // Build filter
                 let formula = `AND({${F.PHOTO_COUNT}}>0`;
                 if (status) formula += `,{${F.PHOTO_AUDIT_STATUS}}='${status}'`;
                 formula += ')';
                 
                 log(`🔍 Filter: ${formula}`);
                 
-                // FIX: Load all pages
                 allRecords = await fetchAllRecords(formula);
                 log(`✅ Loaded ${allRecords.length} total records`);
                 
-                // Apply client filters
                 records = [...allRecords];
                 const catFilter = document.getElementById('filterCategory')?.value;
                 const brandFilter = document.getElementById('filterBrand')?.value;
@@ -1077,7 +1054,6 @@
                     log(`📋 After filters: ${records.length} records`);
                 }
                 
-                // Populate filter dropdowns
                 const cats = new Set(), brands = new Set();
                 allRecords.forEach(r => {
                     const c = extractField(r, F.CATEGORY_NAME) || extractField(r, F.CATEGORY);
@@ -1104,15 +1080,17 @@
             showLoading(false);
         }
 
-        // FIX: Fetch all pages from Airtable
         async function fetchAllRecords(formula) {
             let all = [];
             let offset = null;
             
             do {
-                let url = `https://api.airtable.com/v0/${BASE_ID}/${RAW_INVENTORY_TABLE}?pageSize=100`;
+                // v9: Usa encodeURIComponent per il nome tabella
+                let url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(RAW_INVENTORY_TABLE)}?pageSize=100`;
                 url += `&filterByFormula=${encodeURIComponent(formula)}`;
                 if (offset) url += `&offset=${offset}`;
+                
+                log(`📡 Fetching: ${RAW_INVENTORY_TABLE}`);
                 
                 const res = await fetch(url, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -1120,6 +1098,7 @@
                 
                 if (!res.ok) {
                     const err = await res.json();
+                    log(`❌ API Error: ${JSON.stringify(err)}`);
                     throw new Error(`${res.status}: ${err.error?.message || 'Error'}`);
                 }
                 
@@ -1134,7 +1113,6 @@
             return all;
         }
 
-        // Helper to extract field value (handles arrays from linked records)
         function extractField(record, fieldName) {
             const val = record.fields[fieldName];
             if (Array.isArray(val)) return val[0];
@@ -1173,7 +1151,6 @@
             }
         }
 
-        // FIX: More accurate stats
         function updateStats() {
             const pending = allRecords.filter(r => r.fields[F.PHOTO_AUDIT_STATUS] === 'NEEDS_REVIEW').length;
             const done = allRecords.filter(r => r.fields[F.PHOTO_AUDIT_STATUS] === 'COMPLIANT').length;
@@ -1206,7 +1183,6 @@
             log(`📦 Loading: ${currentSKU}`);
             updateStats();
             
-            // Show loading state in card
             const container = document.getElementById('productContainer');
             container.innerHTML = `
                 <div class="product-card">
@@ -1224,19 +1200,25 @@
 
         async function loadPhotos(sku, invRecord) {
             try {
-                const url = `https://api.airtable.com/v0/${BASE_ID}/${PHOTO_CANDIDATES_TABLE}?filterByFormula=${encodeURIComponent(`{SKU}='${sku}'`)}`;
+                // v9: Usa encodeURIComponent per il nome tabella
+                const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(PHOTO_CANDIDATES_TABLE)}?filterByFormula=${encodeURIComponent(`{SKU}='${sku}'`)}`;
                 const res = await fetch(url, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
+                
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.error?.message || 'Failed to load photos');
+                }
+                
                 const data = await res.json();
                 
                 photos = data.records || [];
                 log(`📷 ${photos.length} photos for ${sku}`);
                 
-                // Reset selections and check for pre-existing flags
                 selFront = null;
                 selBack = null;
-                hoveredPhoto = null;  // FIX: Reset hovered photo
+                hoveredPhoto = null;
                 
                 photos.forEach(p => {
                     if (p.fields.Is_Front) selFront = p.id;
@@ -1297,7 +1279,6 @@
                 }).join('');
             }
             
-            // Selection badges
             const frontBadge = selFront 
                 ? `<div class="selection-badge front">✓ FRONT</div>`
                 : `<div class="selection-badge empty">— Front</div>`;
@@ -1365,7 +1346,6 @@
         function clickPhoto(id) {
             if (isProcessing) return;
             
-            // FIX: Validate id exists in photos
             if (!photos.find(p => p.id === id)) {
                 log(`⚠️ Invalid photo ID: ${id}`);
                 return;
@@ -1384,13 +1364,11 @@
                 rerender();
                 toast('Back deselezionato', 'warning');
             } else {
-                // Replace front
                 setFront(id);
             }
         }
 
         function setFront(id) {
-            // FIX: Prevent same photo for both
             if (id === selBack) selBack = null;
             selFront = id;
             rerender();
@@ -1398,7 +1376,6 @@
         }
 
         function setBack(id) {
-            // FIX: Prevent same photo for both
             if (id === selFront) selFront = null;
             selBack = id;
             rerender();
@@ -1420,7 +1397,6 @@
                 }
             });
             
-            // Update selection badges
             const infoDiv = document.querySelector('.selection-info');
             if (infoDiv) {
                 const frontBadge = selFront 
@@ -1443,12 +1419,11 @@
         }
 
         // ═══════════════════════════════════════════════════════════════
-        // CONFIRM APPROVE
+        // CONFIRM APPROVE — v9 FIX: Boolean per checkbox
         // ═══════════════════════════════════════════════════════════════
         async function confirmApprove() {
             if (!selFront || !selBack || isProcessing) return;
             
-            // FIX: Validate selections exist
             const front = photos.find(p => p.id === selFront);
             const back = photos.find(p => p.id === selBack);
             
@@ -1469,34 +1444,35 @@
                 
                 log(`💾 Saving ${currentSKU}: front=${front.fields.FileId}, back=${back.fields.FileId}, mode=${mode}`);
                 
-                // Update PHOTO_CANDIDATES
-                // FIX: Checkbox fields need 1 (integer) not true (boolean)
-                await update(PHOTO_CANDIDATES_TABLE, selFront, { Is_Front: 1, Review_Status: 'ASSIGNED' });
-                await update(PHOTO_CANDIDATES_TABLE, selBack, { Is_Back: 1, Review_Status: 'ASSIGNED' });
+                // v9 FIX: Checkbox usa BOOLEAN true/false, non integer 1/0
+                await update(PHOTO_CANDIDATES_TABLE, selFront, { 
+                    Is_Front: true,           // ✅ Boolean
+                    Review_Status: 'ASSIGNED' 
+                });
+                await update(PHOTO_CANDIDATES_TABLE, selBack, { 
+                    Is_Back: true,            // ✅ Boolean
+                    Review_Status: 'ASSIGNED' 
+                });
                 
-                // Mark other photos as assigned
                 for (const p of photos) {
                     if (p.id !== selFront && p.id !== selBack) {
                         await update(PHOTO_CANDIDATES_TABLE, p.id, { Review_Status: 'ASSIGNED' });
                     }
                 }
                 
-                // Update RAW_INVENTORY
-                // FIX: Checkbox fields need 1 (integer) not true (boolean)
+                // v9 FIX: Checkbox usa BOOLEAN true/false
                 await update(RAW_INVENTORY_TABLE, currentRecordId, {
                     [F.CONFIRMED_FRONT]: front.fields.FileId,
                     [F.CONFIRMED_BACK]: back.fields.FileId,
                     [F.PHOTO_AUDIT_STATUS]: 'COMPLIANT',
                     [F.MIGRATION_AI_MODE]: mode,
-                    [F.READY_TO_MIGRATE]: 1          // Checkbox: 1 = checked
+                    [F.READY_TO_MIGRATE]: true    // ✅ Boolean
                 });
                 
                 toast(`✅ ${currentSKU} approvato`, 'success');
                 log(`✅ ${currentSKU} saved successfully`);
                 
-                // Remove from local array and advance
                 records.splice(idx, 1);
-                // Also update allRecords for accurate stats
                 const allIdx = allRecords.findIndex(r => r.id === currentRecordId);
                 if (allIdx >= 0) allRecords.splice(allIdx, 1);
                 
@@ -1543,6 +1519,7 @@
             document.getElementById('confirmSkipBtn').disabled = false;
         }
 
+        // v9 FIX: Boolean per checkbox, null per reset Single Select
         async function confirmSkip() {
             if (!skipReason || isProcessing) return;
             
@@ -1556,31 +1533,29 @@
                 
                 log(`🗑️ Skipping ${currentSKU}: reason=${skipReason}`);
                 
-                // Delete photos from PHOTO_CANDIDATES
                 for (const p of photos) {
                     await del(PHOTO_CANDIDATES_TABLE, p.id);
                 }
                 
-                // Update RAW_INVENTORY with reset
-                // FIX: Single Select fields need '' (empty string) not null
-                // FIX: Checkbox fields need 0/1 (integer) not true/false (boolean)
+                // v9 FIX: 
+                // - Single Select: null per clear (non stringa vuota)
+                // - Checkbox: false per uncheck (non 0)
                 await update(RAW_INVENTORY_TABLE, currentRecordId, {
-                    [F.CONFIRMED_FRONT]: '',
-                    [F.CONFIRMED_BACK]: '',
+                    [F.CONFIRMED_FRONT]: null,          // Text: null per clear
+                    [F.CONFIRMED_BACK]: null,           // Text: null per clear
                     [F.PHOTO_AUDIT_STATUS]: 'SKIPPED',
-                    [F.MIGRATION_AI_MODE]: '',       // Single Select: stringa vuota per reset
-                    [F.READY_TO_MIGRATE]: 0,         // Checkbox: 0 = unchecked
+                    [F.MIGRATION_AI_MODE]: null,        // Single Select: null per clear
+                    [F.READY_TO_MIGRATE]: false,        // ✅ Boolean false
                     [F.SKIP_REASON]: skipReason,
                     [F.SKIP_NOTES]: notes,
                     [F.SKIPPED_AT]: new Date().toISOString(),
-                    [F.REQUIRES_RESHOOT]: 1          // Checkbox: 1 = checked
+                    [F.REQUIRES_RESHOOT]: true          // ✅ Boolean true
                 });
                 
                 closeSkipModal();
                 toast(`❌ ${currentSKU} scartato`, 'warning');
                 log(`✅ ${currentSKU} skipped`);
                 
-                // Remove from arrays
                 records.splice(idx, 1);
                 const allIdx = allRecords.findIndex(r => r.id === currentRecordId);
                 if (allIdx >= 0) allRecords.splice(allIdx, 1);
@@ -1615,10 +1590,13 @@
         }
 
         // ═══════════════════════════════════════════════════════════════
-        // API HELPERS
+        // API HELPERS — v9: URL encoding per nomi tabella
         // ═══════════════════════════════════════════════════════════════
         async function update(table, id, fields) {
-            const res = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${table}/${id}`, {
+            const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(table)}/${id}`;
+            log(`📤 PATCH ${table}/${id.substring(0,10)}...`);
+            
+            const res = await fetch(url, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -1629,19 +1607,24 @@
             
             if (!res.ok) {
                 const err = await res.json();
+                log(`❌ Update failed: ${JSON.stringify(err)}`);
                 throw new Error(err.error?.message || 'Update failed');
             }
             return res.json();
         }
 
         async function del(table, id) {
-            const res = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${table}/${id}`, {
+            const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(table)}/${id}`;
+            log(`🗑️ DELETE ${table}/${id.substring(0,10)}...`);
+            
+            const res = await fetch(url, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
             if (!res.ok) {
                 const err = await res.json();
+                log(`❌ Delete failed: ${JSON.stringify(err)}`);
                 throw new Error(err.error?.message || 'Delete failed');
             }
         }
@@ -1650,7 +1633,6 @@
         // KEYBOARD SHORTCUTS
         // ═══════════════════════════════════════════════════════════════
         function handleKey(e) {
-            // Ignore if typing in input/textarea
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             if (isProcessing) return;
             
